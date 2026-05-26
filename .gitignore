@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.so
+*.pt
+*.pth
+results/
+wandb/
+.env
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+*.log
+data/operator_topology.json
+notebooks/.ipynb_checkpoints/
