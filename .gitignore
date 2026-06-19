@@ -12,5 +12,4 @@ build/
 .pytest_cache/
 .mypy_cache/
 *.log
-data/operator_topology.json
 notebooks/.ipynb_checkpoints/

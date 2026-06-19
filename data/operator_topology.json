@@ -1,0 +1,1095 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "tier": "core",
+      "id": "S1"
+    },
+    {
+      "tier": "core",
+      "id": "S2"
+    },
+    {
+      "tier": "core",
+      "id": "S3"
+    },
+    {
+      "tier": "core",
+      "id": "S4"
+    },
+    {
+      "tier": "core",
+      "id": "S5"
+    },
+    {
+      "tier": "core",
+      "id": "S6"
+    },
+    {
+      "tier": "core",
+      "id": "S7"
+    },
+    {
+      "tier": "dist",
+      "id": "S8"
+    },
+    {
+      "tier": "core",
+      "id": "S9"
+    },
+    {
+      "tier": "core",
+      "id": "S10"
+    },
+    {
+      "tier": "core",
+      "id": "S11"
+    },
+    {
+      "tier": "dist",
+      "id": "S12"
+    },
+    {
+      "tier": "dist",
+      "id": "S13"
+    },
+    {
+      "tier": "core",
+      "id": "S14"
+    },
+    {
+      "tier": "core",
+      "id": "S15"
+    },
+    {
+      "tier": "core",
+      "id": "S16"
+    },
+    {
+      "tier": "core",
+      "id": "S17"
+    },
+    {
+      "tier": "core",
+      "id": "S18"
+    },
+    {
+      "tier": "core",
+      "id": "S19"
+    },
+    {
+      "tier": "core",
+      "id": "S20"
+    },
+    {
+      "tier": "dist",
+      "id": "S21"
+    },
+    {
+      "tier": "dist",
+      "id": "S22"
+    },
+    {
+      "tier": "core",
+      "id": "S23"
+    },
+    {
+      "tier": "core",
+      "id": "S24"
+    },
+    {
+      "tier": "core",
+      "id": "S25"
+    },
+    {
+      "tier": "core",
+      "id": "S26"
+    },
+    {
+      "tier": "core",
+      "id": "S27"
+    },
+    {
+      "tier": "core",
+      "id": "S28"
+    },
+    {
+      "tier": "core",
+      "id": "S29"
+    },
+    {
+      "tier": "dist",
+      "id": "S30"
+    },
+    {
+      "tier": "dist",
+      "id": "S31"
+    },
+    {
+      "tier": "core",
+      "id": "S32"
+    },
+    {
+      "tier": "core",
+      "id": "S33"
+    },
+    {
+      "tier": "core",
+      "id": "S34"
+    },
+    {
+      "tier": "core",
+      "id": "S35"
+    },
+    {
+      "tier": "core",
+      "id": "S36"
+    },
+    {
+      "tier": "core",
+      "id": "S37"
+    },
+    {
+      "tier": "dist",
+      "id": "S38"
+    },
+    {
+      "tier": "dist",
+      "id": "S39"
+    },
+    {
+      "tier": "core",
+      "id": "S40"
+    },
+    {
+      "tier": "core",
+      "id": "S41"
+    },
+    {
+      "tier": "core",
+      "id": "S42"
+    },
+    {
+      "tier": "core",
+      "id": "S43"
+    },
+    {
+      "tier": "core",
+      "id": "S44"
+    },
+    {
+      "tier": "core",
+      "id": "S45"
+    },
+    {
+      "tier": "core",
+      "id": "S46"
+    },
+    {
+      "tier": "dist",
+      "id": "S47"
+    },
+    {
+      "tier": "dist",
+      "id": "S48"
+    },
+    {
+      "tier": "core",
+      "id": "S49"
+    },
+    {
+      "tier": "core",
+      "id": "S50"
+    },
+    {
+      "tier": "core",
+      "id": "S51"
+    },
+    {
+      "tier": "core",
+      "id": "S52"
+    },
+    {
+      "tier": "core",
+      "id": "S53"
+    },
+    {
+      "tier": "core",
+      "id": "S54"
+    },
+    {
+      "tier": "core",
+      "id": "S55"
+    },
+    {
+      "tier": "dist",
+      "id": "S56"
+    },
+    {
+      "tier": "dist",
+      "id": "S57"
+    },
+    {
+      "tier": "core",
+      "id": "S58"
+    },
+    {
+      "tier": "core",
+      "id": "S59"
+    },
+    {
+      "tier": "core",
+      "id": "S60"
+    },
+    {
+      "tier": "core",
+      "id": "S61"
+    },
+    {
+      "tier": "core",
+      "id": "S62"
+    },
+    {
+      "tier": "core",
+      "id": "S63"
+    },
+    {
+      "tier": "core",
+      "id": "S64"
+    },
+    {
+      "tier": "dist",
+      "id": "S65"
+    },
+    {
+      "tier": "access",
+      "id": "BS1"
+    },
+    {
+      "tier": "access",
+      "id": "BS2"
+    },
+    {
+      "tier": "access",
+      "id": "BS3"
+    },
+    {
+      "tier": "access",
+      "id": "BS4"
+    },
+    {
+      "tier": "access",
+      "id": "BS5"
+    },
+    {
+      "tier": "access",
+      "id": "BS6"
+    },
+    {
+      "tier": "access",
+      "id": "BS7"
+    },
+    {
+      "tier": "access",
+      "id": "CS1"
+    },
+    {
+      "tier": "access",
+      "id": "CS2"
+    },
+    {
+      "tier": "access",
+      "id": "CS3"
+    },
+    {
+      "tier": "access",
+      "id": "CS4"
+    },
+    {
+      "tier": "access",
+      "id": "CS5"
+    },
+    {
+      "tier": "access",
+      "id": "CS6"
+    },
+    {
+      "tier": "access",
+      "id": "CS7"
+    },
+    {
+      "tier": "access",
+      "id": "MECS1"
+    },
+    {
+      "tier": "access",
+      "id": "MECS2"
+    },
+    {
+      "tier": "access",
+      "id": "MECS3"
+    },
+    {
+      "tier": "access",
+      "id": "MECS4"
+    },
+    {
+      "tier": "access",
+      "id": "MECS5"
+    },
+    {
+      "tier": "access",
+      "id": "MECS6"
+    },
+    {
+      "tier": "access",
+      "id": "MECS7"
+    }
+  ],
+  "edges": [
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S1",
+      "target": "S2"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S1",
+      "target": "S3"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S1",
+      "target": "S8"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S2",
+      "target": "S4"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S3",
+      "target": "S4"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S4",
+      "target": "S5"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S4",
+      "target": "S6"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S5",
+      "target": "S7"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S6",
+      "target": "S7"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S7",
+      "target": "S12"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S8",
+      "target": "BS1"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S8",
+      "target": "MECS1"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S8",
+      "target": "S13"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S8",
+      "target": "S22"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S9",
+      "target": "S10"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S9",
+      "target": "S14"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S10",
+      "target": "S11"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S11",
+      "target": "S20"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S12",
+      "target": "CS1"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S12",
+      "target": "S21"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S12",
+      "target": "S30"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S13",
+      "target": "BS2"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S13",
+      "target": "MECS2"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S13",
+      "target": "S14"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S13",
+      "target": "S31"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S14",
+      "target": "S15"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S14",
+      "target": "S16"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S15",
+      "target": "S17"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S16",
+      "target": "S17"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S17",
+      "target": "S18"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S17",
+      "target": "S19"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S18",
+      "target": "S20"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S19",
+      "target": "S20"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S20",
+      "target": "S21"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S21",
+      "target": "CS2"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S21",
+      "target": "S38"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S22",
+      "target": "BS3"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S22",
+      "target": "MECS3"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S22",
+      "target": "S23"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S22",
+      "target": "S39"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S23",
+      "target": "S24"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S23",
+      "target": "S25"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S24",
+      "target": "S26"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S25",
+      "target": "S26"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S26",
+      "target": "S27"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S26",
+      "target": "S28"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S27",
+      "target": "S29"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S28",
+      "target": "S29"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S29",
+      "target": "S30"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S30",
+      "target": "CS3"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S30",
+      "target": "S47"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S31",
+      "target": "BS4"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S31",
+      "target": "MECS4"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S31",
+      "target": "S32"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S31",
+      "target": "S48"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S32",
+      "target": "S33"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S33",
+      "target": "S34"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S34",
+      "target": "S35"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S35",
+      "target": "S36"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S36",
+      "target": "S37"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S37",
+      "target": "S38"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S38",
+      "target": "CS4"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S38",
+      "target": "S56"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S39",
+      "target": "BS5"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S39",
+      "target": "MECS5"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S39",
+      "target": "S40"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S39",
+      "target": "S48"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S40",
+      "target": "S41"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S40",
+      "target": "S42"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S41",
+      "target": "S43"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S42",
+      "target": "S43"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S43",
+      "target": "S44"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S43",
+      "target": "S45"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S44",
+      "target": "S46"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S45",
+      "target": "S46"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S46",
+      "target": "S47"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S47",
+      "target": "CS5"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S47",
+      "target": "S56"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S48",
+      "target": "BS6"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S48",
+      "target": "MECS6"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S48",
+      "target": "S49"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S48",
+      "target": "S57"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S49",
+      "target": "S50"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S49",
+      "target": "S51"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S50",
+      "target": "S52"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S51",
+      "target": "S52"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S52",
+      "target": "S53"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S52",
+      "target": "S54"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S53",
+      "target": "S55"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S54",
+      "target": "S55"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S55",
+      "target": "S56"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S56",
+      "target": "CS6"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S56",
+      "target": "S65"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S57",
+      "target": "BS7"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S57",
+      "target": "MECS7"
+    },
+    {
+      "capacity": 300.0,
+      "capacity_scale": 0.3,
+      "utilization": 0.0,
+      "source": "S57",
+      "target": "S58"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S58",
+      "target": "S59"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S58",
+      "target": "S60"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S59",
+      "target": "S61"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S60",
+      "target": "S61"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S61",
+      "target": "S62"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S61",
+      "target": "S63"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S62",
+      "target": "S64"
+    },
+    {
+      "capacity": 500.0,
+      "capacity_scale": 0.5,
+      "utilization": 0.0,
+      "source": "S63",
+      "target": "S64"
+    },
+    {
+      "capacity": 700.0,
+      "capacity_scale": 0.7,
+      "utilization": 0.0,
+      "source": "S64",
+      "target": "S65"
+    },
+    {
+      "capacity": 1000.0,
+      "capacity_scale": 1.0,
+      "utilization": 0.0,
+      "source": "S65",
+      "target": "CS7"
+    }
+  ]
+}
