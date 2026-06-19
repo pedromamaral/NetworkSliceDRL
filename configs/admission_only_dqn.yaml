@@ -1,0 +1,14 @@
+_base_: configs/base.yaml
+
+# AdmissionOnlyDQN is evaluated via experiments/eval_baselines.py
+# This config is a reference for documentation purposes only.
+# The eval_baselines.py script loads configs/base.yaml directly.
+agent: admission_only_dqn
+mode: unified
+seed: 42
+run_name: admission_only_dqn_s42
+wandb_project: netslice-drl
+wandb_tags: [baseline, admission_only_dqn]
+
+# Shorter training — DQN baseline is simpler than full agents
+num_episodes: 500

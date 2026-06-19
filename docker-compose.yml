@@ -1,0 +1,43 @@
+version: "3.9"
+
+# Usage:
+#   CONFIG=configs/dqn_unified.yaml docker compose run --rm gpu15
+#   CONFIG=configs/ddqn_separated.yaml docker compose run --rm gpu14
+
+services:
+  # ---- shared base (not a runnable service itself) --------------------------
+  base: &base
+    build: .
+    image: netslice-drl:latest
+    volumes:
+      - ./results:/workspace/results
+      - ./configs:/workspace/configs
+      - ./data:/workspace/data
+    environment:
+      - WANDB_API_KEY=${WANDB_API_KEY:-}
+      - CUDA_VISIBLE_DEVICES=0
+      - EXPERIMENT_CONFIG=${CONFIG:-configs/dqn_unified.yaml}
+    command: ["--config", "${CONFIG:-configs/dqn_unified.yaml}"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # ---- GPU server 10.26.110.15 (primary) ------------------------------------
+  gpu15:
+    <<: *base
+    environment:
+      - WANDB_API_KEY=${WANDB_API_KEY:-}
+      - CUDA_VISIBLE_DEVICES=0
+      - EXPERIMENT_CONFIG=${CONFIG:-configs/dqn_unified.yaml}
+
+  # ---- GPU server 10.26.110.14 (secondary) ----------------------------------
+  gpu14:
+    <<: *base
+    environment:
+      - WANDB_API_KEY=${WANDB_API_KEY:-}
+      - CUDA_VISIBLE_DEVICES=0
+      - EXPERIMENT_CONFIG=${CONFIG:-configs/ddqn_unified.yaml}

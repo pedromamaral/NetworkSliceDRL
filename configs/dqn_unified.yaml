@@ -1,0 +1,12 @@
+# DQN – unified action space  (Discrete(K+1), 0=reject, 1..K=path index)
+# Inherits all defaults from configs/base.yaml; only agent/mode differ.
+_base_: configs/base.yaml
+
+agent: dqn_unified
+mode: unified
+seed: 42
+
+# experiment identity (used by Logger / WandB run name)
+run_name: dqn_unified_s42
+wandb_project: netslice-drl
+wandb_tags: [dqn, unified]

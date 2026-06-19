@@ -1,0 +1,11 @@
+# DQN – separated action space  (Tuple(Discrete(2), Discrete(K)))
+# Inherits all defaults from configs/base.yaml; only agent/mode differ.
+_base_: configs/base.yaml
+
+agent: dqn_separated
+mode: separated
+seed: 42
+
+run_name: dqn_separated_s42
+wandb_project: netslice-drl
+wandb_tags: [dqn, separated]

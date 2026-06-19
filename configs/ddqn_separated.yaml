@@ -1,0 +1,11 @@
+# Duelling Double DQN – separated action space
+# Inherits all defaults from configs/base.yaml; only agent/mode differ.
+_base_: configs/base.yaml
+
+agent: ddqn_separated
+mode: separated
+seed: 42
+
+run_name: ddqn_separated_s42
+wandb_project: netslice-drl
+wandb_tags: [ddqn, duelling, separated]
