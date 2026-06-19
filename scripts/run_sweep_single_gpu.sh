@@ -27,15 +27,8 @@ DRL_CONFIGS=(
 )
 
 # ---------------------------------------------------------------------------
-echo "=== [1/3] Syncing workspace to $REMOTE:$REMOTE_DIR ==="
-rsync -av --delete \
-      --exclude='.git' \
-      --exclude='results/' \
-      --exclude='wandb/' \
-      --exclude='__pycache__/' \
-      --exclude='*.pyc' \
-      --exclude='.venv/' \
-      ./ "$REMOTE:$REMOTE_DIR/"
+echo "=== [1/3] Pulling latest code on $REMOTE:$REMOTE_DIR ==="
+ssh "$REMOTE" "cd $REMOTE_DIR && git pull"
 
 echo ""
 echo "=== [2/3] Building Docker image on $REMOTE ==="
