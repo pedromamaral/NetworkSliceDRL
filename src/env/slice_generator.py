@@ -19,7 +19,12 @@ class SliceGenerator:
 
     def sample(self) -> dict:
         bw = float(self.rng.uniform(*self.cfg["bandwidth_range"]))
-        duration = int(self.rng.geometric(1.0 / self.cfg["slice_duration_mean"]))
+        # duration_slots is in time-slot units (paper's d_t); used for state and reward.
+        # duration_steps is the tick count: each MDP step is 1 arrival event, so there
+        # are arrival_rate steps per time slot on average.
+        arrival_rate = float(self.cfg.get("arrival_rate", 1.0))
+        duration_slots = int(self.rng.geometric(1.0 / self.cfg["slice_duration_mean"]))
+        duration_steps = max(1, int(round(duration_slots * arrival_rate)))
         price = bw * self.cfg["price_scale"] * (
             1.0 + 0.1 * float(self.rng.standard_normal())
         )
@@ -33,7 +38,8 @@ class SliceGenerator:
 
         return {
             "type": slice_type,
-            "duration": duration,
+            "duration": duration_slots,        # paper's d_t (time slots) — state + reward
+            "duration_steps": duration_steps,  # tick counter (MDP steps)
             "bandwidth": bw,
             "price": max(price, 0.1),
             "Mt": Mt,

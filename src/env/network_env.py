@@ -126,8 +126,10 @@ class NetworkEnv(gym.Env):
             if feasible:
                 for path, bw in chosen_paths:
                     self.topo.reserve(path, bw)
+                # Tick counter uses duration_steps (MDP steps); reward uses
+                # duration (time slots) per §2.5 of the paper formulation.
                 self.active_slices.append(
-                    (req, chosen_paths, req["duration"], req["bandwidth"])
+                    (req, chosen_paths, req["duration_steps"], req["bandwidth"])
                 )
                 reward = float(req["duration"] * req["price"])
                 info["admitted"] = True
