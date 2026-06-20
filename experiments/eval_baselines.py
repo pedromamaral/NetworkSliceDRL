@@ -155,7 +155,7 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
     # --- GreedyAdmission ---
     for mode in ("unified", "separated"):
         env = NetworkEnv(cfg, mode=mode)
-        agent = GreedyAdmission(mode=mode)
+        agent = GreedyAdmission(mode=mode, V=env.V, K=env.K)
         summary = _eval_agent(agent, env, eval_episodes)
         _record("greedy_admission", mode, summary)
 
