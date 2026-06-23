@@ -185,6 +185,11 @@ def train(cfg: dict) -> None:
     log_interval: int = cfg.get("log_interval", 10)
 
     last_loss: float | None = None
+    # Rewards (d_t × p_t) can be ~600 per step → Q-values in the hundreds of
+    # thousands → MSE loss diverges.  Normalise before storing in the replay
+    # buffer so Q-values stay in a tractable range.  Metrics still use the
+    # original (un-scaled) rewards for interpretability.
+    reward_scale: float = cfg.get("reward_scale", 1000.0)
 
     print(
         f"[run_experiment] agent={cfg['agent']}  mode={mode}  "
@@ -201,12 +206,12 @@ def train(cfg: dict) -> None:
             action = agent.select_action(state)
             next_state, reward, terminated, truncated, info = env.step(action)
 
-            agent.store(state, action, reward, next_state, terminated or truncated)
+            agent.store(state, action, reward / reward_scale, next_state, terminated or truncated)
             loss = agent.learn()
             if loss is not None:
                 last_loss = loss
 
-            metrics.update(reward, info)
+            metrics.update(reward, info)   # original scale for metrics
             ep_reward += reward
             state = next_state
 

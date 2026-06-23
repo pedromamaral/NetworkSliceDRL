@@ -22,6 +22,7 @@ epsilon_end: 0.05
 epsilon_decay_steps: 10000
 target_update_freq: 100
 penalty_weight: 0.5
+reward_scale: 1000.0       # divide stored rewards by this before replay buffer
 
 # Evaluation
 eval_episodes: 200
