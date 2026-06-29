@@ -10,7 +10,7 @@ price_scale: 1.0
 inelastic_prob: 0.5
 
 # Training
-num_episodes: 2000
+num_episodes: 3000
 max_steps_per_episode: 500
 batch_size: 64
 replay_capacity: 50000
@@ -19,7 +19,7 @@ lr: 1.0e-4
 hidden_size: 256
 epsilon_start: 1.0
 epsilon_end: 0.05
-epsilon_decay_steps: 10000
+epsilon_decay_steps: 200000  # ~400 episodes of exploration before committing
 target_update_freq: 100
 penalty_weight: 0.5
 reward_scale: 1000.0       # divide stored rewards by this before replay buffer

@@ -47,6 +47,18 @@ class NetworkEnv(gym.Env):
         self.gen = SliceGenerator(gen_cfg, self.rng)
         self.penalty_weight: float = cfg.get("penalty_weight", 0.5)
 
+        # Normalisation constants — keep all observation components in [0, 1].
+        # Derived from config so they stay consistent across env instances.
+        arrival_rate = float(cfg.get("arrival_rate", 1.0))
+        dur_mean = float(cfg.get("slice_duration_mean", 10.0))
+        self._norm_duration = max(1.0, 5.0 * dur_mean)           # 5× mean covers >99% of geometric
+        self._norm_bw = float(cfg.get("bandwidth_range", [10, 100])[1])
+        self._norm_price = self._norm_bw * float(cfg.get("price_scale", 1.0)) * 1.5
+        # Steady-state active slices = 1 arrival/step × duration_steps_mean
+        self._norm_active = max(1.0, 3.0 * arrival_rate * dur_mean)
+        # Maximum link capacity from the loaded topology
+        self._norm_cap = max(self.topo._cap.values()) if self.topo._cap else 1000.0
+
         # state_dim = request(4) + Mt(V²) + active_counts(2) + B(V²·K)
         self.state_dim: int = 4 + self.V ** 2 + 2 + self.V ** 2 * self.K
         self.observation_space = gym.spaces.Box(
@@ -162,12 +174,20 @@ class NetworkEnv(gym.Env):
     def _get_obs(self) -> np.ndarray:
         req = self.current_request
         rt_vec = np.array(
-            [req["type"], req["duration"], req["bandwidth"], req["price"]],
+            [
+                req["type"],                               # {0, 1}
+                req["duration"] / self._norm_duration,    # → [0, 1]
+                req["bandwidth"] / self._norm_bw,         # → [0, 1]
+                req["price"] / self._norm_price,          # → [0, 1]
+            ],
             dtype=np.float32,
         )
-        mt_flat = req["Mt"].flatten().astype(np.float32)
+        mt_flat = req["Mt"].flatten().astype(np.float32)  # binary, already [0, 1]
         n_inelastic = sum(1 for s in self.active_slices if s[0]["type"] == 0)
         n_elastic = sum(1 for s in self.active_slices if s[0]["type"] == 1)
-        asl = np.array([n_inelastic, n_elastic], dtype=np.float32)
-        B_flat = self.topo.bottleneck_tensor().flatten()
+        asl = np.array(
+            [n_inelastic / self._norm_active, n_elastic / self._norm_active],
+            dtype=np.float32,
+        )
+        B_flat = (self.topo.bottleneck_tensor() / self._norm_cap).flatten()
         return np.concatenate([rt_vec, mt_flat, asl, B_flat])
