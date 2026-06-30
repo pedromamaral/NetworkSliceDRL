@@ -190,6 +190,7 @@ def train(cfg: dict) -> None:
     # buffer so Q-values stay in a tractable range.  Metrics still use the
     # original (un-scaled) rewards for interpretability.
     reward_scale: float = cfg.get("reward_scale", 1000.0)
+    total_steps: int = 0  # global step counter for target-network sync
 
     print(
         f"[run_experiment] agent={cfg['agent']}  mode={mode}  "
@@ -213,18 +214,19 @@ def train(cfg: dict) -> None:
 
             metrics.update(reward, info)   # original scale for metrics
             ep_reward += reward
+            total_steps += 1
             state = next_state
+
+            # Target-network hard copy every target_update_freq STEPS
+            if total_steps % target_update_freq == 0:
+                agent.update_target()
 
             if terminated or truncated:
                 break
 
         metrics.end_episode()
 
-        # Periodic target-network sync
-        if ep % target_update_freq == 0:
-            agent.update_target()
-
-        # Periodic evaluation log + checkpoint
+        # Evaluation log + checkpoint
         if ep % eval_interval == 0:
             summary = metrics.summarise()
             logger.log(episode=ep, metrics=summary, loss=last_loss)
