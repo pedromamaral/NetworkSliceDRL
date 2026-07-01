@@ -160,10 +160,10 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
         _record("greedy_admission", mode, summary)
 
     # --- RevenueHeuristic ---
-    threshold: float = cfg.get("revenue_threshold", 50.0)
+    threshold: float = cfg.get("revenue_threshold", 500.0)
     for mode in ("unified", "separated"):
         env = NetworkEnv(cfg, mode=mode)
-        agent = RevenueHeuristic(threshold=threshold, mode=mode)
+        agent = RevenueHeuristic(threshold=threshold, mode=mode, env=env)
         summary = _eval_agent(agent, env, eval_episodes)
         _record("revenue_heuristic", mode, summary)
 
