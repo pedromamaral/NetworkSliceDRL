@@ -59,8 +59,8 @@ class NetworkEnv(gym.Env):
         # Maximum link capacity from the loaded topology
         self._norm_cap = max(self.topo._cap.values()) if self.topo._cap else 1000.0
 
-        # state_dim = request(4) + Mt(V²) + active_counts(2) + B(V²·K)
-        self.state_dim: int = 4 + self.V ** 2 + 2 + self.V ** 2 * self.K
+        # state_dim = request(4) + Mt(V²) + active_counts(2) + B(V²·K) + feasibility(K)
+        self.state_dim: int = 4 + self.V ** 2 + 2 + self.V ** 2 * self.K + self.K
         self.observation_space = gym.spaces.Box(
             low=-np.inf,
             high=np.inf,
@@ -189,5 +189,27 @@ class NetworkEnv(gym.Env):
             [n_inelastic / self._norm_active, n_elastic / self._norm_active],
             dtype=np.float32,
         )
-        B_flat = (self.topo.bottleneck_tensor() / self._norm_cap).flatten()
-        return np.concatenate([rt_vec, mt_flat, asl, B_flat])
+        B = self.topo.bottleneck_tensor()
+        B_flat = (B / self._norm_cap).flatten()
+
+        # Feasibility signal: for each of the K paths, the ratio of available
+        # bottleneck capacity to the requested bandwidth across all connections
+        # required by this slice.  A value ≥ 1 means path k is feasible.
+        # Clamped to [0, 3] and normalised so the network gets a direct,
+        # low-dimensional routing cue without having to decode 1323 B values.
+        bw = req["bandwidth"]
+        connections = [
+            (i, j)
+            for i in range(self.V)
+            for j in range(self.V)
+            if req["Mt"][i, j] == 1
+        ]
+        feasibility = np.zeros(self.K, dtype=np.float32)
+        for k in range(self.K):
+            if connections:
+                bottleneck = float(min(B[i, j, k] for i, j in connections))
+                feasibility[k] = np.clip(bottleneck / max(bw, 1e-6), 0.0, 3.0) / 3.0
+            else:
+                feasibility[k] = 1.0  # no connections required → always feasible
+
+        return np.concatenate([rt_vec, mt_flat, asl, B_flat, feasibility])

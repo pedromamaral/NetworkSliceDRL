@@ -103,9 +103,10 @@ class DQNUnified:
         with torch.no_grad():
             target = R + self.gamma * (1.0 - D) * self.q_target(S2).max(dim=1).values
 
-        loss = nn.functional.mse_loss(q_val, target)
+        loss = nn.functional.smooth_l1_loss(q_val, target)
         self.opt.zero_grad()
         loss.backward()
+        nn.utils.clip_grad_norm_(self.q.parameters(), max_norm=10.0)
         self.opt.step()
         self.steps += 1
         return float(loss.item())
