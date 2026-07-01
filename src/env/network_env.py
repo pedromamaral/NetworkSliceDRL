@@ -107,17 +107,31 @@ class NetworkEnv(gym.Env):
         reward = 0.0
         info: dict = {"admitted": False, "sla_ok": True}
 
+        connections = [
+            (i, j)
+            for i in range(self.V)
+            for j in range(self.V)
+            if req["Mt"][i, j] == 1
+        ]
+        B = self.topo.bottleneck_tensor()
+
+        # Diagnostic: was ANY of the K paths feasible for this request?
+        # Distinguishes routing mistakes (a feasible path existed but the agent
+        # picked a different, infeasible one) from genuine capacity exhaustion.
+        any_path_feasible = False
+        for k in range(self.K):
+            ok = bool(connections)
+            for (i, j) in connections:
+                pl = self.topo.paths.get((self.topo.nodes[i], self.topo.nodes[j]), [])
+                if not pl or k >= len(pl) or B[i, j, k] < req["bandwidth"]:
+                    ok = False
+                    break
+            if ok:
+                any_path_feasible = True
+                break
+
         # --- Admission decision ----------------------------------------------
         if admit:
-            connections = [
-                (i, j)
-                for i in range(self.V)
-                for j in range(self.V)
-                if req["Mt"][i, j] == 1
-            ]
-
-            # Compute bottleneck once for this time-step
-            B = self.topo.bottleneck_tensor()
             feasible = True
             chosen_paths: list = []
 
@@ -148,6 +162,19 @@ class NetworkEnv(gym.Env):
                 # With hard reservation SLA is guaranteed; P(s,a) = 0 always.
                 info["sla_ok"] = True
 
+        # --- Diagnostic flags ------------------------------------------------
+        info["admit_attempt"] = admit
+        info["any_path_feasible"] = any_path_feasible
+        # Agent tried to admit but its chosen path failed, though a feasible
+        # path existed → pure routing error.
+        info["routing_error"] = bool(
+            admit and not info["admitted"] and any_path_feasible
+        )
+        # Agent chose reject outright while a feasible path existed →
+        # admission conservatism (left money on the table).
+        info["missed_admission"] = bool(
+            not admit and any_path_feasible
+        )
         info["avg_path_utilization"] = self.topo.avg_link_utilization()
 
         # --- Tick active slices (age by one time-step) -----------------------
