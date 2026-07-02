@@ -76,11 +76,13 @@ def _tally(agent, env, n_episodes: int, max_steps: int) -> dict:
         "true_reject": 0,
         "any_feasible": 0,
     }
+    total_reward = 0.0
     for _ in range(n_episodes):
         state, _ = env.reset()
         for _ in range(max_steps):
             action = agent.select_action(state)
             state, reward, term, trunc, info = env.step(action)
+            total_reward += reward
             counts["arrivals"] += 1
             counts["any_feasible"] += int(info["any_path_feasible"])
             if info["admitted"]:
@@ -93,6 +95,7 @@ def _tally(agent, env, n_episodes: int, max_steps: int) -> dict:
                 counts["true_reject"] += 1
             if term or trunc:
                 break
+    counts["mean_ep_reward"] = total_reward / max(n_episodes, 1)
     return counts
 
 
@@ -105,6 +108,7 @@ def _report(name: str, c: dict) -> None:
     print(f"  routing_error     : {c['routing_error']/n:6.2%}  (tried admit, picked infeasible path, feasible existed)")
     print(f"  missed_admission  : {c['missed_admission']/n:6.2%}  (chose reject, feasible path existed)")
     print(f"  true_reject       : {c['true_reject']/n:6.2%}  (correct: no feasible path)")
+    print(f"  mean_ep_reward    : {c.get('mean_ep_reward', 0.0):,.0f}")
 
 
 def main() -> None:
