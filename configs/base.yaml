@@ -4,7 +4,7 @@ k_shortest_paths: 3
 
 # Traffic model
 arrival_rate: 5.0
-slice_duration_mean: 12
+slice_duration_mean: 30
 bandwidth_range: [10, 100]
 price_scale: 1.0
 inelastic_prob: 0.5
@@ -14,7 +14,7 @@ num_episodes: 2000
 max_steps_per_episode: 500
 batch_size: 64
 replay_capacity: 50000
-gamma: 0.99
+gamma: 0.95
 lr: 1.0e-4
 hidden_size: 256
 epsilon_start: 1.0
