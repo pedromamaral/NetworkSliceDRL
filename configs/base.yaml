@@ -23,6 +23,7 @@ epsilon_decay_steps: 200000  # ~400 episodes of exploration before committing
 target_update_freq: 100
 penalty_weight: 0.5
 reward_scale: 1000.0       # divide stored rewards by this before replay buffer
+action_mask: true          # forbid admitting via an infeasible path (unified agents)
 
 # Evaluation
 eval_episodes: 200
