@@ -117,10 +117,14 @@ def main() -> None:
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--checkpoint", default=None)
     p.add_argument("--episodes", type=int, default=100)
+    p.add_argument("--mask", action="store_true",
+                   help="Enable feasibility action masking on the DRL agent.")
     args = p.parse_args()
 
     cfg = _load_config(args.config)
     cfg["seed"] = args.seed + 100  # same held-out traffic as evaluate()
+    if args.mask:
+        cfg["action_mask"] = True
     mode = cfg.get("mode", "unified")
     run_name = f"{cfg.get('agent')}_s{args.seed}"
     max_steps = cfg.get("max_steps_per_episode", 500)

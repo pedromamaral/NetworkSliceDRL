@@ -53,6 +53,14 @@ class DQNUnified:
         self.action_dim: int = action_dim
         self.steps: int = 0
 
+        # Optional action masking: never select "admit via path k" when the
+        # observation's feasibility signal (last K entries) says path k cannot
+        # satisfy the request.  Reject (action 0) is always permitted.  The
+        # feasibility signal is part of the observation (not privileged info).
+        self.use_mask: bool = bool(cfg.get("action_mask", False))
+        self.n_paths: int = action_dim - 1                # K
+        self._mask_thresh: float = 1.0 / 3.0 - 1e-6       # matches env feasibility encoding
+
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
@@ -71,11 +79,28 @@ class DQNUnified:
 
     def select_action(self, state: np.ndarray) -> int:
         self._decay_eps()
+
+        # Build feasibility mask over path actions 1..K (reject always allowed).
+        feasible_path = None
+        if self.use_mask:
+            feas = np.asarray(state[-self.n_paths:], dtype=np.float32)
+            feasible_path = feas >= self._mask_thresh  # bool over K paths
+
         if np.random.random() < self.eps:
+            if feasible_path is not None:
+                # Explore only among reject + feasible paths.
+                choices = [0] + [k + 1 for k in range(self.n_paths) if feasible_path[k]]
+                return int(np.random.choice(choices))
             return int(np.random.randint(self.action_dim))
+
         s = torch.as_tensor(state, dtype=torch.float32).unsqueeze(0).to(self.device)
         with torch.no_grad():
-            return int(self.q(s).argmax(dim=1).item())
+            q = self.q(s).squeeze(0).cpu().numpy()
+        if feasible_path is not None:
+            for k in range(self.n_paths):
+                if not feasible_path[k]:
+                    q[k + 1] = -np.inf  # forbid admitting via infeasible path k
+        return int(np.argmax(q))
 
     def store(self, s, a: int, r: float, s_next, done: bool) -> None:
         self.buf.push(s, a, r, s_next, done)
