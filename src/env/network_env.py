@@ -105,7 +105,7 @@ class NetworkEnv(gym.Env):
             path_k = int(action[1])
 
         reward = 0.0
-        info: dict = {"admitted": False, "sla_ok": True}
+        info: dict = {"admitted": False, "admit_revenue": 0.0}
 
         connections = [
             (i, j)
@@ -115,9 +115,7 @@ class NetworkEnv(gym.Env):
         ]
         B = self.topo.bottleneck_tensor()
 
-        # Diagnostic: was ANY of the K paths feasible for this request?
-        # Distinguishes routing mistakes (a feasible path existed but the agent
-        # picked a different, infeasible one) from genuine capacity exhaustion.
+        # Diagnostic: was ANY of the K paths feasible (no oversubscription)?
         any_path_feasible = False
         for k in range(self.K):
             ok = bool(connections)
@@ -130,62 +128,84 @@ class NetworkEnv(gym.Env):
                 any_path_feasible = True
                 break
 
-        # --- Admission decision ----------------------------------------------
+        # --- Admission decision (SOFT capacity: over-admission allowed) -------
+        over_admitted = False
         if admit:
-            feasible = True
+            # Gather the chosen path for every logical connection.  Admission is
+            # NOT gated on capacity — the agent may over-admit and risk an SLA
+            # penalty later.  Only a structurally missing path blocks admission.
+            structurally_valid = True
             chosen_paths: list = []
-
+            chosen_feasible = True
             for (i, j) in connections:
                 path_list = self.topo.paths.get(
                     (self.topo.nodes[i], self.topo.nodes[j]), []
                 )
                 if not path_list or path_k >= len(path_list):
-                    feasible = False
+                    structurally_valid = False
                     break
-                path = path_list[path_k]
-                if B[i, j, path_k] >= req["bandwidth"]:
-                    chosen_paths.append((path, req["bandwidth"]))
-                else:
-                    feasible = False
-                    break
+                chosen_paths.append((path_list[path_k], req["bandwidth"]))
+                if B[i, j, path_k] < req["bandwidth"]:
+                    chosen_feasible = False
 
-            if feasible:
+            if structurally_valid and chosen_paths:
+                # Reserve on the chosen path; avail may go negative (oversub).
                 for path, bw in chosen_paths:
                     self.topo.reserve(path, bw)
-                # Tick counter uses duration_steps (MDP steps); reward uses
-                # duration (time slots) per §2.5 of the paper formulation.
+                # Slice entry is mutable so we can flag SLA violation later.
                 self.active_slices.append(
-                    (req, chosen_paths, req["duration_steps"], req["bandwidth"])
+                    [req, chosen_paths, req["duration_steps"], req["bandwidth"], False]
                 )
-                reward = float(req["duration"] * req["price"])
+                rev = float(req["duration"] * req["price"])
+                reward += rev
                 info["admitted"] = True
-                # With hard reservation SLA is guaranteed; P(s,a) = 0 always.
-                info["sla_ok"] = True
+                info["admit_revenue"] = rev
+                over_admitted = not chosen_feasible
 
-        # --- Diagnostic flags ------------------------------------------------
+        # --- SLA violation detection (binary: once if ever oversubscribed) ----
+        # A link is oversubscribed when its committed load exceeds capacity
+        # (avail < 0).  Any active slice crossing such a link fails its SLA.
+        # Penalty is applied once, at the step the slice first violates, and
+        # is attributed to the current action (which caused the oversub).
+        new_violations = 0
+        penalty = 0.0
+        for s in self.active_slices:
+            if s[4]:
+                continue  # already violated & penalised
+            oversub = any(
+                self.topo.avail.get(e, 0.0) < 0.0
+                for path, _ in s[1]
+                for e in path
+            )
+            if oversub:
+                s[4] = True
+                new_violations += 1
+                s_rev = float(s[0]["duration"] * s[0]["price"])
+                # Inelastic (τ=0) penalised in full; elastic (τ=1) at half.
+                frac = 1.0 if s[0]["type"] == 0 else 0.5
+                penalty += self.penalty_weight * frac * s_rev
+        reward -= penalty
+
+        # --- Info / diagnostics ----------------------------------------------
         info["admit_attempt"] = admit
         info["any_path_feasible"] = any_path_feasible
-        # Agent tried to admit but its chosen path failed, though a feasible
-        # path existed → pure routing error.
+        info["over_admitted"] = over_admitted
+        info["new_violations"] = new_violations
+        info["missed_admission"] = bool(not admit and any_path_feasible)
         info["routing_error"] = bool(
             admit and not info["admitted"] and any_path_feasible
-        )
-        # Agent chose reject outright while a feasible path existed →
-        # admission conservatism (left money on the table).
-        info["missed_admission"] = bool(
-            not admit and any_path_feasible
         )
         info["avg_path_utilization"] = self.topo.avg_link_utilization()
 
         # --- Tick active slices (age by one time-step) -----------------------
         new_active = []
-        for (s_req, s_paths, s_rem, s_bw) in self.active_slices:
-            s_rem -= 1
-            if s_rem <= 0:
-                for path, bw in s_paths:
+        for s in self.active_slices:
+            s[2] -= 1
+            if s[2] <= 0:
+                for path, bw in s[1]:
                     self.topo.release(path, bw)
             else:
-                new_active.append((s_req, s_paths, s_rem, s_bw))
+                new_active.append(s)
         self.active_slices = new_active
 
         self.current_request = self.gen.sample()
