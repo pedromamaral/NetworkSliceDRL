@@ -56,7 +56,9 @@ def base_cfg(topo_file):
         "price_scale": 1.0,
         "inelastic_prob": 0.5,
         "seed": 42,
-        "penalty_weight": 0.5,
+        "penalty_weight": 1.5,
+        "reward_scale": 1000.0,
+        "action_mask": False,
     }
 
 

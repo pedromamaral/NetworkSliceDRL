@@ -35,10 +35,10 @@ class TestObservationSpace:
         assert obs.shape == (env_separated.state_dim,)
 
     def test_state_dim_formula(self, base_cfg):
-        """state_dim must equal 4 + V² + 2 + V²·K."""
+        """state_dim must equal 4 + V² + 2 + V²·K + K (K = per-path feasibility)."""
         env = NetworkEnv(base_cfg, mode="unified")
         V, K = env.V, env.K
-        expected = 4 + V ** 2 + 2 + V ** 2 * K
+        expected = 4 + V ** 2 + 2 + V ** 2 * K + K
         assert env.state_dim == expected
 
 
@@ -122,30 +122,34 @@ class TestAdmit:
 
 
 # ---------------------------------------------------------------------------
-# Capacity enforcement
+# Soft-capacity / over-admission model
 # ---------------------------------------------------------------------------
 
 
 class TestCapacity:
-    def test_over_saturation_rejected(self, env_unified):
-        """Force bw to exceed all link capacities; the slice must be rejected."""
+    def test_over_saturation_is_admitted_then_violates(self, env_unified):
+        """Under soft capacity a huge-bw slice is over-admitted (not rejected)
+        and immediately fails its SLA (oversubscribes its links)."""
         env_unified.reset()
-        # Monkey-patch current request with huge bandwidth
+        # Monkey-patch current request with huge bandwidth (exceeds all links).
         env_unified.current_request["bandwidth"] = 1e9
         _, reward, _, _, info = env_unified.step(1)
-        assert not info["admitted"]
-        assert reward == 0.0
+        assert info["admitted"] is True                    # over-admission allowed
+        assert info["over_admitted"] is True                # chosen path was infeasible
+        assert info["new_violations"] >= 1                  # SLA violated this step
+        assert reward < info["admit_revenue"]               # a penalty was applied
 
     def test_capacity_restored_after_expiry(self, env_unified):
         """After a slice expires, capacity must be fully restored."""
         env_unified.reset()
-        # Use a 1-step slice
-        env_unified.current_request["duration"] = 1
+        # Force a 1-step slice with a modest, feasible bandwidth.  The tick
+        # counter uses duration_steps, so set that (not duration).
+        env_unified.current_request["duration_steps"] = 1
         env_unified.current_request["bandwidth"] = 50.0
         # Record available capacity before admission
         cap_before = dict(env_unified.topo.avail)
 
-        # Try to admit
+        # Admit (soft capacity ⟹ structurally valid path always admits)
         _, _, _, _, info = env_unified.step(1)
         if not info["admitted"]:
             pytest.skip("admission failed; cannot test expiry")

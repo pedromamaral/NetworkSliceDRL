@@ -180,8 +180,16 @@ netslice-drl/
   — in that order. Changing order invalidates all agent checkpoints.
 - Slice duration is ticked **every step** (one step = one slice arrival event).
 - When a slice expires, bandwidth is **released** back to `topology.avail`.
-- If admission=1 but capacity is insufficient for the chosen path, the action is
-  treated as a **forced reject** (reward=0, no capacity reserved). This is by design.
+- **Soft-capacity / over-admission model (current):** admission is NOT gated on
+  capacity. On admit, the chosen path is reserved even if that drives a link's
+  load past capacity (`topology.avail` may go **negative** = oversubscribed).
+  Only a structurally missing path blocks admission. Any active slice crossing an
+  oversubscribed link (avail<0) fails its SLA; the penalty (§2.5) is applied
+  **once**, at the step it first violates, attributed to the action that caused
+  the oversubscription. Penalty = `penalty_weight × frac × (d·p)`, frac=1
+  inelastic / 0.5 elastic. (The earlier hard-reservation "forced reject on
+  insufficient capacity" made SLA penalties dead code and greedy near-optimal;
+  replaced per researcher decision 2026-07-03.)
 - The `mode` parameter ('unified' or 'separated') controls `action_space` type but
   not the state. State is identical for all four agent variants.
 
