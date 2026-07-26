@@ -34,6 +34,27 @@ def _make_state(duration: float = 10.0, price: float = 8.0) -> np.ndarray:
     return state
 
 
+def _greedy_state(feasibility, K: int = 3, dim: int = STATE_DIM) -> np.ndarray:
+    """State whose last K entries hold the per-path feasibility signal.
+
+    GreedyAdmission reads state[-K:] (env appends feasibility[k] = clip(
+    bottleneck_k/bw, 0, 3)/3, so path k is feasible iff feasibility[k] >= 1/3).
+    """
+    state = np.zeros(dim, dtype=np.float32)
+    state[-K:] = np.asarray(feasibility, dtype=np.float32)
+    return state
+
+
+class _StubEnv:
+    """Minimal env exposing current_request, for RevenueHeuristic tests.
+
+    RevenueHeuristic reads raw duration/price from env.current_request (not the
+    normalised observation), so the tests supply a stub rather than a state."""
+
+    def __init__(self, duration: float, price: float) -> None:
+        self.current_request = {"duration": duration, "price": price}
+
+
 def _baseline_cfg() -> dict:
     return {
         "hidden_size": 32,
@@ -53,16 +74,24 @@ def _baseline_cfg() -> dict:
 
 
 class TestGreedyAdmission:
-    def test_unified_always_returns_1(self):
-        agent = GreedyAdmission(mode="unified")
-        for _ in range(10):
-            assert agent.select_action(np.random.rand(STATE_DIM).astype(np.float32)) == 1
+    def test_unified_admits_max_feasibility_path(self):
+        # feasibility [0.2, 0.9, 0.4] → best path index 1 → action = index+1 = 2
+        agent = GreedyAdmission(mode="unified", K=3)
+        assert agent.select_action(_greedy_state([0.2, 0.9, 0.4])) == 2
 
-    def test_separated_always_returns_1_0(self):
-        agent = GreedyAdmission(mode="separated")
-        for _ in range(10):
-            a = agent.select_action(np.random.rand(STATE_DIM).astype(np.float32))
-            assert a == (1, 0)
+    def test_unified_rejects_when_no_path_feasible(self):
+        # all feasibility < 1/3 → reject
+        agent = GreedyAdmission(mode="unified", K=3)
+        assert agent.select_action(_greedy_state([0.1, 0.2, 0.05])) == 0
+
+    def test_separated_admits_max_feasibility_path(self):
+        # feasibility [0.2, 0.3, 0.9] → best path index 2 → (1, 2)
+        agent = GreedyAdmission(mode="separated", K=3)
+        assert agent.select_action(_greedy_state([0.2, 0.3, 0.9])) == (1, 2)
+
+    def test_separated_rejects_when_no_path_feasible(self):
+        agent = GreedyAdmission(mode="separated", K=3)
+        assert agent.select_action(_greedy_state([0.1, 0.2, 0.05])) == (0, 0)
 
     def test_invalid_mode_raises(self):
         with pytest.raises(ValueError):
@@ -83,33 +112,32 @@ class TestGreedyAdmission:
 
 class TestRevenueHeuristic:
     def test_admits_when_revenue_above_threshold(self):
-        agent = RevenueHeuristic(threshold=50.0, mode="unified")
         # duration=10, price=10 → revenue=100 > 50 → admit
-        state = _make_state(duration=10.0, price=10.0)
-        assert agent.select_action(state) == 1
+        agent = RevenueHeuristic(threshold=50.0, mode="unified",
+                                 env=_StubEnv(duration=10.0, price=10.0))
+        assert agent.select_action(_make_state()) == 1
 
     def test_rejects_when_revenue_below_threshold(self):
-        agent = RevenueHeuristic(threshold=50.0, mode="unified")
         # duration=2, price=5 → revenue=10 < 50 → reject
-        state = _make_state(duration=2.0, price=5.0)
-        assert agent.select_action(state) == 0
+        agent = RevenueHeuristic(threshold=50.0, mode="unified",
+                                 env=_StubEnv(duration=2.0, price=5.0))
+        assert agent.select_action(_make_state()) == 0
 
     def test_admits_at_exact_threshold(self):
-        agent = RevenueHeuristic(threshold=50.0, mode="unified")
-        state = _make_state(duration=5.0, price=10.0)  # revenue = 50.0
-        assert agent.select_action(state) == 1
+        # revenue = 5 * 10 = 50 == threshold → admit (>=)
+        agent = RevenueHeuristic(threshold=50.0, mode="unified",
+                                 env=_StubEnv(duration=5.0, price=10.0))
+        assert agent.select_action(_make_state()) == 1
 
     def test_separated_admit_action_is_tuple(self):
-        agent = RevenueHeuristic(threshold=0.0, mode="separated")
-        state = _make_state(duration=10.0, price=5.0)
-        a = agent.select_action(state)
-        assert a == (1, 0)
+        agent = RevenueHeuristic(threshold=0.0, mode="separated",
+                                 env=_StubEnv(duration=10.0, price=5.0))
+        assert agent.select_action(_make_state()) == (1, 0)
 
     def test_separated_reject_action_is_tuple(self):
-        agent = RevenueHeuristic(threshold=1e9, mode="separated")
-        state = _make_state(duration=1.0, price=1.0)
-        a = agent.select_action(state)
-        assert a == (0, 0)
+        agent = RevenueHeuristic(threshold=1e9, mode="separated",
+                                 env=_StubEnv(duration=1.0, price=1.0))
+        assert agent.select_action(_make_state()) == (0, 0)
 
     def test_invalid_mode_raises(self):
         with pytest.raises(ValueError):
