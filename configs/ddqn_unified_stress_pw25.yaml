@@ -1,0 +1,17 @@
+# Duelling Double DQN – unified – STRESS regime (cap_scale=0.35) with a HARSHER
+# SLA penalty.  penalty_weight=2.5 makes a violated slice net-negative for BOTH
+# types (inelastic d·p·(1−2.5)=−1.5·d·p; elastic d·p·(1−1.25)=−0.25·d·p), so
+# over-admission no longer pays.  Goal: force selective, greedy-like admission
+# at stress so routing (joint vs AC-only k=0) can be tested cleanly.  The
+# pw=1.5 stress run flooded because violated elastic still netted +0.25·d·p.
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+capacity_scale: 0.35
+penalty_weight: 2.5
+
+run_name: ddqn_unified_stress_pw25_s42
+wandb_project: netslice-drl
+wandb_tags: [ddqn, duelling, unified, stress, pw25]

@@ -1,0 +1,13 @@
+# Duelling Double DQN – unified – COUNT objective / HARD capacity (paper model).
+# Inherits admission_mode=hard, reward_mode=count, gamma=0.99 from base.yaml.
+# This is the 5-seed sweep config (seeds 42-46); --seed appends _s<seed> to
+# run_name, so checkpoints land in results/checkpoints/ddqn_unified_count_s<N>/.
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+
+run_name: ddqn_unified_count
+wandb_project: netslice-drl
+wandb_tags: [ddqn, duelling, unified, count, hard]

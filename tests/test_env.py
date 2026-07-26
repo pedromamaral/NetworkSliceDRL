@@ -107,14 +107,30 @@ class TestAdmit:
         assert info is not None
         assert info["admitted"] is True
 
-    def test_reward_matches_duration_times_price(self, env_unified):
-        """Reward should equal duration * price for the admitted request."""
+    def test_admission_reward_is_one_under_count_mode(self, env_unified):
+        """Default reward_mode='count': admission reward is exactly +1,
+        regardless of duration/price (paper's 'accept more slices' objective)."""
         for _ in range(50):
             env_unified.reset()
-            req = env_unified.current_request
-            expected = req["duration"] * req["price"]
             for path_idx in range(1, env_unified.K + 1):
                 _, reward, _, _, info = env_unified.step(path_idx)
+                if info["admitted"]:
+                    assert reward == pytest.approx(1.0)
+                    return
+        pytest.skip("could not trigger admission in test window")
+
+    def test_admission_reward_matches_duration_times_price_in_revenue_mode(
+        self, base_cfg
+    ):
+        """reward_mode='revenue' (soft-capacity ablation): reward == d * p."""
+        cfg = {**base_cfg, "admission_mode": "soft", "reward_mode": "revenue"}
+        env = NetworkEnv(cfg, mode="unified")
+        for _ in range(50):
+            env.reset()
+            req = env.current_request
+            expected = req["duration"] * req["price"]
+            for path_idx in range(1, env.K + 1):
+                _, reward, _, _, info = env.step(path_idx)
                 if info["admitted"]:
                     assert reward == pytest.approx(expected)
                     return
@@ -122,18 +138,38 @@ class TestAdmit:
 
 
 # ---------------------------------------------------------------------------
-# Soft-capacity / over-admission model
+# Capacity model
 # ---------------------------------------------------------------------------
 
 
 class TestCapacity:
-    def test_over_saturation_is_admitted_then_violates(self, env_unified):
-        """Under soft capacity a huge-bw slice is over-admitted (not rejected)
-        and immediately fails its SLA (oversubscribes its links)."""
+    def test_hard_capacity_rejects_oversized_request(self, env_unified):
+        """Default admission_mode='hard': a huge-bw slice cannot be admitted —
+        the attempt fails outright rather than oversubscribing a link."""
         env_unified.reset()
-        # Monkey-patch current request with huge bandwidth (exceeds all links).
         env_unified.current_request["bandwidth"] = 1e9
         _, reward, _, _, info = env_unified.step(1)
+        assert info["admitted"] is False
+        assert reward == 0.0
+        assert info["new_violations"] == 0
+
+    def test_hard_capacity_never_oversubscribed(self, env_unified):
+        """Capacity constraint (§2.6): avail must never go negative on any
+        link after any sequence of steps under the default hard admission."""
+        env_unified.reset()
+        for _ in range(200):
+            action = env_unified.action_space.sample()
+            env_unified.step(action)
+            assert all(v >= -1e-9 for v in env_unified.topo.avail.values())
+
+    def test_soft_capacity_over_admits_and_violates(self, base_cfg):
+        """Explicit admission_mode='soft' + reward_mode='revenue': a huge-bw
+        slice IS over-admitted and immediately fails its SLA."""
+        cfg = {**base_cfg, "admission_mode": "soft", "reward_mode": "revenue"}
+        env = NetworkEnv(cfg, mode="unified")
+        env.reset()
+        env.current_request["bandwidth"] = 1e9
+        _, reward, _, _, info = env.step(1)
         assert info["admitted"] is True                    # over-admission allowed
         assert info["over_admitted"] is True                # chosen path was infeasible
         assert info["new_violations"] >= 1                  # SLA violated this step

@@ -81,23 +81,57 @@ A_routing   = {1, 2, ..., K}  (path index)
 ```
 Two independent Q-networks; routing network is only queried if admission=1.
 
-### 2.5 Reward
+### 2.5 Reward (current default: count objective, hard capacity)
 
 ```
 R(s, a) =
-  0                      if slice rejected
-  d_t × p_t + P(s,a)    if slice accepted
+  0     if slice rejected, OR admission attempted but the chosen path lacks
+        headroom for some required connection (attempt fails outright)
+  +1    if slice admitted  (reward_mode = "count", admission_mode = "hard")
 ```
 
-Performance penalty P(s,a) applied during slice lifetime:
+This is the **paper's headline objective** — "DRL agents accept 47.5% more slices
+than baseline methods" is a claim about *count*, not revenue, so the reward
+must optimize count directly. Capacity is gated (§2.6): the agent cannot
+oversubscribe a link, so every admitted slice is fulfilled for its whole
+lifetime and `fulfillment_ratio ≡ 1.0` under this mode — the interesting
+metric is `acceptance_ratio`.
+
+**Alternate mode (kept for ablation, not the default) — revenue objective,
+soft capacity.** Set `admission_mode: soft`, `reward_mode: revenue` (see
+`configs/ddqn_unified_revenue_soft.yaml`):
+```
+R(s, a) =
+  0                      if slice rejected
+  d_t × p_t + P(s,a)    if slice accepted   (over-admission allowed)
+```
+Performance penalty P(s,a), applied once at the step a slice first violates:
 ```
 P(s,a) =
   0          if bandwidth SLA is met throughout slice duration
-  -p_t/2     if bandwidth NOT met AND slice is elastic (τ=1)
-  -p_t       if bandwidth NOT met AND slice is inelastic (τ=0)
+  -w·p_t/2   if bandwidth NOT met AND slice is elastic (τ=1)
+  -w·p_t     if bandwidth NOT met AND slice is inelastic (τ=0)
 ```
+`w` = `penalty_weight`. A `sla_penalty_mode: per_step` variant also exists
+(spreads the penalty over the oversubscribed lifetime instead of charging it
+once) — **do not use it**: it creates a discount asymmetry against the
+lump-sum admission reward that makes over-admission profitable and the agent
+floods (tested 2026-07-04, net reward 184k vs greedy 219k).
 
-`λ` (penalty_weight in config) scales the penalty term.
+**Why the pivot away from revenue (2026-07-07):** the revenue/soft-capacity
+model *did* beat greedy on net reward (222,239 vs 219,365, config "onceG99"),
+but only by being *more selective* — it admitted **fewer** slices than
+greedy in every regime tested (moderate load and two stress configs), and a
+joint AC+RA agent under that objective never beat AC-only-DQN (fixed path
+k=0) either. A path-diversity diagnostic confirmed the topology has real
+routing headroom (~11% of arrivals at moderate load are admittable only via
+a non-shortest path) — the revenue reward simply never pays the agent to use
+it, because admitting more (cheap) slices costs more in oversubscription
+penalty than it earns. Since the paper's claims are about slice *count*, not
+revenue, the objective was switched to match: count reward + hard capacity
+removes the possibility of "winning by rejecting more," so the only lever
+left for beating greedy/AC-only is smarter temporal (reject now to admit
+more later) and spatial (routing) bin-packing — which is the actual thesis.
 
 ### 2.6 Capacity Constraint
 
@@ -105,6 +139,10 @@ For every link `e ∈ E`, total reserved bandwidth must not exceed capacity:
 ```
 Σ_{s ∈ S_active} Σ_{(i,j): M_s[i,j]=1} b_s × δ_{s,i,j,e} ≤ C_e
 ```
+Enforced by construction under `admission_mode: hard` (default): an admission
+attempt whose chosen path lacks headroom for any required connection fails
+outright rather than reserving. Under `admission_mode: soft` this constraint
+may be violated (`topology.avail` goes negative) — see §2.5's alternate mode.
 
 ### 2.7 Duelling Architecture Decomposition
 
@@ -180,16 +218,32 @@ netslice-drl/
   — in that order. Changing order invalidates all agent checkpoints.
 - Slice duration is ticked **every step** (one step = one slice arrival event).
 - When a slice expires, bandwidth is **released** back to `topology.avail`.
-- **Soft-capacity / over-admission model (current):** admission is NOT gated on
-  capacity. On admit, the chosen path is reserved even if that drives a link's
-  load past capacity (`topology.avail` may go **negative** = oversubscribed).
-  Only a structurally missing path blocks admission. Any active slice crossing an
-  oversubscribed link (avail<0) fails its SLA; the penalty (§2.5) is applied
-  **once**, at the step it first violates, attributed to the action that caused
-  the oversubscription. Penalty = `penalty_weight × frac × (d·p)`, frac=1
-  inelastic / 0.5 elastic. (The earlier hard-reservation "forced reject on
-  insufficient capacity" made SLA penalties dead code and greedy near-optimal;
-  replaced per researcher decision 2026-07-03.)
+- **Hard-capacity / count-reward model (current default, `admission_mode: hard`,
+  `reward_mode: count` — researcher decision 2026-07-07, see §2.5 for full
+  history):** admission IS gated on capacity. The chosen path is reserved
+  only if it has headroom for every required connection; otherwise the
+  attempt fails outright (no reservation, reward 0 — same bookkeeping as
+  `routing_error`/`missed_admission`, see `diagnose.py`). `topology.avail`
+  can never go negative. Reward is `+1` per admitted slice. Fulfillment is
+  guaranteed (`fulfillment_ratio ≡ 1.0`); the metric that matters is
+  `acceptance_ratio`.
+- **Soft-capacity / revenue-reward model (kept for ablation,
+  `admission_mode: soft`, `reward_mode: revenue`,
+  `configs/ddqn_unified_revenue_soft.yaml`):** admission NOT gated on
+  capacity — the chosen path is reserved even if that drives a link's load
+  past capacity (`topology.avail` may go **negative** = oversubscribed).
+  Revenue `d·p` is paid as a lump sum at admission. Any active slice crossing
+  an oversubscribed link (avail<0) fails its SLA and is charged per
+  `sla_penalty_mode` (`"once"` = full `penalty_weight × frac × (d·p)` at
+  first violation — the validated setting; `"per_step"` exists but floods,
+  do not use). The per-slice violated flag is kept only for metrics
+  (fulfillment / sla_violation_rate count a slice once if it ever violates).
+  (History: hard-reservation made SLA penalties dead code → soft-capacity
+  binary-once → per-step proportional (rejected, floods) → back to
+  binary-once + γ=0.99 ["onceG99", beat greedy on revenue but not on slice
+  count] → superseded 2026-07-07 by the hard/count model above once
+  diagnostics showed the revenue objective never rewards using routing
+  headroom to admit more.)
 - The `mode` parameter ('unified' or 'separated') controls `action_space` type but
   not the state. State is identical for all four agent variants.
 

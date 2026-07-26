@@ -1,0 +1,26 @@
+# Duelling Double DQN – unified – REVENUE / SOFT-CAPACITY regime (superseded).
+#
+# This is the "onceG99" config from the 2026-07-03/04 revenue-selectivity
+# campaign: admission_mode=soft (over-admission allowed), reward_mode=revenue
+# (d·price minus a "once" SLA penalty), gamma=0.99.  It beat greedy on held-out
+# net reward (222,239 vs 219,365) via pure selectivity, but path-diversity
+# analysis (2026-07-07) showed the revenue objective actively discourages the
+# agent from using its routing headroom to admit MORE slices — it trails
+# greedy and even AC-only-DQN on slice count/fulfillment in every regime
+# tested.  Superseded by the count/hard objective now in base.yaml, which is
+# what the paper's "accept more slices" claim actually needs.  Kept here so
+# this result stays reproducible for the write-up / ablation discussion.
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+
+admission_mode: soft
+reward_mode: revenue
+reward_scale: 1000.0
+gamma: 0.99
+
+run_name: ddqn_unified_revenue_soft_s42
+wandb_project: netslice-drl
+wandb_tags: [ddqn, duelling, unified, revenue, soft-capacity]

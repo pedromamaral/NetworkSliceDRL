@@ -88,21 +88,29 @@ def _eval_agent(agent, env: NetworkEnv, n_episodes: int) -> dict:
 
 
 def _train_dqn_baseline(agent: AdmissionOnlyDQN, env: NetworkEnv, n_episodes: int) -> None:
-    """Quick training loop for AdmissionOnlyDQN."""
+    """Training loop for AdmissionOnlyDQN, matching run_experiment machinery.
+
+    Rewards are divided by ``reward_scale`` before entering the replay buffer
+    (same as the main agents) and the target net is hard-copied every
+    ``target_update_freq`` STEPS (not episodes)."""
     max_steps: int = env.cfg.get("max_steps_per_episode", 500)
     target_freq: int = env.cfg.get("target_update_freq", 100)
+    reward_scale: float = float(env.cfg.get("reward_scale", 1.0))
+    total_steps = 0
     for ep in range(1, n_episodes + 1):
         state, _ = env.reset()
         for _ in range(max_steps):
             action = agent.select_action(state)
             next_state, reward, terminated, truncated, info = env.step(action)
-            agent.store(state, action, reward, next_state, terminated or truncated)
+            agent.store(state, action, reward / reward_scale, next_state,
+                        terminated or truncated)
             agent.learn()
             state = next_state
+            total_steps += 1
+            if total_steps % target_freq == 0:
+                agent.update_target()
             if terminated or truncated:
                 break
-        if ep % target_freq == 0:
-            agent.update_target()
 
 
 # ---------------------------------------------------------------------------
@@ -129,8 +137,12 @@ def _save_results(rows: list[dict], out_dir: str) -> None:
 
 def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> None:
     cfg = _load_config(cfg_path)
-    cfg["seed"] = seed
     _set_seeds(seed)
+    # Mirror run_experiment.evaluate(): train on `seed`, evaluate every baseline
+    # on the held-out `seed + 100` traffic so results are directly comparable to
+    # the DRL agents' held-out eval.
+    eval_seed = seed + 100
+    modes = ("unified",)  # unified is the comparison against the joint DRL agent
 
     results_dir: str = cfg.get("results_dir", "results")
     run_tag = f"baselines_s{seed}"
@@ -138,12 +150,16 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
 
     rows: list[dict] = []
 
+    def _make_env(s: int, mode: str) -> NetworkEnv:
+        return NetworkEnv({**cfg, "seed": s}, mode=mode)
+
     def _record(name: str, mode: str, summary: dict) -> None:
         row = {
             "timestamp": datetime.utcnow().isoformat(timespec="seconds"),
             "baseline": name,
             "mode": mode,
             "seed": seed,
+            "eval_seed": eval_seed,
             **{k: round(v, 6) if isinstance(v, float) else v for k, v in summary.items()},
         }
         rows.append(row)
@@ -152,36 +168,35 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
             parts.append(f"{k}={v:.4f}" if isinstance(v, float) else f"{k}={v}")
         print("  ".join(parts), flush=True)
 
-    # --- GreedyAdmission ---
-    for mode in ("unified", "separated"):
-        env = NetworkEnv(cfg, mode=mode)
+    # --- GreedyAdmission (no training; eval on held-out) ---
+    for mode in modes:
+        env = _make_env(eval_seed, mode)
         agent = GreedyAdmission(mode=mode, V=env.V, K=env.K)
         summary = _eval_agent(agent, env, eval_episodes)
         _record("greedy_admission", mode, summary)
 
-    # --- RevenueHeuristic ---
+    # --- RevenueHeuristic (no training; eval on held-out) ---
     threshold: float = cfg.get("revenue_threshold", 500.0)
-    for mode in ("unified", "separated"):
-        env = NetworkEnv(cfg, mode=mode)
+    for mode in modes:
+        env = _make_env(eval_seed, mode)
         agent = RevenueHeuristic(threshold=threshold, mode=mode, env=env)
         summary = _eval_agent(agent, env, eval_episodes)
         _record("revenue_heuristic", mode, summary)
 
-    # --- AdmissionOnlyDQN (train first, then eval) ---
-    for mode in ("unified", "separated"):
-        env = NetworkEnv(cfg, mode=mode)
-        agent = AdmissionOnlyDQN(env.state_dim, cfg, mode=mode)
+    # --- AdmissionOnlyDQN (train on `seed`, eval on held-out `seed+100`) ---
+    for mode in modes:
+        train_env = _make_env(seed, mode)
+        agent = AdmissionOnlyDQN(train_env.state_dim, cfg, mode=mode)
         print(
             f"[eval_baselines] Training AdmissionOnlyDQN/{mode} "
             f"for {train_episodes} episodes …",
             flush=True,
         )
-        _train_dqn_baseline(agent, env, train_episodes)
-        # Freeze epsilon for eval
-        saved_eps = agent.eps
+        _train_dqn_baseline(agent, train_env, train_episodes)
+        # Freeze epsilon and evaluate on held-out traffic.
         agent.eps = 0.0
-        summary = _eval_agent(agent, env, eval_episodes)
-        agent.eps = saved_eps
+        eval_env = _make_env(eval_seed, mode)
+        summary = _eval_agent(agent, eval_env, eval_episodes)
         _record("admission_only_dqn", mode, summary)
 
     _save_results(rows, out_dir)

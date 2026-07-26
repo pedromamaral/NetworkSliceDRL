@@ -8,22 +8,42 @@ slice_duration_mean: 30
 bandwidth_range: [10, 100]
 price_scale: 1.0
 inelastic_prob: 0.5
+revenue_threshold: 1831.0   # ~70th pct of d*p → revenue heuristic admits top ~30% by value (matched selectivity vs DRL)
 
 # Training
 num_episodes: 2000
 max_steps_per_episode: 500
 batch_size: 64
 replay_capacity: 50000
-gamma: 0.95
+gamma: 0.99                # long horizon: rejecting now to admit more later is a multi-step trade-off
 lr: 1.0e-4
 hidden_size: 256
 epsilon_start: 1.0
 epsilon_end: 0.05
 epsilon_decay_steps: 200000  # ~400 episodes of exploration before committing
 target_update_freq: 100
-penalty_weight: 1.5        # SLA-violation penalty as fraction of d*p (inelastic full, elastic half)
-reward_scale: 1000.0       # divide stored rewards by this before replay buffer
-action_mask: false         # masking hurt revenue (removed the selectivity edge) — keep off
+action_mask: false         # masking hurt revenue in the old revenue-mode experiments — keep off
+
+# MDP objective (researcher decision 2026-07-07, see CLAUDE.md §2.5 history):
+#   admission_mode "hard"  — gate admission on capacity; never oversubscribe.
+#   reward_mode    "count" — +1 per admitted slice (paper's "accept more
+#                            slices" headline claim). Path-diversity analysis
+#                            confirmed routing headroom exists (~11% of
+#                            arrivals at moderate load need a non-shortest
+#                            path), so under a count objective the joint
+#                            AC+RA agent has a real lever to beat AC-only/
+#                            greedy that the earlier revenue objective didn't
+#                            reward it for using.
+admission_mode: hard
+reward_mode: count
+reward_scale: 1.0          # count rewards are O(1); no scaling needed
+
+# --- Soft-capacity / revenue-mode knobs (inert under the defaults above;
+#     kept so the 2026-07-03/04 revenue-selectivity experiments — best result
+#     "onceG99", net reward 222,239 vs greedy 219,365 at admission_mode=soft —
+#     stay reproducible via configs/ddqn_unified_revenue_soft.yaml). ---
+penalty_weight: 1.5        # SLA penalty as fraction of d*p (inelastic full, elastic half)
+sla_penalty_mode: once     # "once" (harsh→selective) | "per_step" (lenient→floody; discount asymmetry makes over-admission pay)
 
 # Evaluation
 eval_episodes: 200

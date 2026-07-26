@@ -24,9 +24,21 @@ class NetworkEnv(gym.Env):
     Action – separated mode:
         Tuple(Discrete(2), Discrete(K)):  (admit∈{0,1}, path_k∈{0..K-1})
 
-    Reward:
-        0           – reject or infeasible attempt
-        d · price   – admission; d = slice duration in time-steps
+    Reward (controlled by cfg["reward_mode"], default "count"):
+        "count"   – 0 reject/infeasible, +1 per admitted slice (paper's headline
+                    "accept more slices" objective; used with admission_mode="hard").
+        "revenue" – 0 reject/infeasible, d·price per admission, minus an SLA
+                    penalty accrued while any of the slice's links are
+                    oversubscribed (only reachable under admission_mode="soft").
+
+    Admission (controlled by cfg["admission_mode"], default "hard"):
+        "hard" – admission is gated on capacity: the chosen path must have
+                 enough headroom for every logical connection, or the attempt
+                 fails (no reservation, no reward).  Capacity can never go
+                 negative; SLA violations cannot occur.
+        "soft" – over-admission allowed; the chosen path is reserved even if
+                 it drives a link negative (oversubscribed).  Only used with
+                 reward_mode="revenue" to study the SLA-penalty regime.
     """
 
     metadata: dict = {"render_modes": []}
@@ -36,7 +48,11 @@ class NetworkEnv(gym.Env):
         self.cfg = cfg
         self.mode = mode
 
-        self.topo = NetworkTopology(cfg["topology_file"], cfg["k_shortest_paths"])
+        self.topo = NetworkTopology(
+            cfg["topology_file"],
+            cfg["k_shortest_paths"],
+            capacity_scale=cfg.get("capacity_scale", 1.0),
+        )
         self.K: int = cfg["k_shortest_paths"]
         self.V: int = self.topo.V
 
@@ -46,6 +62,22 @@ class NetworkEnv(gym.Env):
         gen_cfg = {**cfg, "num_nodes": self.V}
         self.gen = SliceGenerator(gen_cfg, self.rng)
         self.penalty_weight: float = cfg.get("penalty_weight", 0.5)
+        # SLA penalty model (only relevant when admission_mode="soft"):
+        #   "once"     – full weight·frac·(d·p) charged the first step a slice
+        #                violates (harsh on any violation → drives selectivity).
+        #   "per_step" – weight·frac·(d·p)/duration_steps per oversubscribed step
+        #                (lenient on partial starvation; the discount asymmetry
+        #                vs the lump-sum admission reward makes over-admission
+        #                look profitable → floody.  Kept for experimentation.)
+        self.sla_penalty_mode: str = cfg.get("sla_penalty_mode", "once")
+        # admission_mode: "hard" (gate on capacity, never oversubscribe — the
+        # 2026-07-07 default, needed for the "accept more slices" objective)
+        # or "soft" (over-admission allowed, SLA penalty applies; the
+        # 2026-07-03/04 revenue-selectivity experiments used this).
+        self.admission_mode: str = cfg.get("admission_mode", "hard")
+        # reward_mode: "count" (+1 per admitted slice — paper's headline
+        # metric) or "revenue" (d·price minus SLA penalty).
+        self.reward_mode: str = cfg.get("reward_mode", "count")
 
         # Normalisation constants — keep all observation components in [0, 1].
         # Derived from config so they stay consistent across env instances.
@@ -128,12 +160,10 @@ class NetworkEnv(gym.Env):
                 any_path_feasible = True
                 break
 
-        # --- Admission decision (SOFT capacity: over-admission allowed) -------
+        # --- Admission decision ------------------------------------------------
         over_admitted = False
         if admit:
-            # Gather the chosen path for every logical connection.  Admission is
-            # NOT gated on capacity — the agent may over-admit and risk an SLA
-            # penalty later.  Only a structurally missing path blocks admission.
+            # Gather the chosen path for every logical connection.
             structurally_valid = True
             chosen_paths: list = []
             chosen_feasible = True
@@ -148,49 +178,77 @@ class NetworkEnv(gym.Env):
                 if B[i, j, path_k] < req["bandwidth"]:
                     chosen_feasible = False
 
-            if structurally_valid and chosen_paths:
-                # Reserve on the chosen path; avail may go negative (oversub).
+            # "hard": the chosen path must have headroom for every connection,
+            # or the admission attempt fails outright (no reservation, reward
+            # stays 0 — same as routing_error/missed_admission bookkeeping
+            # below).  "soft": reserve regardless; avail may go negative.
+            can_admit = structurally_valid and chosen_paths and (
+                self.admission_mode == "soft" or chosen_feasible
+            )
+            if can_admit:
                 for path, bw in chosen_paths:
                     self.topo.reserve(path, bw)
-                # Slice entry is mutable so we can flag SLA violation later.
+                # Slice entry is mutable so we can flag SLA violation later
+                # (soft mode only — under hard mode this flag never flips).
                 self.active_slices.append(
                     [req, chosen_paths, req["duration_steps"], req["bandwidth"], False]
                 )
                 rev = float(req["duration"] * req["price"])
-                reward += rev
                 info["admitted"] = True
                 info["admit_revenue"] = rev
                 over_admitted = not chosen_feasible
+                reward += 1.0 if self.reward_mode == "count" else rev
 
-        # --- SLA violation detection (binary: once if ever oversubscribed) ----
+        # --- SLA violation cost (soft admission_mode only) ---------------------
         # A link is oversubscribed when its committed load exceeds capacity
-        # (avail < 0).  Any active slice crossing such a link fails its SLA.
-        # Penalty is applied once, at the step the slice first violates, and
-        # is attributed to the current action (which caused the oversub).
+        # (avail < 0) — structurally impossible under admission_mode="hard", so
+        # this whole loop is skipped there.  Under "soft", any active slice
+        # crossing such a link fails its SLA.  Charge is controlled by
+        # self.sla_penalty_mode: "once" charges the full weight·frac·(d·p) the
+        # first violating step (harsh → selective); "per_step" spreads it over
+        # the lifetime (lenient → floody, per the 2026-07-04 experiment).  The
+        # per-slice `violated` flag (s[4]) always tracks the first violation
+        # for METRICS (fulfillment / sla rate count a slice once).
         new_violations = 0
-        penalty = 0.0
-        for s in self.active_slices:
-            if s[4]:
-                continue  # already violated & penalised
-            oversub = any(
-                self.topo.avail.get(e, 0.0) < 0.0
-                for path, _ in s[1]
-                for e in path
-            )
-            if oversub:
-                s[4] = True
-                new_violations += 1
-                s_rev = float(s[0]["duration"] * s[0]["price"])
-                # Inelastic (τ=0) penalised in full; elastic (τ=1) at half.
+        new_violations_inelastic = 0
+        new_violations_elastic = 0
+        if self.admission_mode == "soft":
+            penalty = 0.0
+            for s in self.active_slices:
+                if self.sla_penalty_mode == "once" and s[4]:
+                    continue
+                oversub = any(
+                    self.topo.avail.get(e, 0.0) < 0.0
+                    for path, _ in s[1]
+                    for e in path
+                )
+                if not oversub:
+                    continue
+                d_p = float(s[0]["duration"] * s[0]["price"])
                 frac = 1.0 if s[0]["type"] == 0 else 0.5
-                penalty += self.penalty_weight * frac * s_rev
-        reward -= penalty
+                if self.sla_penalty_mode == "per_step":
+                    steps = max(int(s[0]["duration_steps"]), 1)
+                    penalty += self.penalty_weight * frac * d_p / steps
+                else:
+                    penalty += self.penalty_weight * frac * d_p
+                if not s[4]:
+                    s[4] = True
+                    new_violations += 1
+                    if s[0]["type"] == 0:
+                        new_violations_inelastic += 1
+                    else:
+                        new_violations_elastic += 1
+            if self.reward_mode == "revenue":
+                reward -= penalty
 
         # --- Info / diagnostics ----------------------------------------------
         info["admit_attempt"] = admit
         info["any_path_feasible"] = any_path_feasible
         info["over_admitted"] = over_admitted
         info["new_violations"] = new_violations
+        info["new_violations_inelastic"] = new_violations_inelastic
+        info["new_violations_elastic"] = new_violations_elastic
+        info["admit_type"] = int(req["type"]) if info["admitted"] else None
         info["missed_admission"] = bool(not admit and any_path_feasible)
         info["routing_error"] = bool(
             admit and not info["admitted"] and any_path_feasible

@@ -8,11 +8,15 @@ import numpy as np
 class NetworkTopology:
     """IP/MPLS core network topology with k-shortest-path routing support."""
 
-    def __init__(self, graph_file: str, k: int = 3) -> None:
+    def __init__(self, graph_file: str, k: int = 3, capacity_scale: float = 1.0) -> None:
         with open(graph_file) as f:
             data = json.load(f)
         self.G: nx.DiGraph = self._load_graph(data)
         self.k = k
+        # capacity_scale < 1 tightens every link (stress regime) so routing
+        # across the K shortest paths becomes load-bearing; = 1 uses the real
+        # provisioned capacities.  Structure of the topology is untouched.
+        self.capacity_scale = float(capacity_scale)
 
         # Endpoints (tier="access") are the slice attachment points — base stations,
         # cloud sites, MEC servers.  Core/dist nodes (S1–S65) are routing
@@ -29,7 +33,7 @@ class NetworkTopology:
 
         # Capacity is tracked for ALL edges; routing paths traverse core/dist links.
         self._cap: dict = {
-            (u, v): attrs["capacity_mbps"]
+            (u, v): attrs["capacity_mbps"] * self.capacity_scale
             for u, v, attrs in self.G.edges(data=True)
         }
         self.avail: dict = dict(self._cap)

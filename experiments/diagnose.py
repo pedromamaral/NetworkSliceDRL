@@ -75,18 +75,31 @@ def _tally(agent, env, n_episodes: int, max_steps: int) -> dict:
         "missed_admission": 0,
         "true_reject": 0,
         "any_feasible": 0,
+        # Per-type admission / violation breakdown
+        "admitted_inelastic": 0,
+        "admitted_elastic": 0,
+        "viol_inelastic": 0,
+        "viol_elastic": 0,
     }
     total_reward = 0.0
+    total_revenue = 0.0  # gross Σ d·p (before SLA penalties)
     for _ in range(n_episodes):
         state, _ = env.reset()
         for _ in range(max_steps):
             action = agent.select_action(state)
             state, reward, term, trunc, info = env.step(action)
             total_reward += reward
+            total_revenue += info.get("admit_revenue", 0.0)
             counts["arrivals"] += 1
             counts["any_feasible"] += int(info["any_path_feasible"])
+            counts["viol_inelastic"] += int(info.get("new_violations_inelastic", 0))
+            counts["viol_elastic"] += int(info.get("new_violations_elastic", 0))
             if info["admitted"]:
                 counts["admitted"] += 1
+                if info.get("admit_type") == 0:
+                    counts["admitted_inelastic"] += 1
+                else:
+                    counts["admitted_elastic"] += 1
             elif info["routing_error"]:
                 counts["routing_error"] += 1
             elif info["missed_admission"]:
@@ -96,6 +109,7 @@ def _tally(agent, env, n_episodes: int, max_steps: int) -> dict:
             if term or trunc:
                 break
     counts["mean_ep_reward"] = total_reward / max(n_episodes, 1)
+    counts["mean_ep_revenue"] = total_revenue / max(n_episodes, 1)
     return counts
 
 
@@ -108,7 +122,15 @@ def _report(name: str, c: dict) -> None:
     print(f"  routing_error     : {c['routing_error']/n:6.2%}  (tried admit, picked infeasible path, feasible existed)")
     print(f"  missed_admission  : {c['missed_admission']/n:6.2%}  (chose reject, feasible path existed)")
     print(f"  true_reject       : {c['true_reject']/n:6.2%}  (correct: no feasible path)")
-    print(f"  mean_ep_reward    : {c.get('mean_ep_reward', 0.0):,.0f}")
+    adm = max(c["admitted"], 1)
+    adm_in = c["admitted_inelastic"]
+    adm_el = c["admitted_elastic"]
+    print(f"  admitted inelastic: {adm_in:6d}  violated {c['viol_inelastic']:5d}"
+          f"  ({c['viol_inelastic']/max(adm_in,1):6.2%} of inelastic admits)")
+    print(f"  admitted elastic  : {adm_el:6d}  violated {c['viol_elastic']:5d}"
+          f"  ({c['viol_elastic']/max(adm_el,1):6.2%} of elastic admits)")
+    print(f"  mean_ep_revenue   : {c.get('mean_ep_revenue', 0.0):,.0f}  (gross, before SLA penalty)")
+    print(f"  mean_ep_reward    : {c.get('mean_ep_reward', 0.0):,.0f}  (net, after SLA penalty)")
 
 
 def main() -> None:

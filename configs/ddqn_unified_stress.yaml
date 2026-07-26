@@ -1,0 +1,14 @@
+# Duelling Double DQN – unified – STRESS regime (tightened capacity).
+# capacity_scale<1 saturates bottleneck links so routing across the K shortest
+# paths becomes load-bearing; tests whether joint AC+RA beats AC-only (k=0)
+# once the network is near congestion (per researcher hypothesis 2026-07-04).
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+capacity_scale: 0.35
+
+run_name: ddqn_unified_stress_s42
+wandb_project: netslice-drl
+wandb_tags: [ddqn, duelling, unified, stress]
