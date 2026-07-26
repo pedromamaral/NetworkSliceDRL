@@ -28,6 +28,11 @@ def save_checkpoint(agent, episode: int, path: str) -> None:
         "eps": agent.eps,
         "steps": agent.steps,
     }
+    # Separated agents carry a second (routing) network trained on D_rt.
+    if hasattr(agent, "q_route"):
+        payload["q_route_state_dict"] = agent.q_route.state_dict()
+        payload["q_route_target_state_dict"] = agent.q_route_target.state_dict()
+        payload["opt_route_state_dict"] = agent.opt_route.state_dict()
     torch.save(payload, path)
 
 
@@ -38,6 +43,10 @@ def load_checkpoint(agent, path: str) -> int:
     agent.q.load_state_dict(payload["q_state_dict"])
     agent.q_target.load_state_dict(payload["q_target_state_dict"])
     agent.opt.load_state_dict(payload["optimizer_state_dict"])
+    if hasattr(agent, "q_route") and "q_route_state_dict" in payload:
+        agent.q_route.load_state_dict(payload["q_route_state_dict"])
+        agent.q_route_target.load_state_dict(payload["q_route_target_state_dict"])
+        agent.opt_route.load_state_dict(payload["opt_route_state_dict"])
     agent.eps = payload["eps"]
     agent.steps = payload["steps"]
     return int(payload["episode"])

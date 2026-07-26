@@ -11,9 +11,9 @@ import torch
 
 from src.agents.replay_buffer import ReplayBuffer
 from src.agents.dqn_unified import DQNUnified, MLP
-from src.agents.dqn_separated import DQNSeparated, TwoHeadMLP
+from src.agents.dqn_separated import DQNSeparated
 from src.agents.ddqn_unified import DDQNUnified, DuellingMLP
-from src.agents.ddqn_separated import DDQNSeparated, DuellingTwoHeadMLP
+from src.agents.ddqn_separated import DDQNSeparated
 
 
 # ---------------------------------------------------------------------------
@@ -52,9 +52,11 @@ def _fill_buffer_unified(agent: DQNUnified, n: int = BATCH) -> None:
 
 
 def _fill_buffer_separated(agent: DQNSeparated, n: int = BATCH) -> None:
+    # admit=1 so BOTH the admission buffer and the routing D_rt buffer fill
+    # (routing only receives admitted transitions).
     for _ in range(n):
         s, s2 = _rand_state(), _rand_state()
-        a = (int(np.random.randint(2)), int(np.random.randint(3)))
+        a = (1, int(np.random.randint(3)))
         agent.store(s, a, float(np.random.rand()), s2, False)
 
 
@@ -164,9 +166,13 @@ class TestDQNUnified:
 class TestDQNSeparated:
     def test_instantiation(self, agent_cfg):
         agent = DQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
-        assert isinstance(agent.q, TwoHeadMLP)
+        # Two INDEPENDENT networks: admission (2 outputs) + routing (K outputs).
+        assert isinstance(agent.q, MLP)
+        assert isinstance(agent.q_route, MLP)
         assert agent.n_admit == ACTION_DIMS[0]
         assert agent.n_path == ACTION_DIMS[1]
+        # Separate D_rt buffer for routing (spec §4.2).
+        assert agent.buf is not agent.buf_rt
 
     def test_select_action_is_valid_tuple(self, agent_cfg):
         agent = DQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
@@ -175,6 +181,37 @@ class TestDQNSeparated:
             assert isinstance(a, tuple) and len(a) == 2
             assert 0 <= a[0] < ACTION_DIMS[0]
             assert 0 <= a[1] < ACTION_DIMS[1]
+
+    def test_reject_forces_path_zero(self, agent_cfg):
+        """Routing net is only queried on accept; reject → path index 0."""
+        agent = DQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
+        agent.eps = 0.0  # greedy; force deterministic admit head
+        # Drive the admission head to always reject by zeroing accept logits is
+        # hard; instead just assert the contract: whenever admit==0, path==0.
+        for _ in range(50):
+            a = agent.select_action(_rand_state())
+            if a[0] == 0:
+                assert a[1] == 0
+
+    def test_routing_buffer_only_gets_admitted(self, agent_cfg):
+        """D_rt must receive ONLY admitted transitions (spec §4.2, §11.7)."""
+        agent = DQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
+        s = _rand_state()
+        agent.store(s, (0, 2), 1.0, s, False)  # reject → routing NOT stored
+        agent.store(s, (1, 1), 1.0, s, False)  # admit  → routing stored
+        agent.store(s, (0, 0), 0.0, s, False)  # reject → routing NOT stored
+        assert len(agent.buf) == 3       # admission sees every transition
+        assert len(agent.buf_rt) == 1    # routing sees only the admitted one
+
+    def test_both_heads_learn(self, agent_cfg):
+        """learn() updates admission and routing nets independently."""
+        agent = DQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
+        _fill_buffer_separated(agent, n=BATCH)  # admit=1 → both buffers full
+        # Snapshot routing weights; they must change after learn().
+        before = [p.detach().clone() for p in agent.q_route.parameters()]
+        agent.learn()
+        after = list(agent.q_route.parameters())
+        assert any(not torch.allclose(b, a) for b, a in zip(before, after))
 
     def test_learn_returns_none_when_buffer_empty(self, agent_cfg):
         agent = DQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
@@ -197,8 +234,12 @@ class TestDQNSeparated:
         with torch.no_grad():
             for p in agent.q.parameters():
                 p.add_(1.0)
+            for p in agent.q_route.parameters():
+                p.add_(1.0)
         agent.update_target()
         for p_q, p_t in zip(agent.q.parameters(), agent.q_target.parameters()):
+            assert torch.allclose(p_q, p_t)
+        for p_q, p_t in zip(agent.q_route.parameters(), agent.q_route_target.parameters()):
             assert torch.allclose(p_q, p_t)
 
 
@@ -249,15 +290,16 @@ class TestDDQNUnified:
 
 
 class TestDDQNSeparated:
-    def test_uses_duelling_two_head_mlp(self, agent_cfg):
+    def test_uses_duelling_mlp_both_nets(self, agent_cfg):
         agent = DDQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
-        assert isinstance(agent.q, DuellingTwoHeadMLP)
-        assert isinstance(agent.q_target, DuellingTwoHeadMLP)
+        assert isinstance(agent.q, DuellingMLP)          # admission net
+        assert isinstance(agent.q_route, DuellingMLP)    # routing net
 
-    def test_duelling_two_head_has_all_sub_heads(self, agent_cfg):
+    def test_duelling_nets_have_v_and_a_heads(self, agent_cfg):
         agent = DDQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
-        for attr in ("v_admit", "a_admit", "v_path", "a_path"):
-            assert hasattr(agent.q, attr), f"missing attribute: {attr}"
+        for net in (agent.q, agent.q_route):
+            assert hasattr(net, "v_head")
+            assert hasattr(net, "a_head")
 
     def test_select_action_is_valid_tuple(self, agent_cfg):
         agent = DDQNSeparated(STATE_DIM, ACTION_DIMS, agent_cfg)
