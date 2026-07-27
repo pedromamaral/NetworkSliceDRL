@@ -1,0 +1,13 @@
+# Separated DDQN – COUNT/HARD – K=8 (Phase-2 scaling probe).
+# Two independent nets + D_rt buffer; larger K grows only the routing head,
+# the admission head stays size-2 (the arm expected to hold up as K grows).
+_base_: configs/base.yaml
+
+agent: ddqn_separated
+mode: separated
+seed: 42
+k_shortest_paths: 8
+
+run_name: ddqn_separated_count_k8
+wandb_project: netslice-drl
+wandb_tags: [ddqn, separated, count, hard, k8]

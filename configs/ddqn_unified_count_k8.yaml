@@ -1,0 +1,13 @@
+# Unified DDQN – COUNT/HARD – K=8 (Phase-2 scaling probe).
+# Only k_shortest_paths differs from ddqn_unified_count; larger K grows the
+# unified Discrete(K+1) action space (the arm expected to degrade with K).
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+k_shortest_paths: 8
+
+run_name: ddqn_unified_count_k8
+wandb_project: netslice-drl
+wandb_tags: [ddqn, unified, count, hard, k8]

@@ -1,0 +1,14 @@
+# Duelling Double DQN – SEPARATED (two independent nets + D_rt buffer) –
+# COUNT objective / HARD capacity. Same env/reward as ddqn_unified_count, so
+# acceptance_ratio is directly comparable to the unified 5-seed sweep and the
+# shared baselines. This is the parity arm ("same or better performance at K=3")
+# of the unified-vs-separated study.
+_base_: configs/base.yaml
+
+agent: ddqn_separated
+mode: separated
+seed: 42
+
+run_name: ddqn_separated_count
+wandb_project: netslice-drl
+wandb_tags: [ddqn, duelling, separated, count, hard]
