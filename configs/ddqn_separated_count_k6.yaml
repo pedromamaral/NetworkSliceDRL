@@ -1,0 +1,11 @@
+# Separated DDQN – COUNT/HARD – K=6 (Phase-2 scaling midpoint, K=3/6/8 trend line).
+_base_: configs/base.yaml
+
+agent: ddqn_separated
+mode: separated
+seed: 42
+k_shortest_paths: 6
+
+run_name: ddqn_separated_count_k6
+wandb_project: netslice-drl
+wandb_tags: [ddqn, separated, count, hard, k6]

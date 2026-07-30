@@ -1,0 +1,16 @@
+# Unified DDQN – COUNT/HARD – HEAVIER LOAD (capacity_scale=0.5 ≈ 2x relative
+# load). Tests whether the joint-vs-greedy margin GROWS under load: at light
+# load greedy (admit-every-feasible) is near-optimal, but as capacity tightens
+# its myopia should cost more (a bad admission now blocks more future ones),
+# which is exactly where non-myopic DRL admission should pay off.
+# capacity_scale keeps the traffic process + credit horizon fixed, isolating load.
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+capacity_scale: 0.5
+
+run_name: ddqn_unified_count_load
+wandb_project: netslice-drl
+wandb_tags: [ddqn, unified, count, hard, load]

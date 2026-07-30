@@ -1,0 +1,17 @@
+# Unified DDQN – COUNT/HARD – with feasibility ACTION MASKING.
+# Masks "admit via path k" whenever the observation's feasibility signal says
+# path k can't fit the request (reject is always allowed). Under the count
+# objective this is ALIGNED with the goal (admit every feasible slice) — unlike
+# the old revenue objective where masking removed a selectivity edge and hurt.
+# Target: convert the ~4.8% routing_error (chose infeasible path when a feasible
+# one existed) into admits, widening the joint-vs-greedy margin.
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+action_mask: true
+
+run_name: ddqn_unified_count_mask
+wandb_project: netslice-drl
+wandb_tags: [ddqn, unified, count, hard, mask]
