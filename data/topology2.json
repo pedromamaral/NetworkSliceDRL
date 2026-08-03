@@ -1,0 +1,520 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "tier": "core",
+      "id": "C1"
+    },
+    {
+      "tier": "core",
+      "id": "C2"
+    },
+    {
+      "tier": "core",
+      "id": "C3"
+    },
+    {
+      "tier": "core",
+      "id": "C4"
+    },
+    {
+      "tier": "core",
+      "id": "C5"
+    },
+    {
+      "tier": "core",
+      "id": "C6"
+    },
+    {
+      "tier": "core",
+      "id": "C7"
+    },
+    {
+      "tier": "core",
+      "id": "C8"
+    },
+    {
+      "tier": "core",
+      "id": "C9"
+    },
+    {
+      "tier": "core",
+      "id": "C10"
+    },
+    {
+      "tier": "core",
+      "id": "C11"
+    },
+    {
+      "tier": "core",
+      "id": "C12"
+    },
+    {
+      "tier": "core",
+      "id": "C13"
+    },
+    {
+      "tier": "core",
+      "id": "C14"
+    },
+    {
+      "tier": "core",
+      "id": "C15"
+    },
+    {
+      "tier": "core",
+      "id": "C16"
+    },
+    {
+      "tier": "core",
+      "id": "C17"
+    },
+    {
+      "tier": "core",
+      "id": "C18"
+    },
+    {
+      "tier": "core",
+      "id": "C19"
+    },
+    {
+      "tier": "core",
+      "id": "C20"
+    },
+    {
+      "tier": "core",
+      "id": "C21"
+    },
+    {
+      "tier": "core",
+      "id": "C22"
+    },
+    {
+      "tier": "core",
+      "id": "C23"
+    },
+    {
+      "tier": "core",
+      "id": "C24"
+    },
+    {
+      "tier": "access",
+      "id": "A0"
+    },
+    {
+      "tier": "access",
+      "id": "A1"
+    },
+    {
+      "tier": "access",
+      "id": "A2"
+    },
+    {
+      "tier": "access",
+      "id": "A3"
+    },
+    {
+      "tier": "access",
+      "id": "A4"
+    },
+    {
+      "tier": "access",
+      "id": "A5"
+    },
+    {
+      "tier": "access",
+      "id": "A6"
+    },
+    {
+      "tier": "access",
+      "id": "A7"
+    },
+    {
+      "tier": "access",
+      "id": "A8"
+    },
+    {
+      "tier": "access",
+      "id": "A9"
+    },
+    {
+      "tier": "access",
+      "id": "A10"
+    },
+    {
+      "tier": "access",
+      "id": "A11"
+    },
+    {
+      "tier": "access",
+      "id": "A12"
+    },
+    {
+      "tier": "access",
+      "id": "A13"
+    },
+    {
+      "tier": "access",
+      "id": "A14"
+    }
+  ],
+  "links": [
+    {
+      "capacity": 1000.0,
+      "source": "C1",
+      "target": "C8"
+    },
+    {
+      "capacity": 1000.0,
+      "source": "C1",
+      "target": "C16"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C1",
+      "target": "C21"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C1",
+      "target": "A13"
+    },
+    {
+      "capacity": 1600.0,
+      "source": "C2",
+      "target": "C3"
+    },
+    {
+      "capacity": 800.0,
+      "source": "C2",
+      "target": "C7"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C2",
+      "target": "C16"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C2",
+      "target": "A14"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C3",
+      "target": "C11"
+    },
+    {
+      "capacity": 900.0,
+      "source": "C3",
+      "target": "C12"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C3",
+      "target": "C13"
+    },
+    {
+      "capacity": 900.0,
+      "source": "C3",
+      "target": "C14"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C3",
+      "target": "C17"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C3",
+      "target": "C18"
+    },
+    {
+      "capacity": 1000.0,
+      "source": "C3",
+      "target": "C21"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C3",
+      "target": "A1"
+    },
+    {
+      "capacity": 1100.0,
+      "source": "C4",
+      "target": "C13"
+    },
+    {
+      "capacity": 1000.0,
+      "source": "C4",
+      "target": "C14"
+    },
+    {
+      "capacity": 1400.0,
+      "source": "C5",
+      "target": "C14"
+    },
+    {
+      "capacity": 1000.0,
+      "source": "C5",
+      "target": "C18"
+    },
+    {
+      "capacity": 1600.0,
+      "source": "C5",
+      "target": "C19"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C5",
+      "target": "C22"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C5",
+      "target": "C23"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C5",
+      "target": "A8"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C6",
+      "target": "C12"
+    },
+    {
+      "capacity": 1300.0,
+      "source": "C6",
+      "target": "C17"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C6",
+      "target": "C23"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C7",
+      "target": "C15"
+    },
+    {
+      "capacity": 1600.0,
+      "source": "C7",
+      "target": "C16"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C8",
+      "target": "C9"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C8",
+      "target": "C11"
+    },
+    {
+      "capacity": 1400.0,
+      "source": "C8",
+      "target": "C13"
+    },
+    {
+      "capacity": 1300.0,
+      "source": "C8",
+      "target": "C17"
+    },
+    {
+      "capacity": 1100.0,
+      "source": "C8",
+      "target": "C18"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C8",
+      "target": "A6"
+    },
+    {
+      "capacity": 1600.0,
+      "source": "C9",
+      "target": "C18"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C10",
+      "target": "C12"
+    },
+    {
+      "capacity": 900.0,
+      "source": "C10",
+      "target": "C13"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C10",
+      "target": "C14"
+    },
+    {
+      "capacity": 900.0,
+      "source": "C11",
+      "target": "C13"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C11",
+      "target": "C15"
+    },
+    {
+      "capacity": 1300.0,
+      "source": "C11",
+      "target": "C16"
+    },
+    {
+      "capacity": 900.0,
+      "source": "C11",
+      "target": "C17"
+    },
+    {
+      "capacity": 800.0,
+      "source": "C11",
+      "target": "C18"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C11",
+      "target": "A4"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C12",
+      "target": "C13"
+    },
+    {
+      "capacity": 800.0,
+      "source": "C12",
+      "target": "C19"
+    },
+    {
+      "capacity": 900.0,
+      "source": "C12",
+      "target": "C21"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C12",
+      "target": "A7"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C13",
+      "target": "C16"
+    },
+    {
+      "capacity": 1600.0,
+      "source": "C13",
+      "target": "C21"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C13",
+      "target": "A2"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C14",
+      "target": "C15"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C14",
+      "target": "C19"
+    },
+    {
+      "capacity": 1600.0,
+      "source": "C14",
+      "target": "C22"
+    },
+    {
+      "capacity": 1500.0,
+      "source": "C14",
+      "target": "C23"
+    },
+    {
+      "capacity": 1300.0,
+      "source": "C14",
+      "target": "C24"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C14",
+      "target": "A0"
+    },
+    {
+      "capacity": 1100.0,
+      "source": "C15",
+      "target": "C16"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C15",
+      "target": "C21"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C15",
+      "target": "A9"
+    },
+    {
+      "capacity": 1000.0,
+      "source": "C16",
+      "target": "C20"
+    },
+    {
+      "capacity": 1200.0,
+      "source": "C16",
+      "target": "C21"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C16",
+      "target": "A3"
+    },
+    {
+      "capacity": 1100.0,
+      "source": "C17",
+      "target": "C20"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C17",
+      "target": "A10"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C18",
+      "target": "A11"
+    },
+    {
+      "capacity": 1000.0,
+      "source": "C21",
+      "target": "C22"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C21",
+      "target": "A5"
+    },
+    {
+      "capacity": 1600.0,
+      "source": "C22",
+      "target": "C24"
+    },
+    {
+      "capacity": 500.0,
+      "source": "C22",
+      "target": "A12"
+    }
+  ]
+}

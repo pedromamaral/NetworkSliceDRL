@@ -1,0 +1,15 @@
+# Unified DDQN – COUNT/HARD – SECOND TOPOLOGY (generalization test).
+# data/topology2.json: 15 access + 24-node Waxman core (structurally unlike the
+# operator's 21-access/65-core graph). capacity_scale=0.85 matches the operator's
+# moderate regime (greedy ~0.47) so topology is the isolated variable.
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+topology_file: data/topology2.json
+capacity_scale: 0.85
+
+run_name: ddqn_unified_count_topo2
+wandb_project: netslice-drl
+wandb_tags: [ddqn, unified, count, hard, topo2, generalization]
