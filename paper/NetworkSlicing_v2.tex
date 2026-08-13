@@ -1279,19 +1279,21 @@ Revenue threshold   & $0.1308 \pm 0.0011$ & $-267.5\%$ & $187.11^{*}$ \\
   ybar, bar width=13pt,
   ymin=0.0, ymax=0.55,
   ylabel={Acceptance ratio},
-  symbolic x coords={Joint-U,Joint-F,Greedy,AC-only,Revenue},
-  xtick=data, x tick label style={font=\scriptsize,rotate=18,anchor=east},
+  symbolic x coords={jointu,jointf,greedy,aconly,revenue},
+  xtick=data,
+  xticklabels={Joint-U,Joint-F,Greedy,AC-only,Revenue},
+  x tick label style={font=\scriptsize,rotate=18,anchor=east},
   ylabel style={font=\small}, tick label style={font=\scriptsize},
   ymajorgrids, grid style={dashed,black!20},
   error bars/y dir=both, error bars/y explicit,
   nodes near coords, every node near coord/.append style={font=\tiny,/pgf/number format/fixed,/pgf/number format/precision=3},
 ]
 \addplot[draw=cUni,fill=cUni!70] coordinates {
-  (Joint-U,0.4806) +- (0,0.0043)
-  (Joint-F,0.4739) +- (0,0.0049)
-  (Greedy,0.4637)  +- (0,0.0028)
-  (AC-only,0.4476) +- (0,0.0022)
-  (Revenue,0.1308) +- (0,0.0011)
+  (jointu,0.4806)  +- (0,0.0043)
+  (jointf,0.4739)  +- (0,0.0049)
+  (greedy,0.4637)  +- (0,0.0028)
+  (aconly,0.4476)  +- (0,0.0022)
+  (revenue,0.1308) +- (0,0.0011)
 };
 \end{axis}
 \end{tikzpicture}
@@ -1556,6 +1558,7 @@ Fig.~\ref{fig:rho} summarises the relationship.
   ylabel={Percentage},
   symbolic x coords={Operator,Waxman},
   xtick=data, tick label style={font=\scriptsize}, ylabel style={font=\small},
+  ytick={-4,0,4,8,12},
   legend style={font=\scriptsize,at={(0.5,1.16)},anchor=north,legend columns=2,draw=black!25},
   ymajorgrids, grid style={dashed,black!20},
   nodes near coords, every node near coord/.append style={font=\tiny,/pgf/number format/fixed,/pgf/number format/precision=1},
@@ -1564,7 +1567,6 @@ Fig.~\ref{fig:rho} summarises the relationship.
 \addlegendentry{Routing headroom $\rho$}
 \addplot[draw=cUni,fill=cUni!70] coordinates {(Operator,7.4) (Waxman,-2.3)};
 \addlegendentry{Joint gain over AC-only}
-\draw[dashed,black!45] ({rel axis cs:0,0}|-{axis cs:Operator,0}) -- ({rel axis cs:1,0}|-{axis cs:Operator,0});
 \end{axis}
 \end{tikzpicture}
 \caption{Routing headroom predicts the value of joint control. Where
