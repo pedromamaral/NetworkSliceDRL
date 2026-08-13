@@ -13,3 +13,12 @@ build/
 .mypy_cache/
 *.log
 notebooks/.ipynb_checkpoints/
+
+# paper build artefacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/.testbuild/
+paper/*_testbuild.pdf
