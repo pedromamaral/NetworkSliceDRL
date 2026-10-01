@@ -15,6 +15,10 @@
 # Expected output: the (joint - AC-only) gap should rise with rho, and be <= 0
 # at rho = 0.
 #
+# Only greedy/revenue/aconly are run here: the aggregate-state baseline is a
+# representation comparison for the MAIN topology, not something the rho sweep
+# needs, and training it at every level would add ~20h for no extra evidence.
+#
 # Sequential: concurrent runs have starved sshd on this box before.
 set -u
 cd ~/netslice-drl
@@ -35,6 +39,7 @@ for L in $LEVELS; do
     echo "=== [$(date +%H:%M:%S)] $L seed $S : baselines (AC-only) ==="
     docker run --gpus all --rm --entrypoint python $MOUNTS netslice-drl:latest \
       experiments/eval_baselines.py --config $CFG --seed $S \
+      --baselines greedy,revenue,aconly \
       --train_episodes 2000 --eval_episodes 200 \
       > results/rho_${L}_baselines_s${S}.log 2>&1
   done

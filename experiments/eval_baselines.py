@@ -139,7 +139,8 @@ def _save_results(rows: list[dict], out_dir: str) -> None:
 # ---------------------------------------------------------------------------
 
 
-def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> None:
+def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int,
+         baselines: str = "greedy,revenue,aconly,aggregate") -> None:
     cfg = _load_config(cfg_path)
     _set_seeds(seed)
     # Mirror run_experiment.evaluate(): train on `seed`, evaluate every baseline
@@ -151,6 +152,9 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
     results_dir: str = cfg.get("results_dir", "results")
     run_tag = f"baselines_s{seed}"
     out_dir = os.path.join(results_dir, run_tag)
+
+    want = {b.strip() for b in baselines.split(',') if b.strip()}
+    print(f"[eval_baselines] running: {sorted(want)}", flush=True)
 
     rows: list[dict] = []
 
@@ -173,7 +177,7 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
         print("  ".join(parts), flush=True)
 
     # --- GreedyAdmission (no training; eval on held-out) ---
-    for mode in modes:
+    for mode in (modes if 'greedy' in want else ()):
         env = _make_env(eval_seed, mode)
         agent = GreedyAdmission(mode=mode, V=env.V, K=env.K)
         summary = _eval_agent(agent, env, eval_episodes)
@@ -181,14 +185,14 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
 
     # --- RevenueHeuristic (no training; eval on held-out) ---
     threshold: float = cfg.get("revenue_threshold", 500.0)
-    for mode in modes:
+    for mode in (modes if 'revenue' in want else ()):
         env = _make_env(eval_seed, mode)
         agent = RevenueHeuristic(threshold=threshold, mode=mode, env=env)
         summary = _eval_agent(agent, env, eval_episodes)
         _record("revenue_heuristic", mode, summary)
 
     # --- AdmissionOnlyDQN (train on `seed`, eval on held-out `seed+100`) ---
-    for mode in modes:
+    for mode in (modes if 'aconly' in want else ()):
         train_env = _make_env(seed, mode)
         agent = AdmissionOnlyDQN(train_env.state_dim, cfg, mode=mode)
         print(
@@ -207,7 +211,7 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
     # Aggregate resource state, admission-only action space, but the SAME
     # count objective and training machinery as our agents, so the comparison
     # isolates the representation rather than the objective.
-    for mode in modes:
+    for mode in (modes if 'aggregate' in want else ()):
         train_env = _make_env(seed, mode)
         agg_cfg = {**cfg, "num_nodes_eff": train_env.V,
                    "k_shortest_paths": train_env.K}
@@ -231,6 +235,11 @@ def _parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Evaluate heuristic and lightweight-DRL baselines.")
     p.add_argument("--config", default="configs/base.yaml", help="Path to config YAML.")
     p.add_argument("--seed", type=int, default=42, help="Random seed.")
+    p.add_argument("--baselines", default="greedy,revenue,aconly,aggregate",
+                   help="comma-separated subset to run: greedy, revenue, "
+                        "aconly, aggregate. Trained baselines (aconly, "
+                        "aggregate) dominate runtime, so sweeps that only need "
+                        "a subset should say so.")
     p.add_argument("--train_episodes", type=int, default=500,
                    help="Training episodes for AdmissionOnlyDQN.")
     p.add_argument("--eval_episodes", type=int, default=200,
@@ -240,4 +249,5 @@ def _parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = _parse_args()
-    main(args.config, args.seed, args.train_episodes, args.eval_episodes)
+    main(args.config, args.seed, args.train_episodes, args.eval_episodes,
+         args.baselines)
