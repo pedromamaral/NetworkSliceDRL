@@ -1,0 +1,18 @@
+# Unified DDQN - COUNT/HARD - rho-family member (access/core ratio 0.4).
+# Controlled sweep: same core graph, same endpoints, same traffic; only the
+# access-to-core capacity ratio varies, which moves the bottleneck between the
+# shared access link (rho=0, routing useless) and the core (rho>0, routing
+# matters). capacity_scale is calibrated so greedy acceptance ~= 0.47 at every
+# level, so rho is not confounded with offered load.
+#   measured: rho = 0.00%   greedy acceptance = 0.4783
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+topology_file: data/rho_family/topo_r0.4.json
+capacity_scale: 1.7953
+
+run_name: ddqn_unified_rho_r0p4
+wandb_project: netslice-drl
+wandb_tags: [ddqn, unified, count, hard, rho-sweep]

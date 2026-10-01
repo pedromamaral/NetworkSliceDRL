@@ -22,3 +22,9 @@ paper/*.bbl
 paper/*.blg
 paper/.testbuild/
 paper/*_testbuild.pdf
+
+# latex build artefacts (all)
+paper/*.pdf
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
