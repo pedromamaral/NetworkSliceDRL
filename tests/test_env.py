@@ -238,3 +238,80 @@ class TestEpisodes:
             o2, r2, *_ = env2.step(a)
             np.testing.assert_array_equal(o1, o2)
             assert r1 == r2
+
+
+# ---------------------------------------------------------------------------
+# Objective coherence: which request fields actually influence the MDP
+# ---------------------------------------------------------------------------
+
+
+class TestFieldRelevance:
+    """Under admission_mode='hard' + reward_mode='count' the reward is +1 per
+    admitted slice and no SLA penalty can fire, so slice type (tau) and price
+    carry no decision-relevant information. They remain in the observation so
+    that the SAME state representation also serves the revenue/soft ablation.
+
+    These tests pin that down: perturbing tau/price must not change anything,
+    while perturbing duration must (duration governs how long capacity is held).
+    They are regression guards -- if someone later makes tau or price matter
+    under the count objective, these fail and the paper text must be updated.
+    """
+
+    # The 4-node fixture is far too lightly loaded by default: every request
+    # fits, so NOTHING changes the trajectory and the tests would pass
+    # vacuously. Raise the bandwidth demand so capacity actually binds and the
+    # admission decision is discriminating.
+    CONGESTED = {"admission_mode": "hard", "reward_mode": "count",
+                 "bandwidth_range": [300, 600]}
+
+    @staticmethod
+    def _run(base_cfg, perturb, steps=400):
+        cfg = {**base_cfg, **TestFieldRelevance.CONGESTED}
+        env = NetworkEnv(cfg, mode="unified")
+        act = np.random.default_rng(123)
+        prt = np.random.default_rng(999)
+        env.reset()
+        rewards, admits = [], []
+        for _ in range(steps):
+            if perturb == "type_price":
+                env.current_request["type"] = int(prt.integers(0, 2))
+                env.current_request["price"] = float(prt.uniform(1.0, 500.0))
+            elif perturb == "duration":
+                env.current_request["duration_steps"] = int(prt.integers(1, 40))
+            _, r, _, _, info = env.step(int(act.integers(0, env.K + 1)))
+            rewards.append(r)
+            admits.append(info["admitted"])
+        avail = tuple(sorted((str(k), round(v, 6))
+                             for k, v in env.topo.avail.items()))
+        return rewards, admits, avail
+
+    def test_type_and_price_are_inert_under_count_objective(self, base_cfg):
+        baseline = self._run(base_cfg, perturb=None)
+        scrambled = self._run(base_cfg, perturb="type_price")
+        assert baseline[0] == scrambled[0], "reward depends on tau/price"
+        assert baseline[1] == scrambled[1], "admissions depend on tau/price"
+        assert baseline[2] == scrambled[2], "capacity depends on tau/price"
+
+    def test_duration_is_not_inert(self, base_cfg):
+        """Control: the test above must be capable of detecting a difference."""
+        baseline = self._run(base_cfg, perturb=None)
+        scrambled = self._run(base_cfg, perturb="duration")
+        assert baseline[0] != scrambled[0], "duration should change the trajectory"
+
+    def test_reward_is_unit_per_admission_under_count(self, base_cfg):
+        cfg = {**base_cfg, "admission_mode": "hard", "reward_mode": "count"}
+        env = NetworkEnv(cfg, mode="unified")
+        env.reset()
+        for _ in range(200):
+            _, r, _, _, info = env.step(env.action_space.sample())
+            assert r == (1.0 if info["admitted"] else 0.0)
+
+    def test_hard_mode_never_oversubscribes(self, base_cfg):
+        """Capacity is enforced by construction, so fulfilment is identically 1."""
+        cfg = {**base_cfg, "admission_mode": "hard", "reward_mode": "count"}
+        env = NetworkEnv(cfg, mode="unified")
+        env.reset()
+        for _ in range(300):
+            _, _, _, _, info = env.step(env.action_space.sample())
+            assert min(env.topo.avail.values()) >= -1e-9
+            assert info.get("new_violations", 0) == 0

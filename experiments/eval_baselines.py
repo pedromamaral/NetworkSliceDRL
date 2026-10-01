@@ -4,6 +4,9 @@ Baselines covered:
   1. GreedyAdmission   – always admit via path-0; no training
   2. RevenueHeuristic  – threshold-based; no training
   3. AdmissionOnlyDQN  – admit/reject Q-network, path always 0;
+  4. AggregateStateDQN – admit/reject over an AGGREGATE resource state, no
+                         path-level routing; stand-in for the 5G-core
+                         literature (SARA/DSARA, FSAC, online AC+RA);
                          trained here for ``train_episodes`` steps then evaluated
 
 Usage::
@@ -35,6 +38,7 @@ import yaml
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.baselines.admission_only_dqn import AdmissionOnlyDQN
+from src.baselines.aggregate_state_dqn import AggregateStateDQN
 from src.baselines.greedy_admission import GreedyAdmission
 from src.baselines.revenue_heuristic import RevenueHeuristic
 from src.env.network_env import NetworkEnv
@@ -198,6 +202,26 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int) -> N
         eval_env = _make_env(eval_seed, mode)
         summary = _eval_agent(agent, eval_env, eval_episodes)
         _record("admission_only_dqn", mode, summary)
+
+    # --- AggregateStateDQN: stand-in for the 5G-core literature ------------
+    # Aggregate resource state, admission-only action space, but the SAME
+    # count objective and training machinery as our agents, so the comparison
+    # isolates the representation rather than the objective.
+    for mode in modes:
+        train_env = _make_env(seed, mode)
+        agg_cfg = {**cfg, "num_nodes_eff": train_env.V,
+                   "k_shortest_paths": train_env.K}
+        agent = AggregateStateDQN(train_env.state_dim, agg_cfg, mode=mode)
+        print(
+            f"[eval_baselines] Training AggregateStateDQN/{mode} "
+            f"for {train_episodes} episodes …",
+            flush=True,
+        )
+        _train_dqn_baseline(agent, train_env, train_episodes)
+        agent.eps = 0.0
+        eval_env = _make_env(eval_seed, mode)
+        summary = _eval_agent(agent, eval_env, eval_episodes)
+        _record("aggregate_state_dqn", mode, summary)
 
     _save_results(rows, out_dir)
     print("[eval_baselines] Done.", flush=True)

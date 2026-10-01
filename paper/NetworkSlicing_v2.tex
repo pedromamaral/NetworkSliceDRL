@@ -582,6 +582,43 @@ at its requested bandwidth for its entire lifetime, and the fulfilment
 ratio is identically one. Under this model the acceptance ratio is the
 single discriminating performance metric, and it is the metric we report.
 
+%-----------------------------------------------------------------------
+% [M-P5b] GUIDANCE -- ADDED to close a coherence gap a referee WILL find.
+% The issue: under hard capacity + count reward, the slice type tau and the
+% price p_t cannot influence the optimal policy. There are no SLA
+% violations for tau to modulate, and the reward ignores p_t. Yet both sit
+% in the request tuple and in the observation, and inelastic_prob is a live
+% configuration parameter. If we do not say this, a referee will ask what
+% they are doing there and the answer will look like an oversight.
+% Say instead, plainly: they are inert BY DESIGN, retained so that one
+% state representation serves both this objective and the revenue/soft
+% ablation of Sec~\ref{sec:ablations}. Note duration is NOT inert -- it
+% governs how long capacity is held -- so the request tuple is not
+% gratuitous. We verified inertness empirically: scrambling tau and price
+% at every step leaves rewards, admissions and link occupancies bitwise
+% identical, while the same perturbation applied to duration changes the
+% trajectory (regression tests in tests/test_env.py::TestFieldRelevance).
+% Do NOT delete this paragraph to save space -- it converts a weakness a
+% referee would raise into evidence of care.
+%-----------------------------------------------------------------------
+Two components of the request tuple warrant explicit comment, because
+under this objective they cannot influence the optimal policy. Since
+capacity is enforced by construction, no service-level violation can
+occur, so the slice type $\tau_t$ -- whose only role
+in~\eqref{eq:request} is to scale a violation penalty -- never affects a
+reward. The price $p_t$ is likewise ignored by the count objective
+of~\eqref{eq:objective}. Both are nevertheless retained in the state of
+Definition~\ref{def:state} so that a single representation serves both
+this objective and the revenue formulation examined in
+Section~\ref{sec:ablations}, where both quantities are decision relevant.
+We confirmed this empirically rather than by inspection: randomising
+$\tau_t$ and $p_t$ at every arrival leaves the sequence of rewards,
+admissions and residual link capacities exactly unchanged, whereas the
+same perturbation applied to the requested lifetime $d_t$ alters the
+trajectory, as it must, since $d_t$ governs how long admitted capacity
+remains committed. The request tuple is therefore not redundant; it is
+deliberately objective-agnostic.
+
 \subsection{Computational Intractability}
 %-----------------------------------------------------------------------
 % [M-P6] GUIDANCE: Keep your original argument, it is correct and
@@ -1135,7 +1172,7 @@ Parameter values are listed in Table~\ref{tab:hyper}.
 % DRL gains come from a weak comparator -- and it makes the modest margin
 % credible rather than disappointing.
 %-----------------------------------------------------------------------
-Three baselines are used. \emph{Greedy} admits every request for which at
+Four baselines are used. \emph{Greedy} admits every request for which at
 least one candidate path is feasible and routes it over the path with the
 largest residual bottleneck. It is deliberately strong: it is
 capacity-aware, it is routing-aware, it never rejects a request it could
@@ -1148,6 +1185,44 @@ DQN} learns the admission decision with the same network, loss and
 training schedule as the joint agents, but always routes over the
 shortest path; it isolates the contribution of learning the routing
 decision.
+
+%-----------------------------------------------------------------------
+% [E-P5b] GUIDANCE -- ADDED to answer the certain referee question "how
+% does this compare with published methods?". Explain honestly WHY we do
+% not port a published system verbatim: those systems target different
+% substrates and objectives, so a verbatim port would compare our problem
+% with their problem, not the two methods. What transfers is the
+% methodological essence of that family -- aggregate resource state, no
+% path-level routing -- and we reproduce exactly that while holding the
+% objective, algorithm, loss, schedules and training budget identical to
+% our agents. Stress the fairness point: this baseline optimises the SAME
+% count objective, so it is not being beaten on a metric it never
+% targeted. State what the comparison isolates: against AC-only DQN (full
+% state, no routing) it isolates the value of the path-level state;
+% against the joint agent it isolates state and routing together.
+%-----------------------------------------------------------------------
+The fourth baseline represents the published 5G-core literature.
+Methods such as SARA/DSARA~\cite{villota2022admission},
+FSAC~\cite{wang2024fsac} and the online formulation
+of~\cite{sulaiman2025datadriven} share two structural properties that
+distinguish them from this work: they describe the substrate as aggregate
+resource pools rather than per-pair, per-path state, and they do not place
+routing in the action space. Porting any of them verbatim is not
+meaningful here, since each targets a different substrate and objective,
+so the result would compare problems rather than methods. We therefore
+reproduce the methodological essence of the family. \emph{Aggregate-state
+DQN} observes only the request features, the active-slice counts and four
+scalar summaries of residual capacity -- its mean, minimum, dispersion and
+the fraction of paths that cannot carry the request -- with no per-pair
+resolution and no feasibility signal, and it decides admission alone,
+routing over the shortest path. Everything else is held identical to our
+agents: the same count objective, duelling architecture, Huber loss,
+gradient clipping, exploration schedule and training budget. The
+comparison is therefore not one of objectives but of representation:
+measured against the AC-only DQN, which sees the full state but likewise
+cannot route, it isolates the contribution of the path-level state
+representation; measured against the joint agent it isolates
+representation and routing together.
 
 %-----------------------------------------------------------------------
 % [E-P6] GUIDANCE: Metrics and statistical protocol -- state this
@@ -1265,6 +1340,10 @@ Joint, unified      & $\mathbf{0.4806 \pm 0.0043}$ & --- & --- \\
 Joint, factored     & $0.4739 \pm 0.0049$ & $-1.4\%$ & $-2.13$ (n.s.) \\
 Greedy              & $0.4637 \pm 0.0028$ & $-3.6\%$ & $7.44^{*}$ \\
 AC-only DQN         & $0.4476 \pm 0.0022$ & $-7.4\%$ & $11.60^{*}$ \\
+% TODO(fill): aggregate-state DQN, 5 seeds -- runs queued on gpu15 behind
+% the rho sweep. Numbers go here once results/baselines_s4*/metrics.csv
+% carries the aggregate_state_dqn rows.
+Aggregate-state DQN & \textit{TBD} & \textit{TBD} & \textit{TBD} \\
 Revenue threshold   & $0.1308 \pm 0.0011$ & $-267.5\%$ & $187.11^{*}$ \\
 \bottomrule
 \multicolumn{4}{l}{\footnotesize $^{*}$ significant at $\alpha=0.05$ ($t_{\text{crit}}=2.776$, $\mathrm{df}=4$).}
