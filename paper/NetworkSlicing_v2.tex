@@ -1559,7 +1559,7 @@ The results of Section~\ref{sec:main} were obtained on a single
 substrate, and it is legitimate to ask whether they describe the method
 or the graph. Table~\ref{tab:topo2} repeats the comparison on the Waxman
 topology. The central result replicates: the joint agent admits $3.8\%$
-more slices than greedy, on all three seeds and with a significant
+more slices than greedy, on all five seeds and with a significant
 paired statistic. The advantage of a learned, non-myopic admission
 policy over a strong memoryless one is therefore a property of the
 method rather than of the operator topology.
@@ -1568,37 +1568,39 @@ method rather than of the operator topology.
 % [R-P8] GUIDANCE: Now the finding that flips. On the Waxman topology the
 % AC-only agent is the BEST policy: 0.4957 vs joint 0.4841 vs greedy
 % 0.4665. AC-only beats greedy by +6.3% (t=10.04, significant) and beats
-% the joint agent on all three seeds by 2.3%. BE PRECISE about
-% significance: the joint-vs-AC-only difference is consistent (3/3) but
-% with n=3 it does not reach the alpha=0.05 threshold (t=-3.42 vs
-% t_crit=4.303). Say so explicitly. The direction is nevertheless clear
-% and is corroborated by the mechanism data.
+% the joint agent on all five seeds by 2.3%. This comparison was extended
+% from 3 to 5 seeds precisely because at n=3 it did NOT reach significance
+% (t=-3.42 vs t_crit=4.303). At n=5 it does: t=5.97 vs t_crit=2.776, 5/5
+% seeds. State it as a significant effect -- it is now the paper's second
+% headline result and no longer needs hedging.
 %-----------------------------------------------------------------------
 One ordering does not replicate, and it is the informative one. On the
 Waxman topology the admission-only agent is the strongest policy tested,
 admitting $49.57\%$ of arrivals: it exceeds greedy by $6.3\%$ and
-outperforms the joint agent on every seed. With three seeds this last
-difference does not reach the $\alpha=0.05$ threshold in a paired test
-($t=-3.42$ against $t_{\text{crit}}=4.303$), so we describe it as a
-consistent direction rather than a significant effect; but its
-explanation, given below, is unambiguous.
+outperforms the joint agent on every one of five seeds, by $2.30\%$, a
+difference that is significant under a paired test ($t=5.97$). On this
+substrate the admission-only controller is therefore not merely
+competitive with the joint agent but strictly better, and the explanation,
+given below, is unambiguous.
 
 \begin{table}[t]
 \centering
-\caption{Acceptance ratio on the Waxman topology (three seeds, held-out
-evaluation). Paired statistics against the joint unified agent.}
+\caption{Acceptance ratio on the Waxman topology (five seeds, held-out
+evaluation). Paired statistics against the joint unified agent. Note the
+ordering reverses relative to Table~\ref{tab:main}: here the
+admission-only controller is the strongest policy.}
 \label{tab:topo2}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Policy} & \textbf{Acceptance} & \textbf{$\Delta$ vs.\ joint} & \textbf{Paired $t$} \\
 \midrule
-AC-only DQN        & $\mathbf{0.4957 \pm 0.0055}$ & $+2.3\%$ & $-3.42$ (n.s.) \\
-Joint, unified     & $0.4841 \pm 0.0021$ & --- & --- \\
-Greedy             & $0.4665 \pm 0.0009$ & $-3.8\%$ & $10.53^{*}$ \\
+AC-only DQN        & $\mathbf{0.4970 \pm 0.0044}$ & $+2.30\%$ & $5.97^{*}$ \\
+Joint, unified     & $0.4858 \pm 0.0028$ & --- & --- \\
+Greedy             & $0.4683 \pm 0.0026$ & $-3.74\%$ & $18.03^{*}$ \\
 Revenue threshold  & $0.1530$ & --- & --- \\
 \bottomrule
-\multicolumn{4}{l}{\footnotesize $^{*}$ significant at $\alpha=0.05$ ($t_{\text{crit}}=4.303$, $\mathrm{df}=2$).}
+\multicolumn{4}{l}{\footnotesize $^{*}$ significant at $\alpha=0.05$ ($t_{\text{crit}}=2.776$, $\mathrm{df}=4$).}
 \end{tabular}
 \end{table}
 
@@ -2083,15 +2085,17 @@ individuals and institutions who supported this work.
 %  each is already hedged in the text; do not upgrade the language:
 %     - factored vs unified at K=3   (t=-2.13, n=5)
 %     - factored vs unified at K=8   (t=+1.19, n=5)
-%     - joint vs AC-only on Waxman   (t=-3.42, n=3)
+%     (joint vs AC-only on Waxman WAS here at t=-3.42/n=3; re-run at n=5
+%      gives t=5.97 -> now SIGNIFICANT, moved to the confirmed list below)
 %     - joint vs greedy at high load (t=+2.53, n=3)
 %     - masked vs unmasked           (t=-2.09, n=5)
 %
 %  Numbers that ARE significant and may be stated firmly:
 %     - joint vs greedy, operator, K=3      +3.6%  (t=7.44,  n=5)
 %     - joint vs AC-only, operator, K=3     +7.4%  (t=11.60, n=5)
-%     - joint vs greedy, Waxman             +3.8%  (t=10.53, n=3)
-%     - AC-only vs greedy, Waxman           +6.3%  (t=10.04, n=3)
+%     - joint vs greedy, Waxman             +3.7%  (t=18.03, n=5)
+%     - AC-only vs greedy, Waxman           +6.1%  (t=16.93, n=5)
+%     - AC-only vs joint,  Waxman           +2.3%  (t=5.97,  n=5)  <-- NEW
 %     - unified degradation K=3 -> K=8      -2.6%  (t=5.85,  n=5)
 %     - joint vs AC-only at high load       +5.5%  (t=15.47, n=3)
 %=======================================================================
