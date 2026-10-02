@@ -1,0 +1,30 @@
+# Factored DDQN - COUNT/HARD - topology 2 (the rho = 0 substrate).
+#
+# WHY THIS RUN EXISTS
+# On topology 2 the UNIFIED joint agent loses to the admission-only baseline
+# (0.4858 vs 0.4970, t=5.97, 5/5 seeds). The measured routing_error there is
+# 0.00%, so the deficit is NOT bad routing -- all candidate paths are
+# equivalent when rho=0. The likely cause is estimation dilution: the unified
+# agent spreads experience over K+1 actions, three of which are near-identical,
+# which blurs the admit-vs-reject boundary. The admission-only agent
+# concentrates all experience on 2 actions.
+#
+# The factored agent's admission estimator is ALSO a size-2 head trained on
+# every transition -- structurally the same learning problem the admission-only
+# agent solves -- with routing isolated in a separate estimator fed only by
+# admitted transitions. It should therefore NOT pay the rho=0 penalty.
+#
+# If that holds, the paper can recommend ONE architecture that degrades
+# gracefully to admission-only when routing is useless and beats it when
+# routing helps, instead of a rule for choosing between two methods.
+_base_: configs/base.yaml
+
+agent: ddqn_separated
+mode: separated
+seed: 42
+topology_file: data/topology2.json
+capacity_scale: 0.85
+
+run_name: ddqn_separated_count_topo2
+wandb_project: netslice-drl
+wandb_tags: [ddqn, separated, count, hard, topo2, rho-zero]
