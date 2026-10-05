@@ -14,8 +14,12 @@
 #   Slicing.bib, IEEEabrv.bib      (your bibliography)
 #   Figures/Amaral_3x4.jpg         (biography photo)
 # and the entries from Slicing_additions.bib appended to Slicing.bib.
+#
+# Figures are external PDFs in figures/ and are already built.
+# Regenerate the data plots:      python3 make_figures.py
+# Regenerate the schematic:       cd figures && pdflatex fig_architecture.tex
 
-DOC = NetworkSlicing_v2
+DOC = NetworkSlicing_v3
 LATEX = pdflatex -interaction=nonstopmode -file-line-error
 
 .PHONY: all quick test clean
@@ -39,6 +43,7 @@ test:
 	@sed 's|\\begin{IEEEbiography}\[{\\includegraphics.*}\]|\\begin{IEEEbiography}|' \
 	    $(DOC).tex > .testbuild/$(DOC).tex
 	@: > .testbuild/Slicing.bib; : > .testbuild/IEEEabrv.bib
+	@mkdir -p .testbuild/figures && cp figures/*.pdf .testbuild/figures/
 	@cd .testbuild && $(LATEX) $(DOC).tex >/dev/null 2>&1 && \
 	  $(LATEX) $(DOC).tex >/dev/null 2>&1; \
 	  if [ -f $(DOC).pdf ]; then \
