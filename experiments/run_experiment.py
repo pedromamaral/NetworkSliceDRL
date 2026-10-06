@@ -60,20 +60,23 @@ AGENT_MAP = {
 # ---------------------------------------------------------------------------
 
 
-def _load_config(path: str) -> dict:
-    """Load a (possibly base-inheriting) YAML config and return merged dict."""
+def _load_config(path: str, _seen: tuple = ()) -> dict:
+    """Load a YAML config, resolving `_base_` inheritance RECURSIVELY.
+
+    The previous loader resolved only one level, so a config inheriting from a
+    config that itself inherits base.yaml silently lost every base key (e.g.
+    topology_file). Child keys take priority over their base at every level.
+    """
+    if path in _seen:
+        raise ValueError(f"cyclic _base_ chain: {' -> '.join(_seen + (path,))}")
     with open(path) as f:
         cfg = yaml.safe_load(f) or {}
-
-    base_path: str | None = cfg.pop("_base_", None)
-    if base_path is not None:
-        # base_path is relative to repo root (where the script is launched from)
-        with open(base_path) as f:
-            base_cfg = yaml.safe_load(f) or {}
-        base_cfg.update(cfg)   # experiment keys take priority
-        cfg = base_cfg
-
-    return cfg
+    base_path = cfg.pop("_base_", None)
+    if base_path is None:
+        return cfg
+    merged = _load_config(base_path, _seen + (path,))
+    merged.update(cfg)
+    return merged
 
 
 def _set_seeds(seed: int) -> None:
@@ -232,8 +235,13 @@ def train(cfg: dict) -> None:
             logger.log(episode=ep, metrics=summary, loss=last_loss)
             metrics.reset()
 
-            ckpt = _checkpoint_path(cfg, ep)
-            save_checkpoint(agent, ep, ckpt)
+            # Intermediate checkpoints cost ~4.6 MB each (x20 per run); at the
+            # scale of the TNSM work plan (~400 runs) they would fill gpu15.
+            # Default keeps only the final checkpoint; set
+            # checkpoint_every_eval: true to restore the old behaviour.
+            if cfg.get("checkpoint_every_eval", False) or ep == num_episodes:
+                ckpt = _checkpoint_path(cfg, ep)
+                save_checkpoint(agent, ep, ckpt)
 
         elif ep % log_interval == 0:
             # Lightweight stdout-only progress ping

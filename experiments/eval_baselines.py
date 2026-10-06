@@ -39,6 +39,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.baselines.admission_only_dqn import AdmissionOnlyDQN
 from src.baselines.aggregate_state_dqn import AggregateStateDQN
+from src.baselines.ac_dqn_widest import ACDQNWidest
+from src.baselines.trunk_reservation import TrunkReservation, calibrate_theta
 from src.baselines.greedy_admission import GreedyAdmission
 from src.baselines.revenue_heuristic import RevenueHeuristic
 from src.env.network_env import NetworkEnv
@@ -50,16 +52,23 @@ from src.utils.metrics import MetricsTracker
 # ---------------------------------------------------------------------------
 
 
-def _load_config(path: str) -> dict:
+def _load_config(path: str, _seen: tuple = ()) -> dict:
+    """Load a YAML config, resolving `_base_` inheritance RECURSIVELY.
+
+    The previous loader resolved only one level, so a config inheriting from a
+    config that itself inherits base.yaml silently lost every base key (e.g.
+    topology_file). Child keys take priority over their base at every level.
+    """
+    if path in _seen:
+        raise ValueError(f"cyclic _base_ chain: {' -> '.join(_seen + (path,))}")
     with open(path) as f:
         cfg = yaml.safe_load(f) or {}
-    base_path: str | None = cfg.pop("_base_", None)
-    if base_path is not None:
-        with open(base_path) as f:
-            base_cfg = yaml.safe_load(f) or {}
-        base_cfg.update(cfg)
-        cfg = base_cfg
-    return cfg
+    base_path = cfg.pop("_base_", None)
+    if base_path is None:
+        return cfg
+    merged = _load_config(base_path, _seen + (path,))
+    merged.update(cfg)
+    return merged
 
 
 def _set_seeds(seed: int) -> None:
@@ -128,7 +137,11 @@ def _save_results(rows: list[dict], out_dir: str) -> None:
     if not rows:
         return
     with open(path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        # union of keys, first-seen order: some baselines add columns (theta)
+        fields: list[str] = []
+        for r in rows:
+            fields += [k for k in r if k not in fields]
+        writer = csv.DictWriter(f, fieldnames=fields, restval="")
         writer.writeheader()
         writer.writerows(rows)
     print(f"[eval_baselines] Results saved → {path}")
@@ -150,7 +163,10 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int,
     modes = ("unified",)  # unified is the comparison against the joint DRL agent
 
     results_dir: str = cfg.get("results_dir", "results")
-    run_tag = f"baselines_s{seed}"
+    # Per-config output dir: the old regime-agnostic "baselines_s<seed>" was
+    # silently overwritten whenever two sweeps reused a seed.
+    cfg_stem = os.path.splitext(os.path.basename(cfg_path))[0]
+    run_tag = f"baselines_{cfg_stem}_s{seed}"
     out_dir = os.path.join(results_dir, run_tag)
 
     want = {b.strip() for b in baselines.split(',') if b.strip()}
@@ -227,6 +243,42 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int,
         summary = _eval_agent(agent, eval_env, eval_episodes)
         _record("aggregate_state_dqn", mode, summary)
 
+    # --- WP1 factorial cells -------------------------------------------
+    # Learned admission + widest-path routing.
+    for mode in (modes if 'acwidest' in want else ()):
+        train_env = _make_env(seed, mode)
+        agent = ACDQNWidest(train_env.state_dim, cfg, mode=mode, n_paths=train_env.K)
+        print(f"[eval_baselines] Training ACDQNWidest/{mode} "
+              f"for {train_episodes} episodes …", flush=True)
+        _train_dqn_baseline(agent, train_env, train_episodes)
+        agent.eps = 0.0
+        summary = _eval_agent(agent, _make_env(eval_seed, mode), eval_episodes)
+        _record("ac_dqn_widest", mode, summary)
+
+    # Greedy admission + shortest path (= trunk reservation, shortest, theta=0).
+    for mode in (modes if 'greedyshortest' in want else ()):
+        env = _make_env(eval_seed, mode)
+        agent = TrunkReservation(env, theta=0.0, routing="shortest", mode=mode)
+        _record("greedy_shortest", mode, _eval_agent(agent, env, eval_episodes))
+
+    # Trunk reservation: theta calibrated on the TRAINING seed, then frozen.
+    for routing in ("shortest", "widest", "dar"):
+        if f"tr_{routing}" not in want:
+            continue
+        for mode in modes:
+            theta, scores = calibrate_theta(
+                lambda: _make_env(seed, mode), routing,
+                lambda a, e, n: _eval_agent(a, e, n),
+                episodes=cfg.get("tr_calibration_episodes", 40))
+            print(f"[eval_baselines] TR/{routing} calibration "
+                  + " ".join(f"{t:.2f}:{v:.4f}" for t, v in scores.items())
+                  + f" -> theta={theta:.2f}", flush=True)
+            env = _make_env(eval_seed, mode)
+            agent = TrunkReservation(env, theta=theta, routing=routing, mode=mode)
+            summary = _eval_agent(agent, env, eval_episodes)
+            summary["theta"] = theta
+            _record(f"tr_{routing}", mode, summary)
+
     _save_results(rows, out_dir)
     print("[eval_baselines] Done.", flush=True)
 
@@ -237,7 +289,8 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=42, help="Random seed.")
     p.add_argument("--baselines", default="greedy,revenue,aconly,aggregate",
                    help="comma-separated subset to run: greedy, revenue, "
-                        "aconly, aggregate. Trained baselines (aconly, "
+                        "aconly, aggregate, acwidest, greedyshortest, "
+                        "tr_shortest, tr_widest, tr_dar. Trained baselines (aconly, "
                         "aggregate) dominate runtime, so sweeps that only need "
                         "a subset should say so.")
     p.add_argument("--train_episodes", type=int, default=500,
