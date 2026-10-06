@@ -75,7 +75,8 @@ FCT/UNL, Universidade Nova de Lisboa, 2829-516 Caparica, Portugal; pfa@fct.unl.p
 %     substrate statistic rho, computable WITHOUT training. On a family
 %     where rho is the only manipulated variable the joint-vs-AC-only
 %     advantage is linear in rho: gap = 0.97*rho - 1.82, r^2 = 0.979,
-%     from -1.7% at rho=0 to +12.7% at rho=14.4%.
+%     negative below rho~2% (-0.6% at rho=0, -1.7% at rho=0.7%), +12.7%
+%     at rho=14.4%. NOT strictly monotonic -- say so.
 %  4. Mechanism of the admission half: admissibility preservation --
 %     54.9% vs 46.2% feasible arrivals (+8.7pp).
 %  5. Against a published-literature-style aggregate-state controller we
@@ -99,8 +100,9 @@ fraction of arrivals admissible on some candidate path but not on the
 shortest one -- and show, on a family of topologies in which $\rho$ is
 the only manipulated variable and the operating point is held fixed,
 that the advantage of joint control over admission-only control is
-linear in $\rho$: it rises from $-1.7\%$ at $\rho=0$ to $+12.7\%$ at
-$\rho=14.4\%$, with $r^2=0.979$. Two real substrates fall on the same
+linear in $\rho$ ($r^2=0.979$): it is negative where routing headroom is
+scarce ($-0.6\%$ at $\rho=0$, $-1.7\%$ at $\rho=0.7\%$) and reaches
+$+12.7\%$ at $\rho=14.4\%$. Two real substrates fall on the same
 line. $\rho$ requires no training to evaluate, so an operator can decide
 the architecture before committing to it. We further identify the
 mechanism behind the admission half of the problem: the learned policy
@@ -928,7 +930,10 @@ search on a global capacity scale so that greedy acceptance is
 approximately $0.47$ at every level. Without that calibration $\rho$ would
 be confounded with offered load and the sweep would establish nothing.
 Table~\ref{tab:rhofamily} reports the resulting family: $\rho$ spans
-$0$ to $14.4\%$ while greedy acceptance stays within one percentage point.
+$0$ to $14.4\%$ while greedy acceptance stays within one percentage point
+at calibration. (The greedy evaluations inside the sweep itself, which use
+the sweep's held-out seeds and $200$ episodes, span $0.4708$--$0.4849$,
+i.e.\ $1.4$ percentage points; Table~\ref{tab:law} reports those.)
 
 \begin{table}[t]
 \centering
@@ -1296,10 +1301,11 @@ pivotal on one substrate and inert on another. The routing headroom $\rho$
 of Definition~\ref{def:rho} quantifies exactly that, and the family of
 Table~\ref{tab:rhofamily} manipulates it while holding the operating point
 fixed. Table~\ref{tab:law} and Fig.~\ref{fig:rho} report the outcome. The
-advantage of joint control over admission-only control rises
-monotonically in $\rho$ across the range tested, from $-1.65\%$ where
-routing is nearly useless to $+12.74\%$ where it is most valuable, and the
-relationship is close to linear, with $r^2=0.979$. The fitted slope is
+advantage of joint control over admission-only control is negative at the
+two lowest levels ($-0.58\%$ at $\rho=0$ and $-1.65\%$ at $\rho=0.70\%$, a
+difference within seed noise, so the trend is not strictly monotonic) and
+rises to $+12.74\%$ where routing is most valuable. Across the five levels
+the relationship is close to linear, with $r^2=0.979$. The fitted slope is
 approximately $0.97$, so each percentage point of routing headroom buys
 roughly one percent of relative advantage, and the gap changes sign near
 $\rho \approx 2\%$.
@@ -1336,10 +1342,13 @@ fit: $\rho$ measures the reach that a fixed-path policy forfeits.
 %-----------------------------------------------------------------------
 The two real substrates provide out-of-family validation. Neither was part
 of the calibrated family and both were produced by different construction
-processes, yet each falls close to the fitted line: the operator topology
-at $\rho=11.0\%$ with a measured gap of $+7.4\%$, and the Waxman substrate
-at $\rho=0.0\%$ with $-2.3\%$. These are the diamonds in
-Fig.~\ref{fig:rho}(b). The practical consequence is a rule requiring no
+processes. The fitted line predicts $+8.8\%$ for the operator topology
+($\rho=11.0\%$), against a measured $+7.4\%$, and $-1.8\%$ for the Waxman
+substrate ($\rho=0$), against a measured $-2.3\%$: prediction errors of
+$-1.5$ and $-0.4$ percentage points, a mean absolute error of $0.9$
+points. These are the diamonds in Fig.~\ref{fig:rho}(b). Two substrates
+are, of course, a weak out-of-sample test, and one of them sits at
+$\rho=0$; we treat this as consistency rather than validation. The practical consequence is a rule requiring no
 training: estimate the access-to-core provisioning ratio of the intended
 substrate, obtain $\rho$ from it, and choose the architecture before
 committing to it. The asymmetry matters, since deploying joint control
