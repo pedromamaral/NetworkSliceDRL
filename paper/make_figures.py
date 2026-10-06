@@ -3,20 +3,102 @@
 Run:   python3 paper/make_figures.py
 Output: paper/figures/*.pdf
 
-All numbers are the measured experimental values; nothing here is illustrative.
+Every number is READ from raw results -- nothing is typed in by hand:
+  results/all_results.csv          (built by scripts/collect_results.py)
+  data/rho_family/family.json      (measured rho of each family level)
+  results/greedy_load_envelope.csv (scripts/greedy_load_envelope.py)
+  results/remote/gpu14/mech_diag*.log  (experiments/diagnose.py output)
+  results/gpu15_backup/ddqn_*_count_s42/metrics.csv  (training logs)
+Re-run scripts/collect_results.py first whenever results change.
 Figures are sized for IEEEtran: 3.5in wide for single-column, 7.16in for
 figure* (double-column). Fonts are serif at 8pt to match the body text.
 """
 from __future__ import annotations
 
+import csv
+import json
 import os
+import re
+from collections import defaultdict
+
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures")
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(HERE)
+OUT = os.path.join(HERE, "figures")
 os.makedirs(OUT, exist_ok=True)
+
+
+# ---------------------------------------------------------------------
+# Data layer
+# ---------------------------------------------------------------------
+def _load_cells(batch="orig"):
+    cells = defaultdict(dict)
+    with open(os.path.join(REPO, "results", "all_results.csv")) as f:
+        for r in csv.DictReader(f):
+            if r["valid"] == "1" and r["batch"] == batch:
+                cells[(r["substrate"], r["condition"], r["agent"])][int(r["seed"])] = \
+                    float(r["acceptance_ratio"])
+    return cells
+
+
+CELLS = _load_cells()
+
+
+def acc(sub, cond, agent):
+    """Per-seed acceptance, ordered by seed."""
+    d = CELLS[(sub, cond, agent)]
+    if not d:
+        raise KeyError(f"no results for {(sub, cond, agent)}")
+    return np.array([d[k] for k in sorted(d)])
+
+
+def mean(sub, cond, agent):
+    return acc(sub, cond, agent).mean()
+
+
+def sd(sub, cond, agent):
+    return acc(sub, cond, agent).std(ddof=1)
+
+
+def paired_t(sub, cond, a, b):
+    """Paired t of a-b over the seeds both cells share."""
+    da, db = CELLS[(sub, cond, a)], CELLS[(sub, cond, b)]
+    seeds = sorted(set(da) & set(db))
+    d = np.array([da[k] - db[k] for k in seeds])
+    return d.mean() / (d.std(ddof=1) / np.sqrt(len(d)))
+
+
+FAMILY = json.load(open(os.path.join(REPO, "data", "rho_family", "family.json")))
+FAMILY_SUB = {0.4: "rho_r0p4", 0.8: "rho_r0p8", 1.3: "rho_r1p3", 2.0: "rho_r2p0",
+              3.0: "rho_r3p0"}
+# rho of the two real substrates, measured by the same estimator as the family
+# (see scripts/generate_rho_family.py docstring): operator 11.0 %, Waxman 0.0 %.
+RHO_OPERATOR, RHO_WAXMAN = 11.0, 0.0
+
+
+def _feasible(log):
+    """Mean any_path_feasible (%) of DRL and greedy across seeds in a diagnose log."""
+    drl, gre, who = [], [], None
+    for line in open(os.path.join(REPO, "results", "remote", "gpu14", log)):
+        if line.startswith("=== DRL"):
+            who = drl
+        elif line.startswith("=== Greedy"):
+            who = gre
+        m = re.search(r"any_path_feasible\s*:\s*([\d.]+)%", line)
+        if m and who is not None:
+            who.append(float(m.group(1)))
+    return np.mean(drl), np.mean(gre)
+
+
+def _training_curve(run):
+    path = os.path.join(REPO, "results", "gpu15_backup", run, "metrics.csv")
+    rows = list(csv.DictReader(open(path)))
+    return (np.array([int(r["episode"]) for r in rows]),
+            np.array([float(r["acceptance_ratio"]) for r in rows]))
 
 plt.rcParams.update({
     "font.family": "serif",
@@ -59,11 +141,17 @@ def save(fig, name):
 # 1. THE ROUTING-HEADROOM LAW  (centrepiece, double column)
 # =====================================================================
 def fig_rho():
-    rho   = np.array([0.00, 0.70, 5.08, 12.91, 14.42])
-    joint = np.array([0.4906, 0.4829, 0.4820, 0.4843, 0.4776])
-    greedy= np.array([0.4708, 0.4740, 0.4788, 0.4849, 0.4774])
-    acon  = np.array([0.4934, 0.4910, 0.4728, 0.4386, 0.4236])
+    fam   = sorted(FAMILY, key=lambda f: f["rho"])
+    subs  = [FAMILY_SUB[f["ratio"]] for f in fam]
+    rho   = np.array([100 * f["rho"] for f in fam])
+    joint = np.array([mean(s, "nominal", "joint_unified") for s in subs])
+    greedy= np.array([mean(s, "nominal", "greedy") for s in subs])
+    acon  = np.array([mean(s, "nominal", "aconly") for s in subs])
     gap   = 100 * (joint - acon) / acon
+    def _gap(sub, cond):
+        j, a = mean(sub, cond, "joint_unified"), mean(sub, cond, "aconly")
+        return 100 * (j - a) / a
+    gap_op, gap_wax = _gap("operator", "K3"), _gap("waxman", "nominal")
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=DOUBLE)
 
@@ -86,9 +174,9 @@ def fig_rho():
     ax2.scatter(rho, gap, s=34, color=C_JOINT, zorder=3,
                 label="controlled ρ family")
     # the two real substrates, as out-of-family validation
-    ax2.scatter([0.0], [-2.30], s=46, marker="D", facecolor="none",
+    ax2.scatter([RHO_WAXMAN], [gap_wax], s=46, marker="D", facecolor="none",
                 edgecolor=C_FACT, lw=1.3, zorder=4, label="operator / Waxman substrates")
-    ax2.scatter([11.0], [7.40], s=46, marker="D", facecolor="none",
+    ax2.scatter([RHO_OPERATOR], [gap_op], s=46, marker="D", facecolor="none",
                 edgecolor=C_FACT, lw=1.3, zorder=4)
     ax2.axhline(0, color="0.3", lw=0.8, ls=":", zorder=2)
     ax2.set_xlabel("Routing headroom ρ (%)")
@@ -108,8 +196,9 @@ def fig_rho():
 # =====================================================================
 def fig_main():
     names = ["Joint\n(unified)", "Joint\n(factored)", "Greedy", "AC-only", "Aggregate\n-state", "Revenue\nthresh."]
-    vals  = [0.4806, 0.4739, 0.4637, 0.4476, 0.4195, 0.1308]
-    errs  = [0.0043, 0.0049, 0.0028, 0.0022, 0.0012, 0.0011]
+    agents = ["joint_unified", "factored", "greedy", "aconly", "aggregate", "revenue"]
+    vals  = [mean("operator", "K3", a) for a in agents]
+    errs  = [sd("operator", "K3", a) for a in agents]
     cols  = [C_JOINT, C_FACT, C_GREED, C_ACO, C_AGG, C_REV]
     fig, ax = plt.subplots(figsize=(3.5, 2.5))
     x = np.arange(len(names))
@@ -128,8 +217,11 @@ def fig_main():
 # =====================================================================
 def fig_topo2():
     names = ["AC-only", "Joint\n(factored)", "Joint\n(unified)", "Greedy"]
-    vals  = [0.4970, 0.4930, 0.4858, 0.4683]
-    errs  = [0.0044, 0.0048, 0.0028, 0.0026]
+    agents = ["aconly", "factored", "joint_unified", "greedy"]
+    vals  = [mean("waxman", "nominal", a) for a in agents]
+    errs  = [sd("waxman", "nominal", a) for a in agents]
+    t_af  = paired_t("waxman", "nominal", "aconly", "factored")
+    t_aj  = paired_t("waxman", "nominal", "aconly", "joint_unified")
     cols  = [C_ACO, C_FACT, C_JOINT, C_GREED]
     fig, ax = plt.subplots(figsize=(3.5, 2.4))
     x = np.arange(len(names))
@@ -142,9 +234,11 @@ def fig_topo2():
     ax.set_ylim(0.455, 0.518)
     # significance brackets, stacked above the labels
     ax.plot([0, 0, 1, 1], [0.5052, 0.5066, 0.5066, 0.5052], lw=0.7, color="0.25")
-    ax.text(0.5, 0.5070, "n.s.", ha="center", fontsize=6)
+    ax.text(0.5, 0.5070, "n.s." if abs(t_af) < 2.776 else f"$t$={t_af:.2f}",
+            ha="center", fontsize=6)  # 2.776 = t_0.975, df=4
     ax.plot([0, 0, 2, 2], [0.5105, 0.5119, 0.5119, 0.5105], lw=0.7, color="0.25")
-    ax.text(1.0, 0.5123, "significant ($t$=5.97)", ha="center", fontsize=6)
+    ax.text(1.0, 0.5123, f"significant ($t$={t_aj:.2f})" if abs(t_aj) >= 2.776
+            else f"n.s. ($t$={t_aj:.2f})", ha="center", fontsize=6)
     save(fig, "fig_topo2.pdf")
 
 
@@ -153,8 +247,11 @@ def fig_topo2():
 # =====================================================================
 def fig_feasibility():
     labels = ["Operator", "Waxman"]
-    drl    = [54.89, 53.27]
-    greedy = [46.19, 46.68]
+    # NB: the operator diagnostic loaded the gpu14 checkpoints (the July-28
+    # rerun batch), not the original July runs; it is a mechanism figure.
+    (d_op, g_op), (d_wx, g_wx) = _feasible("mech_diag.log"), _feasible("mech_diag_topo2.log")
+    drl    = [d_op, d_wx]
+    greedy = [g_op, g_wx]
     x = np.arange(len(labels)); w = 0.33
     fig, ax = plt.subplots(figsize=(3.5, 2.3))
     ax.bar(x - w/2, drl,    w, label="Learned policy", color=C_JOINT, edgecolor="black", lw=0.5)
@@ -176,8 +273,12 @@ def fig_feasibility():
 # =====================================================================
 def fig_scaling():
     K = np.array([3, 6, 8])
-    uni = np.array([0.4806, 0.4802, 0.4679]); uni_e = np.array([0.0043, 0.0048, 0.0071])
-    fac = np.array([0.4739, 0.4752, 0.4727]); fac_e = np.array([0.0049, 0.0062, 0.0040])
+    conds = ["K3", "K6", "K8"]
+    uni = np.array([mean("operator", c, "joint_unified") for c in conds])
+    uni_e = np.array([sd("operator", c, "joint_unified") for c in conds])
+    fac = np.array([mean("operator", c, "factored") for c in conds])
+    fac_e = np.array([sd("operator", c, "factored") for c in conds])
+    drop = 100 * (uni[2] - uni[0]) / uni[0]
     fig, ax = plt.subplots(figsize=SINGLE)
     ax.errorbar(K, uni, yerr=uni_e, fmt="o-", color=C_JOINT, lw=1.3, ms=4,
                 capsize=2.5, label="Unified")
@@ -187,7 +288,7 @@ def fig_scaling():
     ax.set_ylabel("Acceptance ratio")
     ax.set_xticks(K); ax.set_ylim(0.455, 0.492)
     ax.legend(frameon=True, edgecolor="0.8", loc="lower left")
-    ax.annotate("−2.6%\n(significant)", xy=(8, 0.4679), xytext=(6.5, 0.462),
+    ax.annotate(f"{drop:+.1f}%\n(significant)".replace("-", "−"), xy=(8, uni[2]), xytext=(6.5, 0.462),
                 fontsize=6.3, color="0.3",
                 arrowprops=dict(arrowstyle="->", lw=0.6, color="0.45"))
     save(fig, "fig_scaling.pdf")
@@ -197,15 +298,25 @@ def fig_scaling():
 # 6. Sensitivity to offered load
 # =====================================================================
 def fig_load():
-    cap = np.array([0.35, 0.5, 0.7, 1.0, 1.5])
-    gre = np.array([0.2375, 0.3039, 0.3742, 0.4650, 0.5917])
+    env = defaultdict(list)
+    for r in csv.DictReader(open(os.path.join(REPO, "results", "greedy_load_envelope.csv"))):
+        env[float(r["capacity_scale"])].append(float(r["acceptance_ratio"]))
+    cap = np.array(sorted(env))
+    gre = np.array([np.mean(env[c]) for c in cap])
+    j_lo, j_hi = mean("operator", "load0.5", "joint_unified"), mean("operator", "K3", "joint_unified")
+    g_lo, g_hi = mean("operator", "load0.5", "greedy"), mean("operator", "K3", "greedy")
+    m_lo, m_hi = 100 * (j_lo / g_lo - 1), 100 * (j_hi / g_hi - 1)
+    t_lo = paired_t("operator", "load0.5", "joint_unified", "greedy")
+    df_lo = len(acc("operator", "load0.5", "joint_unified")) - 1
+    sig_lo = abs(t_lo) >= {2: 4.303, 3: 3.182, 4: 2.776}[df_lo]
     fig, ax = plt.subplots(figsize=SINGLE)
     ax.plot(cap, gre, "^-", color=C_GREED, lw=1.3, ms=4, label="Greedy (envelope)")
-    ax.plot([0.5, 1.0], [0.3036, 0.4806], "o", color=C_JOINT, ms=5, label="Joint (unified)")
-    ax.annotate("+1.0% (n.s.)", xy=(0.5, 0.3036), xytext=(0.52, 0.345),
+    ax.plot([0.5, 1.0], [j_lo, j_hi], "o", color=C_JOINT, ms=5, label="Joint (unified)")
+    ax.annotate(f"{m_lo:+.1f}%" + ("" if sig_lo else " (n.s.)"), xy=(0.5, j_lo),
+                xytext=(0.52, 0.345),
                 fontsize=6.3, color=C_JOINT,
                 arrowprops=dict(arrowstyle="->", lw=0.6, color=C_JOINT))
-    ax.annotate("+3.6%", xy=(1.0, 0.4806), xytext=(0.98, 0.53),
+    ax.annotate(f"{m_hi:+.1f}%", xy=(1.0, j_hi), xytext=(0.98, 0.53),
                 fontsize=6.3, color=C_JOINT,
                 arrowprops=dict(arrowstyle="->", lw=0.6, color=C_JOINT))
     ax.set_xlabel("Capacity scale (higher = lighter load)")
@@ -219,11 +330,9 @@ def fig_load():
 # 7. Learning curves
 # =====================================================================
 def fig_learning():
-    ep = np.arange(100, 2001, 100)
-    uni = [0.3222,0.3556,0.3801,0.4010,0.4167,0.4310,0.4366,0.4492,0.4560,0.4579,
-           0.4595,0.4621,0.4640,0.4600,0.4667,0.4659,0.4693,0.4691,0.4668,0.4677]
-    fac = [0.2655,0.3060,0.3381,0.3631,0.3879,0.3967,0.4168,0.4301,0.4401,0.4462,
-           0.4423,0.4536,0.4500,0.4554,0.4588,0.4599,0.4641,0.4655,0.4633,0.4634]
+    ep, uni = _training_curve("ddqn_unified_count_s42")
+    ep_f, fac = _training_curve("ddqn_separated_count_s42")
+    assert (ep == ep_f).all()
     fig, ax = plt.subplots(figsize=SINGLE)
     ax.plot(ep, uni, "-o", color=C_JOINT, lw=1.2, ms=2.6, label="Unified")
     ax.plot(ep, fac, "-s", color=C_FACT,  lw=1.2, ms=2.6, label="Factored")

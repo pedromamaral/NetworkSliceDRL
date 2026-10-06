@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import csv
 import os
+import random
 import sys
 from datetime import datetime
 
@@ -72,6 +73,10 @@ def _load_config(path: str, _seen: tuple = ()) -> dict:
 
 
 def _set_seeds(seed: int) -> None:
+    # stdlib random drives replay-buffer minibatch sampling (unseeded before
+    # 2026-10-06). Called again before every trained baseline so its result
+    # does not depend on which other baselines ran earlier in the process.
+    random.seed(seed)
     np.random.seed(seed)
     try:
         import torch
@@ -166,10 +171,13 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int,
     # Per-config output dir: the old regime-agnostic "baselines_s<seed>" was
     # silently overwritten whenever two sweeps reused a seed.
     cfg_stem = os.path.splitext(os.path.basename(cfg_path))[0]
-    run_tag = f"baselines_{cfg_stem}_s{seed}"
+    want = {b.strip() for b in baselines.split(',') if b.strip()}
+    # Baselines that are run in separate processes for the same config/seed
+    # (WP1 runs one trained baseline per container) must not overwrite each
+    # other's metrics.csv: the subset becomes part of the directory name.
+    run_tag = f"baselines_{cfg_stem}_s{seed}__{'-'.join(sorted(want))}"
     out_dir = os.path.join(results_dir, run_tag)
 
-    want = {b.strip() for b in baselines.split(',') if b.strip()}
     print(f"[eval_baselines] running: {sorted(want)}", flush=True)
 
     rows: list[dict] = []
@@ -210,6 +218,7 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int,
     # --- AdmissionOnlyDQN (train on `seed`, eval on held-out `seed+100`) ---
     for mode in (modes if 'aconly' in want else ()):
         train_env = _make_env(seed, mode)
+        _set_seeds(seed)
         agent = AdmissionOnlyDQN(train_env.state_dim, cfg, mode=mode)
         print(
             f"[eval_baselines] Training AdmissionOnlyDQN/{mode} "
@@ -231,6 +240,7 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int,
         train_env = _make_env(seed, mode)
         agg_cfg = {**cfg, "num_nodes_eff": train_env.V,
                    "k_shortest_paths": train_env.K}
+        _set_seeds(seed)
         agent = AggregateStateDQN(train_env.state_dim, agg_cfg, mode=mode)
         print(
             f"[eval_baselines] Training AggregateStateDQN/{mode} "
@@ -247,6 +257,7 @@ def main(cfg_path: str, seed: int, train_episodes: int, eval_episodes: int,
     # Learned admission + widest-path routing.
     for mode in (modes if 'acwidest' in want else ()):
         train_env = _make_env(seed, mode)
+        _set_seeds(seed)
         agent = ACDQNWidest(train_env.state_dim, cfg, mode=mode, n_paths=train_env.K)
         print(f"[eval_baselines] Training ACDQNWidest/{mode} "
               f"for {train_episodes} episodes …", flush=True)

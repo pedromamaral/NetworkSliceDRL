@@ -90,3 +90,48 @@ sentence will be written whichever way it falls.
 
 WP1 ends when every cell above has its registered seeds. No additional seeds are added to
 WP1 in response to its results; extra seeds belong to WP2 and are registered there.
+
+---
+
+## Amendment 1 — 2026-10-06, before any WP1 run
+
+**What was found.** The replay buffer samples minibatches with Python's stdlib `random`,
+which no entry point seeded (`experiments/run_experiment.py`, `experiments/eval_baselines.py`
+seeded only numpy and torch). Two trainings with the same seed on the same machine diverged
+by episode 10, on CPU as well as GPU. Every learned-policy result produced before this date
+(joint, factored, AC-only, aggregate-state) is therefore a valid random draw but cannot be
+reproduced from its seed. This is the likely cause of the discrepancy between the original
+operator joint runs (seeds 42–44: 0.4815 / 0.4743 / 0.4831) and their July-28 re-run
+(0.4771 / 0.4705 / 0.4678). Code drift between the two batches cannot be excluded.
+
+**Fix.** stdlib `random` is now seeded with the run seed, and `eval_baselines.py` re-seeds
+before every trained baseline, so a baseline's result no longer depends on which other
+baselines ran before it in the same process. Verified: two same-seed trainings on gpu15 (GPU,
+run concurrently) produce byte-identical logs, and so do two on CPU under different
+`PYTHONHASHSEED` values.
+
+**Change to §1 (design).** "Exists" cells are no longer reused. The old runs and the new
+cells come from different, non-reproducible batches, so pairing them would confound the
+comparison with batch effects. Every learned arm of the grid is **re-run** with the fix, on
+the same image as the new cells, under run tag `wp1`:
+
+| Substrate | Learned arms re-run (new seeding) | Seeds |
+|---|---|---|
+| Operator | `joint` (unified), `factored`, `aconly`, + new `ac_dqn_widest` | 42–46 |
+| Waxman | `joint` (unified), `factored`, `aconly`, + new `ac_dqn_widest` | 42–46 |
+| ρ family, 5 levels | `joint` (unified), `aconly`, + new `ac_dqn_widest` | 42–43 |
+
+The deterministic policies (`greedy`, `greedy_shortest`, `tr_*`) are evaluated in the same
+batch for completeness; they do not depend on the seeding fix.
+
+**Change to §3 (analysis).** All tests of H1–H4 use WP1-batch results only. Pre-amendment
+results are reported separately as a replication check (original vs. re-run, per cell),
+never pooled with the WP1 batch.
+
+**Unchanged.** Hypotheses, rationale, thresholds, tests, multiplicity correction, decision
+rule and stopping rule (§2, §4, §5) are unchanged.
+
+**Consequence beyond WP1 (recorded now so it cannot be decided after seeing data).** The
+headline numbers in `NetworkSlicing_v3.tex` that come from learned policies are re-estimated
+from the WP1 batch, and the paper reports those, whichever direction they move. The original
+batch appears only in the replication check.

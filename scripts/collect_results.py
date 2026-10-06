@@ -40,6 +40,9 @@ EVAL_RUNS = {
     ("gpu15_backup", "ddqn_unified_count"):      ("operator", "K3", "joint_unified"),
     ("remote/gpu14", "ddqn_unified_count"):      ("operator", "K3", "joint_unified_rerun"),
     ("gpu15_backup", "ddqn_separated_count"):    ("operator", "K3", "factored"),
+    # WP1 batch (--tag wp1) of the two runs above, wherever they are pulled to
+    ("wp1", "ddqn_unified_count"):               ("operator", "K3", "joint_unified"),
+    ("wp1", "ddqn_separated_count"):             ("operator", "K3", "factored"),
     ("*", "ddqn_unified_count_k6"):              ("operator", "K6", "joint_unified"),
     ("*", "ddqn_separated_count_k6"):            ("operator", "K6", "factored"),
     ("*", "ddqn_unified_count_k8"):              ("operator", "K8", "joint_unified"),
@@ -82,7 +85,7 @@ BASELINE_NAMES = {
     "tr_dar": "tr_dar",
 }
 
-# WP1+ baselines: results/baselines_<config-stem>_s<seed>/metrics.csv.
+# WP1+ baselines: results/baselines_<config-stem>_s<seed>__<subset>/metrics.csv.
 # Keyed by config stem.  These rows carry batch="wp1" so that a WP1 re-run of
 # an existing cell (e.g. aconly on the new image) is a separate row, never a
 # silent replacement of the original.
@@ -115,15 +118,19 @@ def collect():
             d = os.path.basename(os.path.dirname(path))
             seed = _seed(d)
             run = re.sub(r"_s\d+$", "", d)
+            batch = "orig"
+            if run.endswith("_wp1"):          # run_experiment.py --tag wp1
+                run, batch = run[:-len("_wp1")], "wp1"
             if run in EVAL_EXCLUDED:
                 continue
-            key = EVAL_RUNS.get((src, run)) or EVAL_RUNS.get(("*", run))
+            key = (EVAL_RUNS.get(("wp1", run)) if batch == "wp1" else None) \
+                or EVAL_RUNS.get((src, run)) or EVAL_RUNS.get(("*", run))
             if key is None:
                 unmapped[f"eval:{src}:{run}"] += 1
                 continue
             metrics = {r["metric"]: float(r["value"]) for r in csv.DictReader(open(path))}
             rows.append(dict(substrate=key[0], condition=key[1], agent=key[2],
-                             seed=seed, batch="orig", source=f"{src}/{d}", valid=1,
+                             seed=seed, batch=batch, source=f"{src}/{d}", valid=1,
                              **metrics))
 
     # ---- baselines from logs ----------------------------------------------
@@ -149,7 +156,8 @@ def collect():
     for src in SOURCES:
         for path in glob.glob(os.path.join(ROOT, src, "baselines_*_s*", "metrics.csv")):
             d = os.path.basename(os.path.dirname(path))
-            stem = re.sub(r"_s\d+$", "", d[len("baselines_"):])
+            m = re.match(r"^baselines_(.+)_s\d+(?:__.+)?$", d)
+            stem = m.group(1) if m else d
             if stem not in CSV_RUNS:
                 unmapped[f"csv:{src}:{d}"] += 1
                 continue

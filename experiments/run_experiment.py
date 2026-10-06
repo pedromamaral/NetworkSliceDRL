@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import csv
 import os
+import random
 import sys
 
 import numpy as np
@@ -80,6 +81,9 @@ def _load_config(path: str, _seen: tuple = ()) -> dict:
 
 
 def _set_seeds(seed: int) -> None:
+    # stdlib random drives replay-buffer minibatch sampling; it was unseeded
+    # until 2026-10-06, so runs before that are not reproducible per seed.
+    random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():
@@ -273,6 +277,13 @@ def _parse_args() -> argparse.Namespace:
         default=None,
         help="Override cfg['seed'] and append _s<seed> to the run name.",
     )
+    p.add_argument(
+        "--tag",
+        default=None,
+        help="Batch tag appended to the run name before the seed suffix "
+             "(e.g. wp1 -> <run_name>_wp1_s42), so a re-run never overwrites "
+             "an earlier batch.",
+    )
     return p.parse_args()
 
 
@@ -287,7 +298,11 @@ def main() -> None:
         # Strip any existing seed suffix before appending
         if "_s" in base_name and base_name.rsplit("_s", 1)[-1].isdigit():
             base_name = base_name.rsplit("_s", 1)[0]
+        if args.tag:
+            base_name = f"{base_name}_{args.tag}"
         cfg["run_name"] = f"{base_name}_s{args.seed}"
+    elif args.tag:
+        cfg["run_name"] = f"{cfg.get('run_name', cfg.get('agent', 'run'))}_{args.tag}"
 
     train(cfg)
 
