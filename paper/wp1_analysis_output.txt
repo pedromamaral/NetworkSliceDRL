@@ -1,0 +1,70 @@
+=== Cell means (acceptance, WP1 batch) ===
+substrate    rho% joint_unified      factored ac_dqn_widest        aconly        greedy greedy_shorte   tr_shortest     tr_widest        tr_dar
+waxman       0.00 0.4830±0.0040 0.4928±0.0058 0.4935±0.0064 0.4945±0.0038 0.4683±0.0026 0.4683±0.0027 0.4683±0.0027 0.4683±0.0026 0.4683±0.0026
+operator    11.00 0.4826±0.0025 0.4742±0.0054 0.4839±0.0042 0.4469±0.0035 0.4637±0.0028 0.4193±0.0011 0.4193±0.0011 0.4628±0.0028 0.4638±0.0019
+rho_r0p4     0.00 0.4893±0.0011             - 0.4979±0.0011 0.4967±0.0036 0.4709±0.0001 0.4709±0.0001 0.4709±0.0001 0.4709±0.0001 0.4709±0.0001
+rho_r0p8     0.70 0.4817±0.0064             - 0.5008±0.0049 0.4902±0.0099 0.4741±0.0014 0.4696±0.0021 0.4696±0.0021 0.4740±0.0011 0.4735±0.0018
+rho_r1p3     5.08 0.4800±0.0005             - 0.4889±0.0066 0.4659±0.0029 0.4788±0.0013 0.4562±0.0026 0.4562±0.0026 0.4797±0.0025 0.4801±0.0019
+rho_r2p0    12.91 0.4816±0.0017             - 0.4875±0.0009 0.4454±0.0051 0.4850±0.0008 0.4265±0.0025 0.4265±0.0025 0.4839±0.0020 0.4821±0.0035
+rho_r3p0    14.42 0.4747±0.0057             - 0.4854±0.0058 0.4260±0.0034 0.4774±0.0010 0.4119±0.0028 0.4119±0.0028 0.4771±0.0026 0.4775±0.0022
+
+=== theta chosen by calibration (training seed) ===
+  waxman     tr_shortest=[0.0, 0.0, 0.0, 0.0, 0.0]  tr_widest=[0.0, 0.0, 0.0, 0.0, 0.0]  tr_dar=[0.0, 0.0, 0.0, 0.0, 0.0]
+  operator   tr_shortest=[0.0, 0.0, 0.0, 0.0, 0.0]  tr_widest=[0.0, 0.0, 0.0, 0.0, 0.0]  tr_dar=[0.05, 0.02, 0.02, 0.02, 0.05]
+  rho_r0p4   tr_shortest=[0.0, 0.0]  tr_widest=[0.0, 0.0]  tr_dar=[0.0, 0.0]
+  rho_r0p8   tr_shortest=[0.0, 0.0]  tr_widest=[0.0, 0.0]  tr_dar=[0.05, 0.0]
+  rho_r1p3   tr_shortest=[0.0, 0.0]  tr_widest=[0.0, 0.0]  tr_dar=[0.0, 0.0]
+  rho_r2p0   tr_shortest=[0.0, 0.0]  tr_widest=[0.0, 0.0]  tr_dar=[0.02, 0.0]
+  rho_r3p0   tr_shortest=[0.0, 0.0]  tr_widest=[0.0, 0.0]  tr_dar=[0.0, 0.0]
+
+=== H1: ac_dqn_widest >= joint at the two highest rho levels ===
+  rho=12.91%  acwidest-joint   +0.59 pp  CI95 [ -0.09,  +1.28]  t= +10.98  df=1  p=0.0578
+  rho=14.42%  acwidest-joint   +1.07 pp  CI95 [ +0.97,  +1.18]  t=+134.25  df=1  p=0.0047
+  pooled (df=3)    acwidest-joint   +0.83 pp  CI95 [ +0.39,  +1.28]  t=  +5.93  df=3  p=0.0096
+
+=== H3: ac_dqn_widest > best of {tr_widest, tr_dar} ===
+  operator  acwidest-tr_dar     +2.01 pp  CI95 [ +1.63,  +2.39]  t= +14.58  df=4  p=0.0001
+  waxman    acwidest-tr_widest  +2.53 pp  CI95 [ +2.01,  +3.05]  t= +13.49  df=4  p=0.0002
+
+=== Holm-Bonferroni over the primary family ===
+  H3 operator (vs tr_dar)      p=0.0001  threshold=0.0125  SIGNIFICANT  (mean +2.01 pp)
+  H3 waxman (vs tr_widest)     p=0.0002  threshold=0.0167  SIGNIFICANT  (mean +2.53 pp)
+  H1 rho=14.42%                p=0.0047  threshold=0.0250  SIGNIFICANT  (mean +1.07 pp)
+  H1 rho=12.91%                p=0.0578  threshold=0.0500  n.s.  (mean +0.59 pp)
+
+=== H2: ac_dqn_widest >= joint - 0.5 pp everywhere (no correction) ===
+  waxman     rho= 0.00%   +1.06 pp  CI95 [ +0.37,  +1.74]  t=  +4.30  df=4  p=0.0126  lowerCI>-0.5pp: True  mean ok: True
+  operator   rho=11.00%   +0.14 pp  CI95 [ -0.36,  +0.63]  t=  +0.76  df=4  p=0.4920  lowerCI>-0.5pp: True  mean ok: True
+  rho_r0p4   rho= 0.00%   +0.86 pp  CI95 [ -1.15,  +2.87]  t=  +5.43  df=1  p=0.1160  lowerCI>-0.5pp: False  mean ok: True
+  rho_r0p8   rho= 0.70%   +1.91 pp  CI95 [ -8.21, +12.03]  t=  +2.40  df=1  p=0.2510  lowerCI>-0.5pp: False  mean ok: True
+  rho_r1p3   rho= 5.08%   +0.89 pp  CI95 [ -5.51,  +7.29]  t=  +1.77  df=1  p=0.3280  lowerCI>-0.5pp: False  mean ok: True
+  rho_r2p0   rho=12.91%   +0.59 pp  CI95 [ -0.09,  +1.28]  t= +10.98  df=1  p=0.0578  lowerCI>-0.5pp: True  mean ok: True
+  rho_r3p0   rho=14.42%   +1.07 pp  CI95 [ +0.97,  +1.18]  t=+134.25  df=1  p=0.0047  lowerCI>-0.5pp: True  mean ok: True
+
+=== H4: decomposition (descriptive) ===
+  substrate    rho%  foresight(acw-greedy)  flexibility(acw-aconly)  learned-routing(joint-acw)  joint-greedy
+  waxman       0.00     +2.53 pp               -0.10 pp                  -1.06 pp              +1.47 pp
+  operator    11.00     +2.02 pp               +3.70 pp                  -0.14 pp              +1.88 pp
+  rho_r0p4     0.00     +2.71 pp               +0.12 pp                  -0.86 pp              +1.85 pp
+  rho_r0p8     0.70     +2.67 pp               +1.06 pp                  -1.91 pp              +0.76 pp
+  rho_r1p3     5.08     +1.01 pp               +2.30 pp                  -0.89 pp              +0.12 pp
+  rho_r2p0    12.91     +0.25 pp               +4.21 pp                  -0.59 pp              -0.34 pp
+  rho_r3p0    14.42     +0.80 pp               +5.94 pp                  -1.07 pp              -0.28 pp
+
+=== Replication: original batch vs WP1 batch (not pooled) ===
+  waxman     joint_unified  orig 0.4858 (n=5)  wp1 0.4830 (n=5)  diff -0.28 pp
+  waxman     factored       orig 0.4930 (n=5)  wp1 0.4928 (n=5)  diff -0.02 pp
+  waxman     aconly         orig 0.4970 (n=5)  wp1 0.4945 (n=5)  diff -0.25 pp
+  operator   joint_unified  orig 0.4806 (n=5)  wp1 0.4826 (n=5)  diff +0.20 pp
+  operator   factored       orig 0.4739 (n=5)  wp1 0.4742 (n=5)  diff +0.03 pp
+  operator   aconly         orig 0.4476 (n=5)  wp1 0.4469 (n=5)  diff -0.07 pp
+  rho_r0p4   joint_unified  orig 0.4906 (n=2)  wp1 0.4893 (n=2)  diff -0.13 pp
+  rho_r0p4   aconly         orig 0.4934 (n=2)  wp1 0.4967 (n=2)  diff +0.32 pp
+  rho_r0p8   joint_unified  orig 0.4829 (n=2)  wp1 0.4817 (n=2)  diff -0.12 pp
+  rho_r0p8   aconly         orig 0.4910 (n=2)  wp1 0.4902 (n=2)  diff -0.08 pp
+  rho_r1p3   joint_unified  orig 0.4820 (n=2)  wp1 0.4800 (n=2)  diff -0.20 pp
+  rho_r1p3   aconly         orig 0.4728 (n=2)  wp1 0.4659 (n=2)  diff -0.69 pp
+  rho_r2p0   joint_unified  orig 0.4843 (n=2)  wp1 0.4816 (n=2)  diff -0.28 pp
+  rho_r2p0   aconly         orig 0.4386 (n=2)  wp1 0.4454 (n=2)  diff +0.68 pp
+  rho_r3p0   joint_unified  orig 0.4776 (n=2)  wp1 0.4747 (n=2)  diff -0.29 pp
+  rho_r3p0   aconly         orig 0.4236 (n=2)  wp1 0.4260 (n=2)  diff +0.24 pp
