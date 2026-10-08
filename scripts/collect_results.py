@@ -92,6 +92,9 @@ BASELINE_NAMES = {
 CSV_RUNS = {
     "ddqn_unified_count":       ("operator", "K3"),
     "ddqn_unified_count_topo2": ("waxman", "nominal"),
+    "ddqn_unified_count_k6":    ("operator", "K6"),
+    "ddqn_unified_count_k8":    ("operator", "K8"),
+    "ddqn_unified_count_load":  ("operator", "load0.5"),
 }
 for lvl in ("r0p4", "r0p8", "r1p3", "r2p0", "r3p0"):
     CSV_RUNS[f"ddqn_unified_rho_{lvl}"] = (f"rho_{lvl}", "nominal")

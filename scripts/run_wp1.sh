@@ -54,6 +54,27 @@ jobs() {
   done; done
 }
 
+# Loose ends (2026-10-08, after Gate 1): old-batch results v3 still relies on,
+# re-run with seeded replay sampling on the same image, same wp1 tag.
+jobs_loose() {
+  for S in $SEEDS5; do
+    for K in k8 k6; do
+      echo "${K}_fact_s$S|$RUN --config configs/ddqn_separated_count_$K.yaml --seed $S --tag wp1"
+      echo "${K}_joint_s$S|$RUN --config configs/ddqn_unified_count_$K.yaml --seed $S --tag wp1"
+      echo "${K}_acwidest_s$S|$BASE --config configs/ddqn_unified_count_$K.yaml --seed $S --baselines acwidest"
+    done
+    echo "op_aggregate_s$S|$BASE --config $OP --seed $S --baselines aggregate"
+    echo "wx_aggregate_s$S|$BASE --config $WX --seed $S --baselines aggregate"
+    echo "load_joint_s$S|$RUN --config configs/ddqn_unified_count_load.yaml --seed $S --tag wp1"
+    echo "load_aconly_s$S|$BASE --config configs/ddqn_unified_count_load.yaml --seed $S --baselines aconly"
+    echo "load_acwidest_s$S|$BASE --config configs/ddqn_unified_count_load.yaml --seed $S --baselines acwidest"
+    echo "mask_joint_s$S|$RUN --config configs/ddqn_unified_count_mask.yaml --seed $S --tag wp1"
+  done
+  for S in $SEEDS5; do for C in k6 k8 load; do
+    echo "${C}_heur_s$S|$BASE --config configs/ddqn_unified_count_$C.yaml --seed $S --baselines greedy,greedyshortest,revenue"
+  done; done
+}
+
 one() {
   name="${1%%|*}"; cmd="${1#*|}"
   # skip jobs already completed (lets the driver be restarted safely)
@@ -68,6 +89,7 @@ one() {
 export -f one
 export LOG
 
-echo "$(date '+%F %T') WP1 start, $(jobs | wc -l) jobs, P=$P, commit $(cat .wp1_commit 2>/dev/null)"
-jobs | xargs -d '\n' -P "$P" -I{} bash -c 'one "$@"' _ {}
+JOBSET="${JOBSET:-jobs}"   # jobs | jobs_loose
+echo "$(date '+%F %T') WP1 start [$JOBSET], $($JOBSET | wc -l) jobs, P=$P, commit $(cat .wp1_commit 2>/dev/null)"
+$JOBSET | xargs -d '\n' -P "$P" -I{} bash -c 'one "$@"' _ {}
 echo "$(date '+%F %T') WP1_COMPLETE"
