@@ -75,6 +75,23 @@ jobs_loose() {
   done; done
 }
 
+# WP2.1 (paper/preregistration_wp2.md): extended rho family, ac_dqn_widest vs aconly,
+# seeds 42-51; seeds 42-43 at the five WP1 levels already exist.
+jobs_wp2() {
+  for S in 44 45 46 47 48 49 50 51 42 43; do
+    for L in r0p4 r0p8 r1p0 r1p3 r1p6 r2p0 r2p5 r3p0; do
+      case "$S:$L" in 42:r0p4|42:r0p8|42:r1p3|42:r2p0|42:r3p0|43:r0p4|43:r0p8|43:r1p3|43:r2p0|43:r3p0) continue;; esac
+      C=configs/ddqn_unified_rho_$L.yaml
+      echo "rho_${L}_aconly_s$S|$BASE --config $C --seed $S --baselines aconly"
+      echo "rho_${L}_acwidest_s$S|$BASE --config $C --seed $S --baselines acwidest"
+    done
+  done
+  for S in 42 43 44 45 46 47 48 49 50 51; do for L in r0p4 r0p8 r1p0 r1p3 r1p6 r2p0 r2p5 r3p0; do
+    case "$S:$L" in 42:r0p4|42:r0p8|42:r1p3|42:r2p0|42:r3p0|43:r0p4|43:r0p8|43:r1p3|43:r2p0|43:r3p0) continue;; esac
+    echo "rho_${L}_greedy_s$S|$BASE --config configs/ddqn_unified_rho_$L.yaml --seed $S --baselines greedy,greedyshortest"
+  done; done
+}
+
 one() {
   name="${1%%|*}"; cmd="${1#*|}"
   # skip jobs already completed (lets the driver be restarted safely)
@@ -89,7 +106,7 @@ one() {
 export -f one
 export LOG
 
-JOBSET="${JOBSET:-jobs}"   # jobs | jobs_loose
+JOBSET="${JOBSET:-jobs}"   # jobs | jobs_loose | jobs_wp2
 echo "$(date '+%F %T') WP1 start [$JOBSET], $($JOBSET | wc -l) jobs, P=$P, commit $(cat .wp1_commit 2>/dev/null)"
 $JOBSET | xargs -d '\n' -P "$P" -I{} bash -c 'one "$@"' _ {}
 echo "$(date '+%F %T') WP1_COMPLETE"

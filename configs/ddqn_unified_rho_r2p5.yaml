@@ -1,0 +1,17 @@
+# Unified DDQN - COUNT/HARD - rho-family member (access/core ratio 2.5).
+# Added for WP2 (2026-10-08): same core as the other levels (built with
+# generate_rho_family.py --extend from topo_r2.0.json), only access capacity
+# differs. capacity_scale calibrated so greedy acceptance ~= 0.47.
+#   measured (40-episode generator estimate): rho = 13.88%   greedy acceptance = 0.4723
+#   WP2 uses rho_wp2 from scripts/measure_rho.py (data/rho_family/family.json)
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+topology_file: data/rho_family/topo_r2.5.json
+capacity_scale: 0.34423828125
+
+run_name: ddqn_unified_rho_r2p5
+wandb_project: netslice-drl
+wandb_tags: [ddqn, unified, count, hard, rho-sweep, wp2]

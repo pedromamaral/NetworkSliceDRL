@@ -73,8 +73,8 @@ def paired_t(sub, cond, a, b):
 
 
 FAMILY = json.load(open(os.path.join(REPO, "data", "rho_family", "family.json")))
-FAMILY_SUB = {0.4: "rho_r0p4", 0.8: "rho_r0p8", 1.3: "rho_r1p3", 2.0: "rho_r2p0",
-              3.0: "rho_r3p0"}
+def family_sub(ratio):
+    return "rho_r" + str(ratio).replace(".", "p")
 # rho of the two real substrates, measured by the same estimator as the family
 # (see scripts/generate_rho_family.py docstring): operator 11.0 %, Waxman 0.0 %.
 RHO_OPERATOR, RHO_WAXMAN = 11.0, 0.0
@@ -141,8 +141,10 @@ def save(fig, name):
 # 1. THE ROUTING-HEADROOM LAW  (centrepiece, double column)
 # =====================================================================
 def fig_rho():
-    fam   = sorted(FAMILY, key=lambda f: f["rho"])
-    subs  = [FAMILY_SUB[f["ratio"]] for f in fam]
+    fam   = sorted((f for f in FAMILY
+                    if CELLS.get((family_sub(f["ratio"]), "nominal", "joint_unified"))),
+                   key=lambda f: f["rho"])
+    subs  = [family_sub(f["ratio"]) for f in fam]
     rho   = np.array([100 * f["rho"] for f in fam])
     joint = np.array([mean(s, "nominal", "joint_unified") for s in subs])
     greedy= np.array([mean(s, "nominal", "greedy") for s in subs])

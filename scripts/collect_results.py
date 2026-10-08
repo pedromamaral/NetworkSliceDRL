@@ -52,7 +52,7 @@ EVAL_RUNS = {
     ("*", "ddqn_unified_count_topo2"):           ("waxman", "nominal", "joint_unified"),
     ("*", "ddqn_separated_count_topo2"):         ("waxman", "nominal", "factored"),
 }
-for lvl in ("r0p4", "r0p8", "r1p3", "r2p0", "r3p0"):
+for lvl in ("r0p4", "r0p8", "r1p0", "r1p3", "r1p6", "r2p0", "r2p5", "r3p0"):
     EVAL_RUNS[("*", f"ddqn_unified_rho_{lvl}")] = (f"rho_{lvl}", "nominal", "joint_unified")
 
 # run_names that exist but belong to the abandoned revenue/soft model
@@ -70,7 +70,7 @@ LOG_RUNS = {
     "sweep_topo2_baselines":   ("waxman", "nominal"),
     "sweep_topo2ext_baselines": ("waxman", "nominal"),
 }
-for lvl in ("r0p4", "r0p8", "r1p3", "r2p0", "r3p0"):
+for lvl in ("r0p4", "r0p8", "r1p0", "r1p3", "r1p6", "r2p0", "r2p5", "r3p0"):
     LOG_RUNS[f"rho_{lvl}_baselines"] = (f"rho_{lvl}", "nominal")
 
 BASELINE_NAMES = {
@@ -96,7 +96,7 @@ CSV_RUNS = {
     "ddqn_unified_count_k8":    ("operator", "K8"),
     "ddqn_unified_count_load":  ("operator", "load0.5"),
 }
-for lvl in ("r0p4", "r0p8", "r1p3", "r2p0", "r3p0"):
+for lvl in ("r0p4", "r0p8", "r1p0", "r1p3", "r1p6", "r2p0", "r2p5", "r3p0"):
     CSV_RUNS[f"ddqn_unified_rho_{lvl}"] = (f"rho_{lvl}", "nominal")
 
 # The K=8 baseline run trained AC-only for only 50 episodes as a throwaway

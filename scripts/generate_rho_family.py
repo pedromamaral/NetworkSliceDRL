@@ -92,6 +92,26 @@ def build_topology(core: nx.Graph, ratio: float, rng: np.random.Generator) -> nx
     return G
 
 
+def topology_from_existing(ref_path: str, ratio: float) -> nx.Graph:
+    """New family member from a SAVED member: identical core, new access caps.
+
+    build_topology() jitters core capacities with Python's hash(), which is
+    salted per process (PYTHONHASHSEED), so re-running it would silently give
+    a new level a DIFFERENT core. Extending the family must reuse the core
+    that the existing members were built with.
+    """
+    d = json.load(open(ref_path))
+    G = nx.Graph()
+    for n in d["nodes"]:
+        G.add_node(n["id"], tier=n["tier"])
+    for l in d["links"]:
+        u, v = l["source"], l["target"]
+        access = G.nodes[u]["tier"] == "access" or G.nodes[v]["tier"] == "access"
+        G.add_edge(u, v, capacity=round(CORE_CAP_MEAN * ratio, 1) if access
+                   else l["capacity"])
+    return G
+
+
 def to_nodelink(G: nx.Graph) -> dict:
     return {
         "directed": False, "multigraph": False, "graph": {},
@@ -101,9 +121,10 @@ def to_nodelink(G: nx.Graph) -> dict:
     }
 
 
-def measure(topo_path: str, cap_scale: float, base: dict, episodes: int):
+def measure(topo_path: str, cap_scale: float, base: dict, episodes: int,
+            seed: int = 142):
     """Return (greedy_acceptance, rho) for a topology at a given capacity scale."""
-    cfg = {**base, "seed": 142, "topology_file": topo_path,
+    cfg = {**base, "seed": seed, "topology_file": topo_path,
            "capacity_scale": cap_scale}
     env = NetworkEnv(cfg, mode="unified")
     agent = GreedyAdmission(mode="unified", V=env.V, K=env.K)
@@ -155,12 +176,38 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--quick", action="store_true",
                    help="fewer episodes during calibration")
+    p.add_argument("--extend", type=float, nargs="+", default=None,
+                   help="add these ratios to the EXISTING family (same core, "
+                        "read from topo_r2.0.json); appends to family.json")
     args = p.parse_args()
     cal_eps = 8 if args.quick else 14
     fin_eps = 20 if args.quick else 40
 
     base = yaml.safe_load(open("configs/base.yaml"))
     os.makedirs(OUT_DIR, exist_ok=True)
+    if args.extend:
+        fam_path = os.path.join(OUT_DIR, "family.json")
+        fam = json.load(open(fam_path))
+        have = {f["ratio"] for f in fam}
+        for ratio in args.extend:
+            if ratio in have:
+                print(f"ratio {ratio} already in family, skipped")
+                continue
+            G = topology_from_existing(os.path.join(OUT_DIR, "topo_r2.0.json"), ratio)
+            path = os.path.join(OUT_DIR, f"topo_r{ratio:0.1f}.json")
+            with open(path, "w") as f:
+                json.dump(to_nodelink(G), f, indent=2)
+            scale, acc, _ = calibrate(path, base, cal_eps)
+            acc, rho = measure(path, scale, base, fin_eps)
+            fam.append({"ratio": ratio, "capacity_scale": scale,
+                        "greedy_acceptance": acc, "rho": rho, "topology": path})
+            print(f"ratio={ratio:4.1f}  cap_scale={scale:5.3f}  "
+                  f"greedy_accept={acc:.4f}  rho={rho:6.2%}  -> {path}", flush=True)
+        fam.sort(key=lambda f: f["ratio"])
+        with open(fam_path, "w") as f:
+            json.dump(fam, f, indent=1)
+        print(f"wrote {fam_path}")
+        return
     rng = np.random.default_rng(CORE_SEED)
     core = build_core(rng)
     print(f"core: {core.number_of_nodes()} nodes, {core.number_of_edges()} edges, "

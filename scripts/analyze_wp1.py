@@ -35,7 +35,9 @@ with open(os.path.join(ROOT, "results", "all_results.csv")) as f:
 fam = json.load(open(os.path.join(ROOT, "data", "rho_family", "family.json")))
 SUBS = {"operator": 11.0, "waxman": 0.0}
 for f_ in fam:
-    SUBS["rho_r" + str(f_["ratio"]).replace(".", "p")] = 100 * f_["rho"]
+    sub = "rho_r" + str(f_["ratio"]).replace(".", "p")
+    if (sub, "joint_unified", "wp1") in cells:   # WP1 levels only
+        SUBS[sub] = 100 * f_["rho"]
 ORDER = sorted(SUBS, key=lambda s: (s.startswith("rho"), SUBS[s]))
 
 
