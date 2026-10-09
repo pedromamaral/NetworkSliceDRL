@@ -1,0 +1,475 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "at1.at",
+   "tier": "core"
+  },
+  {
+   "id": "be1.be",
+   "tier": "core"
+  },
+  {
+   "id": "ch1.ch",
+   "tier": "core"
+  },
+  {
+   "id": "cz1.cz",
+   "tier": "core"
+  },
+  {
+   "id": "de1.de",
+   "tier": "core"
+  },
+  {
+   "id": "es1.es",
+   "tier": "core"
+  },
+  {
+   "id": "fr1.fr",
+   "tier": "core"
+  },
+  {
+   "id": "gr1.gr",
+   "tier": "core"
+  },
+  {
+   "id": "hr1.hr",
+   "tier": "core"
+  },
+  {
+   "id": "hu1.hu",
+   "tier": "core"
+  },
+  {
+   "id": "ie1.ie",
+   "tier": "core"
+  },
+  {
+   "id": "il1.il",
+   "tier": "core"
+  },
+  {
+   "id": "it1.it",
+   "tier": "core"
+  },
+  {
+   "id": "lu1.lu",
+   "tier": "core"
+  },
+  {
+   "id": "nl1.nl",
+   "tier": "core"
+  },
+  {
+   "id": "ny1.ny",
+   "tier": "core"
+  },
+  {
+   "id": "pl1.pl",
+   "tier": "core"
+  },
+  {
+   "id": "pt1.pt",
+   "tier": "core"
+  },
+  {
+   "id": "se1.se",
+   "tier": "core"
+  },
+  {
+   "id": "si1.si",
+   "tier": "core"
+  },
+  {
+   "id": "sk1.sk",
+   "tier": "core"
+  },
+  {
+   "id": "uk1.uk",
+   "tier": "core"
+  },
+  {
+   "id": "E_at1.at",
+   "tier": "access"
+  },
+  {
+   "id": "E_be1.be",
+   "tier": "access"
+  },
+  {
+   "id": "E_ch1.ch",
+   "tier": "access"
+  },
+  {
+   "id": "E_cz1.cz",
+   "tier": "access"
+  },
+  {
+   "id": "E_de1.de",
+   "tier": "access"
+  },
+  {
+   "id": "E_es1.es",
+   "tier": "access"
+  },
+  {
+   "id": "E_fr1.fr",
+   "tier": "access"
+  },
+  {
+   "id": "E_gr1.gr",
+   "tier": "access"
+  },
+  {
+   "id": "E_hr1.hr",
+   "tier": "access"
+  },
+  {
+   "id": "E_hu1.hu",
+   "tier": "access"
+  },
+  {
+   "id": "E_ie1.ie",
+   "tier": "access"
+  },
+  {
+   "id": "E_il1.il",
+   "tier": "access"
+  },
+  {
+   "id": "E_it1.it",
+   "tier": "access"
+  },
+  {
+   "id": "E_lu1.lu",
+   "tier": "access"
+  },
+  {
+   "id": "E_nl1.nl",
+   "tier": "access"
+  },
+  {
+   "id": "E_ny1.ny",
+   "tier": "access"
+  },
+  {
+   "id": "E_pl1.pl",
+   "tier": "access"
+  },
+  {
+   "id": "E_pt1.pt",
+   "tier": "access"
+  },
+  {
+   "id": "E_se1.se",
+   "tier": "access"
+  },
+  {
+   "id": "E_si1.si",
+   "tier": "access"
+  },
+  {
+   "id": "E_sk1.sk",
+   "tier": "access"
+  },
+  {
+   "id": "E_uk1.uk",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "at1.at",
+   "target": "ch1.ch",
+   "capacity": 1206.039
+  },
+  {
+   "source": "at1.at",
+   "target": "de1.de",
+   "capacity": 1073.87
+  },
+  {
+   "source": "at1.at",
+   "target": "hu1.hu",
+   "capacity": 1222.56
+  },
+  {
+   "source": "at1.at",
+   "target": "ny1.ny",
+   "capacity": 594.759
+  },
+  {
+   "source": "at1.at",
+   "target": "si1.si",
+   "capacity": 660.843
+  },
+  {
+   "source": "at1.at",
+   "target": "E_at1.at",
+   "capacity": 693.885
+  },
+  {
+   "source": "be1.be",
+   "target": "fr1.fr",
+   "capacity": 693.885
+  },
+  {
+   "source": "be1.be",
+   "target": "lu1.lu",
+   "capacity": 142.081
+  },
+  {
+   "source": "be1.be",
+   "target": "nl1.nl",
+   "capacity": 231.295
+  },
+  {
+   "source": "be1.be",
+   "target": "E_be1.be",
+   "capacity": 693.885
+  },
+  {
+   "source": "ch1.ch",
+   "target": "fr1.fr",
+   "capacity": 892.138
+  },
+  {
+   "source": "ch1.ch",
+   "target": "it1.it",
+   "capacity": 545.196
+  },
+  {
+   "source": "ch1.ch",
+   "target": "E_ch1.ch",
+   "capacity": 693.885
+  },
+  {
+   "source": "cz1.cz",
+   "target": "de1.de",
+   "capacity": 1420.813
+  },
+  {
+   "source": "cz1.cz",
+   "target": "pl1.pl",
+   "capacity": 561.717
+  },
+  {
+   "source": "cz1.cz",
+   "target": "sk1.sk",
+   "capacity": 627.801
+  },
+  {
+   "source": "cz1.cz",
+   "target": "E_cz1.cz",
+   "capacity": 693.885
+  },
+  {
+   "source": "de1.de",
+   "target": "fr1.fr",
+   "capacity": 1123.433
+  },
+  {
+   "source": "de1.de",
+   "target": "gr1.gr",
+   "capacity": 528.675
+  },
+  {
+   "source": "de1.de",
+   "target": "ie1.ie",
+   "capacity": 594.759
+  },
+  {
+   "source": "de1.de",
+   "target": "it1.it",
+   "capacity": 429.548
+  },
+  {
+   "source": "de1.de",
+   "target": "nl1.nl",
+   "capacity": 413.027
+  },
+  {
+   "source": "de1.de",
+   "target": "se1.se",
+   "capacity": 561.717
+  },
+  {
+   "source": "de1.de",
+   "target": "E_de1.de",
+   "capacity": 693.885
+  },
+  {
+   "source": "es1.es",
+   "target": "fr1.fr",
+   "capacity": 793.012
+  },
+  {
+   "source": "es1.es",
+   "target": "it1.it",
+   "capacity": 198.253
+  },
+  {
+   "source": "es1.es",
+   "target": "pt1.pt",
+   "capacity": 363.464
+  },
+  {
+   "source": "es1.es",
+   "target": "E_es1.es",
+   "capacity": 693.885
+  },
+  {
+   "source": "fr1.fr",
+   "target": "lu1.lu",
+   "capacity": 594.759
+  },
+  {
+   "source": "fr1.fr",
+   "target": "uk1.uk",
+   "capacity": 462.59
+  },
+  {
+   "source": "fr1.fr",
+   "target": "E_fr1.fr",
+   "capacity": 693.885
+  },
+  {
+   "source": "gr1.gr",
+   "target": "it1.it",
+   "capacity": 165.211
+  },
+  {
+   "source": "gr1.gr",
+   "target": "E_gr1.gr",
+   "capacity": 693.885
+  },
+  {
+   "source": "hr1.hr",
+   "target": "hu1.hu",
+   "capacity": 660.843
+  },
+  {
+   "source": "hr1.hr",
+   "target": "si1.si",
+   "capacity": 142.081
+  },
+  {
+   "source": "hr1.hr",
+   "target": "E_hr1.hr",
+   "capacity": 693.885
+  },
+  {
+   "source": "hu1.hu",
+   "target": "sk1.sk",
+   "capacity": 330.422
+  },
+  {
+   "source": "hu1.hu",
+   "target": "E_hu1.hu",
+   "capacity": 693.885
+  },
+  {
+   "source": "ie1.ie",
+   "target": "uk1.uk",
+   "capacity": 142.081
+  },
+  {
+   "source": "ie1.ie",
+   "target": "E_ie1.ie",
+   "capacity": 693.885
+  },
+  {
+   "source": "il1.il",
+   "target": "it1.it",
+   "capacity": 512.153
+  },
+  {
+   "source": "il1.il",
+   "target": "nl1.nl",
+   "capacity": 181.732
+  },
+  {
+   "source": "il1.il",
+   "target": "E_il1.il",
+   "capacity": 693.885
+  },
+  {
+   "source": "it1.it",
+   "target": "E_it1.it",
+   "capacity": 693.885
+  },
+  {
+   "source": "lu1.lu",
+   "target": "E_lu1.lu",
+   "capacity": 693.885
+  },
+  {
+   "source": "nl1.nl",
+   "target": "uk1.uk",
+   "capacity": 165.211
+  },
+  {
+   "source": "nl1.nl",
+   "target": "E_nl1.nl",
+   "capacity": 693.885
+  },
+  {
+   "source": "ny1.ny",
+   "target": "uk1.uk",
+   "capacity": 627.801
+  },
+  {
+   "source": "ny1.ny",
+   "target": "E_ny1.ny",
+   "capacity": 693.885
+  },
+  {
+   "source": "pl1.pl",
+   "target": "se1.se",
+   "capacity": 142.081
+  },
+  {
+   "source": "pl1.pl",
+   "target": "E_pl1.pl",
+   "capacity": 693.885
+  },
+  {
+   "source": "pt1.pt",
+   "target": "uk1.uk",
+   "capacity": 330.422
+  },
+  {
+   "source": "pt1.pt",
+   "target": "E_pt1.pt",
+   "capacity": 693.885
+  },
+  {
+   "source": "se1.se",
+   "target": "uk1.uk",
+   "capacity": 198.253
+  },
+  {
+   "source": "se1.se",
+   "target": "E_se1.se",
+   "capacity": 693.885
+  },
+  {
+   "source": "si1.si",
+   "target": "E_si1.si",
+   "capacity": 693.885
+  },
+  {
+   "source": "sk1.sk",
+   "target": "E_sk1.sk",
+   "capacity": 693.885
+  },
+  {
+   "source": "uk1.uk",
+   "target": "E_uk1.uk",
+   "capacity": 693.885
+  }
+ ]
+}

@@ -1,0 +1,360 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "Hannover",
+   "tier": "core"
+  },
+  {
+   "id": "Frankfurt",
+   "tier": "core"
+  },
+  {
+   "id": "Hamburg",
+   "tier": "core"
+  },
+  {
+   "id": "Norden",
+   "tier": "core"
+  },
+  {
+   "id": "Bremen",
+   "tier": "core"
+  },
+  {
+   "id": "Berlin",
+   "tier": "core"
+  },
+  {
+   "id": "Muenchen",
+   "tier": "core"
+  },
+  {
+   "id": "Ulm",
+   "tier": "core"
+  },
+  {
+   "id": "Nuernberg",
+   "tier": "core"
+  },
+  {
+   "id": "Stuttgart",
+   "tier": "core"
+  },
+  {
+   "id": "Karlsruhe",
+   "tier": "core"
+  },
+  {
+   "id": "Mannheim",
+   "tier": "core"
+  },
+  {
+   "id": "Essen",
+   "tier": "core"
+  },
+  {
+   "id": "Dortmund",
+   "tier": "core"
+  },
+  {
+   "id": "Duesseldorf",
+   "tier": "core"
+  },
+  {
+   "id": "Koeln",
+   "tier": "core"
+  },
+  {
+   "id": "Leipzig",
+   "tier": "core"
+  },
+  {
+   "id": "E_Hannover",
+   "tier": "access"
+  },
+  {
+   "id": "E_Frankfurt",
+   "tier": "access"
+  },
+  {
+   "id": "E_Hamburg",
+   "tier": "access"
+  },
+  {
+   "id": "E_Norden",
+   "tier": "access"
+  },
+  {
+   "id": "E_Bremen",
+   "tier": "access"
+  },
+  {
+   "id": "E_Berlin",
+   "tier": "access"
+  },
+  {
+   "id": "E_Muenchen",
+   "tier": "access"
+  },
+  {
+   "id": "E_Ulm",
+   "tier": "access"
+  },
+  {
+   "id": "E_Nuernberg",
+   "tier": "access"
+  },
+  {
+   "id": "E_Stuttgart",
+   "tier": "access"
+  },
+  {
+   "id": "E_Karlsruhe",
+   "tier": "access"
+  },
+  {
+   "id": "E_Mannheim",
+   "tier": "access"
+  },
+  {
+   "id": "E_Essen",
+   "tier": "access"
+  },
+  {
+   "id": "E_Dortmund",
+   "tier": "access"
+  },
+  {
+   "id": "E_Duesseldorf",
+   "tier": "access"
+  },
+  {
+   "id": "E_Koeln",
+   "tier": "access"
+  },
+  {
+   "id": "E_Leipzig",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "Hannover",
+   "target": "Berlin",
+   "capacity": 398.456
+  },
+  {
+   "source": "Hannover",
+   "target": "Bremen",
+   "capacity": 956.293
+  },
+  {
+   "source": "Hannover",
+   "target": "Dortmund",
+   "capacity": 1195.367
+  },
+  {
+   "source": "Hannover",
+   "target": "Frankfurt",
+   "capacity": 1872.741
+  },
+  {
+   "source": "Hannover",
+   "target": "Hamburg",
+   "capacity": 517.992
+  },
+  {
+   "source": "Hannover",
+   "target": "Leipzig",
+   "capacity": 239.073
+  },
+  {
+   "source": "Hannover",
+   "target": "E_Hannover",
+   "capacity": 637.529
+  },
+  {
+   "source": "Frankfurt",
+   "target": "Koeln",
+   "capacity": 717.22
+  },
+  {
+   "source": "Frankfurt",
+   "target": "Leipzig",
+   "capacity": 187.274
+  },
+  {
+   "source": "Frankfurt",
+   "target": "Mannheim",
+   "capacity": 916.448
+  },
+  {
+   "source": "Frankfurt",
+   "target": "Nuernberg",
+   "capacity": 1514.131
+  },
+  {
+   "source": "Frankfurt",
+   "target": "E_Frankfurt",
+   "capacity": 637.529
+  },
+  {
+   "source": "Hamburg",
+   "target": "Berlin",
+   "capacity": 187.274
+  },
+  {
+   "source": "Hamburg",
+   "target": "Bremen",
+   "capacity": 187.274
+  },
+  {
+   "source": "Hamburg",
+   "target": "E_Hamburg",
+   "capacity": 637.529
+  },
+  {
+   "source": "Norden",
+   "target": "Bremen",
+   "capacity": 478.147
+  },
+  {
+   "source": "Norden",
+   "target": "Dortmund",
+   "capacity": 187.274
+  },
+  {
+   "source": "Norden",
+   "target": "E_Norden",
+   "capacity": 637.529
+  },
+  {
+   "source": "Bremen",
+   "target": "E_Bremen",
+   "capacity": 637.529
+  },
+  {
+   "source": "Berlin",
+   "target": "Leipzig",
+   "capacity": 199.228
+  },
+  {
+   "source": "Berlin",
+   "target": "E_Berlin",
+   "capacity": 637.529
+  },
+  {
+   "source": "Muenchen",
+   "target": "Nuernberg",
+   "capacity": 1035.985
+  },
+  {
+   "source": "Muenchen",
+   "target": "Ulm",
+   "capacity": 557.838
+  },
+  {
+   "source": "Muenchen",
+   "target": "E_Muenchen",
+   "capacity": 637.529
+  },
+  {
+   "source": "Ulm",
+   "target": "Stuttgart",
+   "capacity": 187.274
+  },
+  {
+   "source": "Ulm",
+   "target": "E_Ulm",
+   "capacity": 637.529
+  },
+  {
+   "source": "Nuernberg",
+   "target": "Leipzig",
+   "capacity": 358.61
+  },
+  {
+   "source": "Nuernberg",
+   "target": "Stuttgart",
+   "capacity": 597.683
+  },
+  {
+   "source": "Nuernberg",
+   "target": "E_Nuernberg",
+   "capacity": 637.529
+  },
+  {
+   "source": "Stuttgart",
+   "target": "Karlsruhe",
+   "capacity": 278.919
+  },
+  {
+   "source": "Stuttgart",
+   "target": "E_Stuttgart",
+   "capacity": 637.529
+  },
+  {
+   "source": "Karlsruhe",
+   "target": "Mannheim",
+   "capacity": 517.992
+  },
+  {
+   "source": "Karlsruhe",
+   "target": "E_Karlsruhe",
+   "capacity": 637.529
+  },
+  {
+   "source": "Mannheim",
+   "target": "E_Mannheim",
+   "capacity": 637.529
+  },
+  {
+   "source": "Essen",
+   "target": "Dortmund",
+   "capacity": 836.757
+  },
+  {
+   "source": "Essen",
+   "target": "Duesseldorf",
+   "capacity": 278.919
+  },
+  {
+   "source": "Essen",
+   "target": "E_Essen",
+   "capacity": 637.529
+  },
+  {
+   "source": "Dortmund",
+   "target": "Koeln",
+   "capacity": 199.228
+  },
+  {
+   "source": "Dortmund",
+   "target": "E_Dortmund",
+   "capacity": 637.529
+  },
+  {
+   "source": "Duesseldorf",
+   "target": "Koeln",
+   "capacity": 358.61
+  },
+  {
+   "source": "Duesseldorf",
+   "target": "E_Duesseldorf",
+   "capacity": 637.529
+  },
+  {
+   "source": "Koeln",
+   "target": "E_Koeln",
+   "capacity": 637.529
+  },
+  {
+   "source": "Leipzig",
+   "target": "E_Leipzig",
+   "capacity": 637.529
+  }
+ ]
+}

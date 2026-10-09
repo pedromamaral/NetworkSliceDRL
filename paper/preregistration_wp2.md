@@ -143,3 +143,28 @@ intervals.
 
 **WP2.4 — sensitivity and cost.** ρ estimated with greedy vs `aconly` as the reference
 policy and at 20/100/500 episodes; wall-clock cost of estimating ρ vs training one agent.
+
+---
+
+## Amendment 1 — 2026-10-09, before any WP2.3 prediction or run (tightening only)
+
+**What was found.** Building the nine WP2.3 networks with the registered rules
+(`scripts/build_sndlib.py`, `data/sndlib_topo/networks.json`) gives ρ_wp2 between 6.20 %
+and 10.29 % (per-network seed spread ≤ ±0.2 pp). Load-proportional provisioning starts
+every link at equal utilisation, so all nine land mid-range. With the WP1 slope
+(≈ 0.34 pp of F per point of ρ) the predicted F spans only ≈ 1.4 pp, and the registered
+criterion (MAE ≤ 1.0 pp, ≥ 7/9 inside intervals) could be met by a predictor that ignores ρ.
+
+**Change.** Rules, network set and procedure are unchanged. The WP2.3 pass criterion
+becomes the conjunction of the registered one and two further conditions:
+1. **Beats a constant.** MAE of the ρ-based predictions is lower than the MAE of the
+   constant predictor F̂ = mean F over the WP2.1 family (all levels, all seeds).
+2. **Ranks the networks.** Spearman correlation between predicted and observed F > 0,
+   one-sided permutation test (10 000 permutations), α = 0.05.
+
+If the registered criterion passes but 1 or 2 fails, WP2.3 is reported as "consistent with
+the criterion but not discriminating", not as a successful out-of-sample prediction.
+
+**Why this is allowed.** It is registered before any WP2.3 prediction is committed, before
+any WP2.3 training, and without any knowledge of F on these networks; it can only make
+the test harder to pass.

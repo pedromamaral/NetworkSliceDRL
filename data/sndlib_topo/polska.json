@@ -1,0 +1,255 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "Gdansk",
+   "tier": "core"
+  },
+  {
+   "id": "Bydgoszcz",
+   "tier": "core"
+  },
+  {
+   "id": "Kolobrzeg",
+   "tier": "core"
+  },
+  {
+   "id": "Katowice",
+   "tier": "core"
+  },
+  {
+   "id": "Krakow",
+   "tier": "core"
+  },
+  {
+   "id": "Bialystok",
+   "tier": "core"
+  },
+  {
+   "id": "Lodz",
+   "tier": "core"
+  },
+  {
+   "id": "Poznan",
+   "tier": "core"
+  },
+  {
+   "id": "Rzeszow",
+   "tier": "core"
+  },
+  {
+   "id": "Szczecin",
+   "tier": "core"
+  },
+  {
+   "id": "Warsaw",
+   "tier": "core"
+  },
+  {
+   "id": "Wroclaw",
+   "tier": "core"
+  },
+  {
+   "id": "E_Gdansk",
+   "tier": "access"
+  },
+  {
+   "id": "E_Bydgoszcz",
+   "tier": "access"
+  },
+  {
+   "id": "E_Kolobrzeg",
+   "tier": "access"
+  },
+  {
+   "id": "E_Katowice",
+   "tier": "access"
+  },
+  {
+   "id": "E_Krakow",
+   "tier": "access"
+  },
+  {
+   "id": "E_Bialystok",
+   "tier": "access"
+  },
+  {
+   "id": "E_Lodz",
+   "tier": "access"
+  },
+  {
+   "id": "E_Poznan",
+   "tier": "access"
+  },
+  {
+   "id": "E_Rzeszow",
+   "tier": "access"
+  },
+  {
+   "id": "E_Szczecin",
+   "tier": "access"
+  },
+  {
+   "id": "E_Warsaw",
+   "tier": "access"
+  },
+  {
+   "id": "E_Wroclaw",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "Gdansk",
+   "target": "Warsaw",
+   "capacity": 725.275
+  },
+  {
+   "source": "Gdansk",
+   "target": "Kolobrzeg",
+   "capacity": 791.209
+  },
+  {
+   "source": "Gdansk",
+   "target": "Bialystok",
+   "capacity": 395.604
+  },
+  {
+   "source": "Gdansk",
+   "target": "E_Gdansk",
+   "capacity": 725.275
+  },
+  {
+   "source": "Bydgoszcz",
+   "target": "Kolobrzeg",
+   "capacity": 329.67
+  },
+  {
+   "source": "Bydgoszcz",
+   "target": "Poznan",
+   "capacity": 560.44
+  },
+  {
+   "source": "Bydgoszcz",
+   "target": "Warsaw",
+   "capacity": 692.308
+  },
+  {
+   "source": "Bydgoszcz",
+   "target": "E_Bydgoszcz",
+   "capacity": 725.275
+  },
+  {
+   "source": "Kolobrzeg",
+   "target": "Szczecin",
+   "capacity": 395.604
+  },
+  {
+   "source": "Kolobrzeg",
+   "target": "E_Kolobrzeg",
+   "capacity": 725.275
+  },
+  {
+   "source": "Katowice",
+   "target": "Krakow",
+   "capacity": 824.176
+  },
+  {
+   "source": "Katowice",
+   "target": "Lodz",
+   "capacity": 197.802
+  },
+  {
+   "source": "Katowice",
+   "target": "Wroclaw",
+   "capacity": 428.571
+  },
+  {
+   "source": "Katowice",
+   "target": "E_Katowice",
+   "capacity": 725.275
+  },
+  {
+   "source": "Krakow",
+   "target": "Rzeszow",
+   "capacity": 593.407
+  },
+  {
+   "source": "Krakow",
+   "target": "Warsaw",
+   "capacity": 758.242
+  },
+  {
+   "source": "Krakow",
+   "target": "E_Krakow",
+   "capacity": 725.275
+  },
+  {
+   "source": "Bialystok",
+   "target": "Rzeszow",
+   "capacity": 395.604
+  },
+  {
+   "source": "Bialystok",
+   "target": "Warsaw",
+   "capacity": 329.67
+  },
+  {
+   "source": "Bialystok",
+   "target": "E_Bialystok",
+   "capacity": 725.275
+  },
+  {
+   "source": "Lodz",
+   "target": "Warsaw",
+   "capacity": 527.473
+  },
+  {
+   "source": "Lodz",
+   "target": "Wroclaw",
+   "capacity": 395.604
+  },
+  {
+   "source": "Lodz",
+   "target": "E_Lodz",
+   "capacity": 725.275
+  },
+  {
+   "source": "Poznan",
+   "target": "Szczecin",
+   "capacity": 329.67
+  },
+  {
+   "source": "Poznan",
+   "target": "Wroclaw",
+   "capacity": 626.374
+  },
+  {
+   "source": "Poznan",
+   "target": "E_Poznan",
+   "capacity": 725.275
+  },
+  {
+   "source": "Rzeszow",
+   "target": "E_Rzeszow",
+   "capacity": 725.275
+  },
+  {
+   "source": "Szczecin",
+   "target": "E_Szczecin",
+   "capacity": 725.275
+  },
+  {
+   "source": "Warsaw",
+   "target": "E_Warsaw",
+   "capacity": 725.275
+  },
+  {
+   "source": "Wroclaw",
+   "target": "E_Wroclaw",
+   "capacity": 725.275
+  }
+ ]
+}

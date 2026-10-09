@@ -1,0 +1,240 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "ATLAM5",
+   "tier": "core"
+  },
+  {
+   "id": "ATLAng",
+   "tier": "core"
+  },
+  {
+   "id": "CHINng",
+   "tier": "core"
+  },
+  {
+   "id": "DNVRng",
+   "tier": "core"
+  },
+  {
+   "id": "HSTNng",
+   "tier": "core"
+  },
+  {
+   "id": "IPLSng",
+   "tier": "core"
+  },
+  {
+   "id": "KSCYng",
+   "tier": "core"
+  },
+  {
+   "id": "LOSAng",
+   "tier": "core"
+  },
+  {
+   "id": "NYCMng",
+   "tier": "core"
+  },
+  {
+   "id": "SNVAng",
+   "tier": "core"
+  },
+  {
+   "id": "STTLng",
+   "tier": "core"
+  },
+  {
+   "id": "WASHng",
+   "tier": "core"
+  },
+  {
+   "id": "E_ATLAM5",
+   "tier": "access"
+  },
+  {
+   "id": "E_ATLAng",
+   "tier": "access"
+  },
+  {
+   "id": "E_CHINng",
+   "tier": "access"
+  },
+  {
+   "id": "E_DNVRng",
+   "tier": "access"
+  },
+  {
+   "id": "E_HSTNng",
+   "tier": "access"
+  },
+  {
+   "id": "E_IPLSng",
+   "tier": "access"
+  },
+  {
+   "id": "E_KSCYng",
+   "tier": "access"
+  },
+  {
+   "id": "E_LOSAng",
+   "tier": "access"
+  },
+  {
+   "id": "E_NYCMng",
+   "tier": "access"
+  },
+  {
+   "id": "E_SNVAng",
+   "tier": "access"
+  },
+  {
+   "id": "E_STTLng",
+   "tier": "access"
+  },
+  {
+   "id": "E_WASHng",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "ATLAM5",
+   "target": "ATLAng",
+   "capacity": 599.193
+  },
+  {
+   "source": "ATLAM5",
+   "target": "E_ATLAM5",
+   "capacity": 599.193
+  },
+  {
+   "source": "ATLAng",
+   "target": "HSTNng",
+   "capacity": 1307.33
+  },
+  {
+   "source": "ATLAng",
+   "target": "IPLSng",
+   "capacity": 490.249
+  },
+  {
+   "source": "ATLAng",
+   "target": "WASHng",
+   "capacity": 708.137
+  },
+  {
+   "source": "ATLAng",
+   "target": "E_ATLAng",
+   "capacity": 599.193
+  },
+  {
+   "source": "CHINng",
+   "target": "IPLSng",
+   "capacity": 762.609
+  },
+  {
+   "source": "CHINng",
+   "target": "NYCMng",
+   "capacity": 381.305
+  },
+  {
+   "source": "CHINng",
+   "target": "E_CHINng",
+   "capacity": 599.193
+  },
+  {
+   "source": "DNVRng",
+   "target": "KSCYng",
+   "capacity": 1089.442
+  },
+  {
+   "source": "DNVRng",
+   "target": "SNVAng",
+   "capacity": 326.833
+  },
+  {
+   "source": "DNVRng",
+   "target": "STTLng",
+   "capacity": 490.249
+  },
+  {
+   "source": "DNVRng",
+   "target": "E_DNVRng",
+   "capacity": 599.193
+  },
+  {
+   "source": "HSTNng",
+   "target": "KSCYng",
+   "capacity": 708.137
+  },
+  {
+   "source": "HSTNng",
+   "target": "LOSAng",
+   "capacity": 653.665
+  },
+  {
+   "source": "HSTNng",
+   "target": "E_HSTNng",
+   "capacity": 599.193
+  },
+  {
+   "source": "IPLSng",
+   "target": "KSCYng",
+   "capacity": 653.665
+  },
+  {
+   "source": "IPLSng",
+   "target": "E_IPLSng",
+   "capacity": 599.193
+  },
+  {
+   "source": "KSCYng",
+   "target": "E_KSCYng",
+   "capacity": 599.193
+  },
+  {
+   "source": "LOSAng",
+   "target": "SNVAng",
+   "capacity": 381.305
+  },
+  {
+   "source": "LOSAng",
+   "target": "E_LOSAng",
+   "capacity": 599.193
+  },
+  {
+   "source": "NYCMng",
+   "target": "WASHng",
+   "capacity": 326.833
+  },
+  {
+   "source": "NYCMng",
+   "target": "E_NYCMng",
+   "capacity": 599.193
+  },
+  {
+   "source": "SNVAng",
+   "target": "STTLng",
+   "capacity": 130.733
+  },
+  {
+   "source": "SNVAng",
+   "target": "E_SNVAng",
+   "capacity": 599.193
+  },
+  {
+   "source": "STTLng",
+   "target": "E_STTLng",
+   "capacity": 599.193
+  },
+  {
+   "source": "WASHng",
+   "target": "E_WASHng",
+   "capacity": 599.193
+  }
+ ]
+}

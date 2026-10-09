@@ -1,0 +1,462 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "N1",
+   "tier": "core"
+  },
+  {
+   "id": "N2",
+   "tier": "core"
+  },
+  {
+   "id": "N3",
+   "tier": "core"
+  },
+  {
+   "id": "N4",
+   "tier": "core"
+  },
+  {
+   "id": "N5",
+   "tier": "core"
+  },
+  {
+   "id": "N6",
+   "tier": "core"
+  },
+  {
+   "id": "N7",
+   "tier": "core"
+  },
+  {
+   "id": "N8",
+   "tier": "core"
+  },
+  {
+   "id": "N9",
+   "tier": "core"
+  },
+  {
+   "id": "N10",
+   "tier": "core"
+  },
+  {
+   "id": "N11",
+   "tier": "core"
+  },
+  {
+   "id": "N12",
+   "tier": "core"
+  },
+  {
+   "id": "N13",
+   "tier": "core"
+  },
+  {
+   "id": "N14",
+   "tier": "core"
+  },
+  {
+   "id": "N15",
+   "tier": "core"
+  },
+  {
+   "id": "N16",
+   "tier": "core"
+  },
+  {
+   "id": "E_N1",
+   "tier": "access"
+  },
+  {
+   "id": "E_N2",
+   "tier": "access"
+  },
+  {
+   "id": "E_N3",
+   "tier": "access"
+  },
+  {
+   "id": "E_N4",
+   "tier": "access"
+  },
+  {
+   "id": "E_N5",
+   "tier": "access"
+  },
+  {
+   "id": "E_N6",
+   "tier": "access"
+  },
+  {
+   "id": "E_N7",
+   "tier": "access"
+  },
+  {
+   "id": "E_N8",
+   "tier": "access"
+  },
+  {
+   "id": "E_N9",
+   "tier": "access"
+  },
+  {
+   "id": "E_N10",
+   "tier": "access"
+  },
+  {
+   "id": "E_N11",
+   "tier": "access"
+  },
+  {
+   "id": "E_N12",
+   "tier": "access"
+  },
+  {
+   "id": "E_N13",
+   "tier": "access"
+  },
+  {
+   "id": "E_N14",
+   "tier": "access"
+  },
+  {
+   "id": "E_N15",
+   "tier": "access"
+  },
+  {
+   "id": "E_N16",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "N1",
+   "target": "N2",
+   "capacity": 302.326
+  },
+  {
+   "source": "N1",
+   "target": "N5",
+   "capacity": 518.272
+  },
+  {
+   "source": "N1",
+   "target": "N6",
+   "capacity": 691.03
+  },
+  {
+   "source": "N1",
+   "target": "N7",
+   "capacity": 820.598
+  },
+  {
+   "source": "N1",
+   "target": "N8",
+   "capacity": 518.272
+  },
+  {
+   "source": "N1",
+   "target": "N12",
+   "capacity": 259.136
+  },
+  {
+   "source": "N1",
+   "target": "N13",
+   "capacity": 259.136
+  },
+  {
+   "source": "N1",
+   "target": "N15",
+   "capacity": 259.136
+  },
+  {
+   "source": "N1",
+   "target": "E_N1",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N2",
+   "target": "N5",
+   "capacity": 129.568
+  },
+  {
+   "source": "N2",
+   "target": "N6",
+   "capacity": 302.326
+  },
+  {
+   "source": "N2",
+   "target": "N12",
+   "capacity": 129.568
+  },
+  {
+   "source": "N2",
+   "target": "N13",
+   "capacity": 172.757
+  },
+  {
+   "source": "N2",
+   "target": "N15",
+   "capacity": 345.515
+  },
+  {
+   "source": "N2",
+   "target": "E_N2",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N3",
+   "target": "N4",
+   "capacity": 475.083
+  },
+  {
+   "source": "N3",
+   "target": "N6",
+   "capacity": 734.219
+  },
+  {
+   "source": "N3",
+   "target": "N7",
+   "capacity": 691.03
+  },
+  {
+   "source": "N3",
+   "target": "N8",
+   "capacity": 172.757
+  },
+  {
+   "source": "N3",
+   "target": "N11",
+   "capacity": 691.03
+  },
+  {
+   "source": "N3",
+   "target": "E_N3",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N4",
+   "target": "N7",
+   "capacity": 647.841
+  },
+  {
+   "source": "N4",
+   "target": "N8",
+   "capacity": 345.515
+  },
+  {
+   "source": "N4",
+   "target": "N9",
+   "capacity": 518.272
+  },
+  {
+   "source": "N4",
+   "target": "N10",
+   "capacity": 259.136
+  },
+  {
+   "source": "N4",
+   "target": "N11",
+   "capacity": 129.568
+  },
+  {
+   "source": "N4",
+   "target": "E_N4",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N5",
+   "target": "N12",
+   "capacity": 129.568
+  },
+  {
+   "source": "N5",
+   "target": "N13",
+   "capacity": 172.757
+  },
+  {
+   "source": "N5",
+   "target": "N15",
+   "capacity": 431.894
+  },
+  {
+   "source": "N5",
+   "target": "E_N5",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N6",
+   "target": "N7",
+   "capacity": 431.894
+  },
+  {
+   "source": "N6",
+   "target": "N8",
+   "capacity": 129.568
+  },
+  {
+   "source": "N6",
+   "target": "E_N6",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N7",
+   "target": "N8",
+   "capacity": 172.757
+  },
+  {
+   "source": "N7",
+   "target": "N9",
+   "capacity": 777.409
+  },
+  {
+   "source": "N7",
+   "target": "N10",
+   "capacity": 431.894
+  },
+  {
+   "source": "N7",
+   "target": "N12",
+   "capacity": 691.03
+  },
+  {
+   "source": "N7",
+   "target": "N13",
+   "capacity": 518.272
+  },
+  {
+   "source": "N7",
+   "target": "N14",
+   "capacity": 604.651
+  },
+  {
+   "source": "N7",
+   "target": "N15",
+   "capacity": 259.136
+  },
+  {
+   "source": "N7",
+   "target": "E_N7",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N8",
+   "target": "E_N8",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N9",
+   "target": "N10",
+   "capacity": 172.757
+  },
+  {
+   "source": "N9",
+   "target": "N11",
+   "capacity": 431.894
+  },
+  {
+   "source": "N9",
+   "target": "N14",
+   "capacity": 172.757
+  },
+  {
+   "source": "N9",
+   "target": "N15",
+   "capacity": 691.03
+  },
+  {
+   "source": "N9",
+   "target": "N16",
+   "capacity": 1122.924
+  },
+  {
+   "source": "N9",
+   "target": "E_N9",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N10",
+   "target": "N11",
+   "capacity": 129.568
+  },
+  {
+   "source": "N10",
+   "target": "N14",
+   "capacity": 129.568
+  },
+  {
+   "source": "N10",
+   "target": "N15",
+   "capacity": 259.136
+  },
+  {
+   "source": "N10",
+   "target": "E_N10",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N11",
+   "target": "E_N11",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N12",
+   "target": "N13",
+   "capacity": 129.568
+  },
+  {
+   "source": "N12",
+   "target": "N15",
+   "capacity": 129.568
+  },
+  {
+   "source": "N12",
+   "target": "E_N12",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N13",
+   "target": "N14",
+   "capacity": 345.515
+  },
+  {
+   "source": "N13",
+   "target": "N15",
+   "capacity": 129.568
+  },
+  {
+   "source": "N13",
+   "target": "E_N13",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N14",
+   "target": "N15",
+   "capacity": 129.568
+  },
+  {
+   "source": "N14",
+   "target": "N16",
+   "capacity": 172.757
+  },
+  {
+   "source": "N14",
+   "target": "E_N14",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N15",
+   "target": "E_N15",
+   "capacity": 1295.681
+  },
+  {
+   "source": "N16",
+   "target": "E_N16",
+   "capacity": 1295.681
+  }
+ ]
+}

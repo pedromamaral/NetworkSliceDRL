@@ -1,0 +1,578 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "Amsterdam",
+   "tier": "core"
+  },
+  {
+   "id": "Athens",
+   "tier": "core"
+  },
+  {
+   "id": "Barcelona",
+   "tier": "core"
+  },
+  {
+   "id": "Belgrade",
+   "tier": "core"
+  },
+  {
+   "id": "Berlin",
+   "tier": "core"
+  },
+  {
+   "id": "Bordeaux",
+   "tier": "core"
+  },
+  {
+   "id": "Brussels",
+   "tier": "core"
+  },
+  {
+   "id": "Budapest",
+   "tier": "core"
+  },
+  {
+   "id": "Copenhagen",
+   "tier": "core"
+  },
+  {
+   "id": "Dublin",
+   "tier": "core"
+  },
+  {
+   "id": "Frankfurt",
+   "tier": "core"
+  },
+  {
+   "id": "Glasgow",
+   "tier": "core"
+  },
+  {
+   "id": "Hamburg",
+   "tier": "core"
+  },
+  {
+   "id": "London",
+   "tier": "core"
+  },
+  {
+   "id": "Lyon",
+   "tier": "core"
+  },
+  {
+   "id": "Madrid",
+   "tier": "core"
+  },
+  {
+   "id": "Milan",
+   "tier": "core"
+  },
+  {
+   "id": "Munich",
+   "tier": "core"
+  },
+  {
+   "id": "Oslo",
+   "tier": "core"
+  },
+  {
+   "id": "Paris",
+   "tier": "core"
+  },
+  {
+   "id": "Prague",
+   "tier": "core"
+  },
+  {
+   "id": "Rome",
+   "tier": "core"
+  },
+  {
+   "id": "Stockholm",
+   "tier": "core"
+  },
+  {
+   "id": "Strasbourg",
+   "tier": "core"
+  },
+  {
+   "id": "Vienna",
+   "tier": "core"
+  },
+  {
+   "id": "Warsaw",
+   "tier": "core"
+  },
+  {
+   "id": "Zagreb",
+   "tier": "core"
+  },
+  {
+   "id": "Zurich",
+   "tier": "core"
+  },
+  {
+   "id": "E_Amsterdam",
+   "tier": "access"
+  },
+  {
+   "id": "E_Athens",
+   "tier": "access"
+  },
+  {
+   "id": "E_Barcelona",
+   "tier": "access"
+  },
+  {
+   "id": "E_Belgrade",
+   "tier": "access"
+  },
+  {
+   "id": "E_Berlin",
+   "tier": "access"
+  },
+  {
+   "id": "E_Bordeaux",
+   "tier": "access"
+  },
+  {
+   "id": "E_Brussels",
+   "tier": "access"
+  },
+  {
+   "id": "E_Budapest",
+   "tier": "access"
+  },
+  {
+   "id": "E_Copenhagen",
+   "tier": "access"
+  },
+  {
+   "id": "E_Dublin",
+   "tier": "access"
+  },
+  {
+   "id": "E_Frankfurt",
+   "tier": "access"
+  },
+  {
+   "id": "E_Glasgow",
+   "tier": "access"
+  },
+  {
+   "id": "E_Hamburg",
+   "tier": "access"
+  },
+  {
+   "id": "E_London",
+   "tier": "access"
+  },
+  {
+   "id": "E_Lyon",
+   "tier": "access"
+  },
+  {
+   "id": "E_Madrid",
+   "tier": "access"
+  },
+  {
+   "id": "E_Milan",
+   "tier": "access"
+  },
+  {
+   "id": "E_Munich",
+   "tier": "access"
+  },
+  {
+   "id": "E_Oslo",
+   "tier": "access"
+  },
+  {
+   "id": "E_Paris",
+   "tier": "access"
+  },
+  {
+   "id": "E_Prague",
+   "tier": "access"
+  },
+  {
+   "id": "E_Rome",
+   "tier": "access"
+  },
+  {
+   "id": "E_Stockholm",
+   "tier": "access"
+  },
+  {
+   "id": "E_Strasbourg",
+   "tier": "access"
+  },
+  {
+   "id": "E_Vienna",
+   "tier": "access"
+  },
+  {
+   "id": "E_Warsaw",
+   "tier": "access"
+  },
+  {
+   "id": "E_Zagreb",
+   "tier": "access"
+  },
+  {
+   "id": "E_Zurich",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "Amsterdam",
+   "target": "Brussels",
+   "capacity": 1185.488
+  },
+  {
+   "source": "Amsterdam",
+   "target": "Glasgow",
+   "capacity": 803.389
+  },
+  {
+   "source": "Amsterdam",
+   "target": "Hamburg",
+   "capacity": 1401.032
+  },
+  {
+   "source": "Amsterdam",
+   "target": "London",
+   "capacity": 313.518
+  },
+  {
+   "source": "Amsterdam",
+   "target": "E_Amsterdam",
+   "capacity": 529.061
+  },
+  {
+   "source": "Athens",
+   "target": "Belgrade",
+   "capacity": 480.074
+  },
+  {
+   "source": "Athens",
+   "target": "Rome",
+   "capacity": 578.048
+  },
+  {
+   "source": "Athens",
+   "target": "E_Athens",
+   "capacity": 529.061
+  },
+  {
+   "source": "Barcelona",
+   "target": "Lyon",
+   "capacity": 764.199
+  },
+  {
+   "source": "Barcelona",
+   "target": "Madrid",
+   "capacity": 313.518
+  },
+  {
+   "source": "Barcelona",
+   "target": "E_Barcelona",
+   "capacity": 529.061
+  },
+  {
+   "source": "Belgrade",
+   "target": "Budapest",
+   "capacity": 558.453
+  },
+  {
+   "source": "Belgrade",
+   "target": "Zagreb",
+   "capacity": 215.543
+  },
+  {
+   "source": "Belgrade",
+   "target": "E_Belgrade",
+   "capacity": 529.061
+  },
+  {
+   "source": "Berlin",
+   "target": "Copenhagen",
+   "capacity": 901.363
+  },
+  {
+   "source": "Berlin",
+   "target": "Hamburg",
+   "capacity": 1753.739
+  },
+  {
+   "source": "Berlin",
+   "target": "Munich",
+   "capacity": 1214.881
+  },
+  {
+   "source": "Berlin",
+   "target": "Prague",
+   "capacity": 901.363
+  },
+  {
+   "source": "Berlin",
+   "target": "Warsaw",
+   "capacity": 773.997
+  },
+  {
+   "source": "Berlin",
+   "target": "E_Berlin",
+   "capacity": 529.061
+  },
+  {
+   "source": "Bordeaux",
+   "target": "Madrid",
+   "capacity": 254.733
+  },
+  {
+   "source": "Bordeaux",
+   "target": "Paris",
+   "capacity": 705.415
+  },
+  {
+   "source": "Bordeaux",
+   "target": "E_Bordeaux",
+   "capacity": 529.061
+  },
+  {
+   "source": "Brussels",
+   "target": "Frankfurt",
+   "capacity": 725.009
+  },
+  {
+   "source": "Brussels",
+   "target": "Paris",
+   "capacity": 950.35
+  },
+  {
+   "source": "Brussels",
+   "target": "E_Brussels",
+   "capacity": 529.061
+  },
+  {
+   "source": "Budapest",
+   "target": "Prague",
+   "capacity": 568.251
+  },
+  {
+   "source": "Budapest",
+   "target": "Warsaw",
+   "capacity": 244.936
+  },
+  {
+   "source": "Budapest",
+   "target": "E_Budapest",
+   "capacity": 529.061
+  },
+  {
+   "source": "Copenhagen",
+   "target": "Oslo",
+   "capacity": 450.682
+  },
+  {
+   "source": "Copenhagen",
+   "target": "E_Copenhagen",
+   "capacity": 529.061
+  },
+  {
+   "source": "Dublin",
+   "target": "Glasgow",
+   "capacity": 313.518
+  },
+  {
+   "source": "Dublin",
+   "target": "London",
+   "capacity": 215.543
+  },
+  {
+   "source": "Dublin",
+   "target": "E_Dublin",
+   "capacity": 529.061
+  },
+  {
+   "source": "Frankfurt",
+   "target": "Hamburg",
+   "capacity": 333.112
+  },
+  {
+   "source": "Frankfurt",
+   "target": "Munich",
+   "capacity": 646.63
+  },
+  {
+   "source": "Frankfurt",
+   "target": "Strasbourg",
+   "capacity": 333.112
+  },
+  {
+   "source": "Frankfurt",
+   "target": "E_Frankfurt",
+   "capacity": 529.061
+  },
+  {
+   "source": "Glasgow",
+   "target": "E_Glasgow",
+   "capacity": 529.061
+  },
+  {
+   "source": "Hamburg",
+   "target": "E_Hamburg",
+   "capacity": 529.061
+  },
+  {
+   "source": "London",
+   "target": "Paris",
+   "capacity": 391.897
+  },
+  {
+   "source": "London",
+   "target": "E_London",
+   "capacity": 529.061
+  },
+  {
+   "source": "Lyon",
+   "target": "Paris",
+   "capacity": 793.591
+  },
+  {
+   "source": "Lyon",
+   "target": "Zurich",
+   "capacity": 1263.868
+  },
+  {
+   "source": "Lyon",
+   "target": "E_Lyon",
+   "capacity": 529.061
+  },
+  {
+   "source": "Madrid",
+   "target": "E_Madrid",
+   "capacity": 529.061
+  },
+  {
+   "source": "Milan",
+   "target": "Munich",
+   "capacity": 1165.894
+  },
+  {
+   "source": "Milan",
+   "target": "Rome",
+   "capacity": 1018.932
+  },
+  {
+   "source": "Milan",
+   "target": "Zurich",
+   "capacity": 1440.222
+  },
+  {
+   "source": "Milan",
+   "target": "E_Milan",
+   "capacity": 529.061
+  },
+  {
+   "source": "Munich",
+   "target": "Vienna",
+   "capacity": 715.212
+  },
+  {
+   "source": "Munich",
+   "target": "E_Munich",
+   "capacity": 529.061
+  },
+  {
+   "source": "Oslo",
+   "target": "Stockholm",
+   "capacity": 175.374
+  },
+  {
+   "source": "Oslo",
+   "target": "E_Oslo",
+   "capacity": 529.061
+  },
+  {
+   "source": "Paris",
+   "target": "Strasbourg",
+   "capacity": 175.374
+  },
+  {
+   "source": "Paris",
+   "target": "E_Paris",
+   "capacity": 529.061
+  },
+  {
+   "source": "Prague",
+   "target": "Vienna",
+   "capacity": 175.374
+  },
+  {
+   "source": "Prague",
+   "target": "E_Prague",
+   "capacity": 529.061
+  },
+  {
+   "source": "Rome",
+   "target": "Zagreb",
+   "capacity": 205.746
+  },
+  {
+   "source": "Rome",
+   "target": "E_Rome",
+   "capacity": 529.061
+  },
+  {
+   "source": "Stockholm",
+   "target": "Warsaw",
+   "capacity": 568.251
+  },
+  {
+   "source": "Stockholm",
+   "target": "E_Stockholm",
+   "capacity": 529.061
+  },
+  {
+   "source": "Strasbourg",
+   "target": "Zurich",
+   "capacity": 175.374
+  },
+  {
+   "source": "Strasbourg",
+   "target": "E_Strasbourg",
+   "capacity": 529.061
+  },
+  {
+   "source": "Vienna",
+   "target": "Zagreb",
+   "capacity": 421.289
+  },
+  {
+   "source": "Vienna",
+   "target": "E_Vienna",
+   "capacity": 529.061
+  },
+  {
+   "source": "Warsaw",
+   "target": "E_Warsaw",
+   "capacity": 529.061
+  },
+  {
+   "source": "Zagreb",
+   "target": "E_Zagreb",
+   "capacity": 529.061
+  },
+  {
+   "source": "Zurich",
+   "target": "E_Zurich",
+   "capacity": 529.061
+  }
+ ]
+}

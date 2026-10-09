@@ -1,0 +1,557 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "Seattle",
+   "tier": "core"
+  },
+  {
+   "id": "LosAngeles",
+   "tier": "core"
+  },
+  {
+   "id": "SanFrancisco",
+   "tier": "core"
+  },
+  {
+   "id": "LasVegas",
+   "tier": "core"
+  },
+  {
+   "id": "SaltLakeCity",
+   "tier": "core"
+  },
+  {
+   "id": "ElPaso",
+   "tier": "core"
+  },
+  {
+   "id": "Dallas",
+   "tier": "core"
+  },
+  {
+   "id": "Houston",
+   "tier": "core"
+  },
+  {
+   "id": "Tulsa",
+   "tier": "core"
+  },
+  {
+   "id": "Minneapolis",
+   "tier": "core"
+  },
+  {
+   "id": "KansasCity",
+   "tier": "core"
+  },
+  {
+   "id": "Denver",
+   "tier": "core"
+  },
+  {
+   "id": "Chicago",
+   "tier": "core"
+  },
+  {
+   "id": "Indianapolis",
+   "tier": "core"
+  },
+  {
+   "id": "Detroit",
+   "tier": "core"
+  },
+  {
+   "id": "StLouis",
+   "tier": "core"
+  },
+  {
+   "id": "Nashville",
+   "tier": "core"
+  },
+  {
+   "id": "Cleveland",
+   "tier": "core"
+  },
+  {
+   "id": "NewYork",
+   "tier": "core"
+  },
+  {
+   "id": "Albany",
+   "tier": "core"
+  },
+  {
+   "id": "Charlotte",
+   "tier": "core"
+  },
+  {
+   "id": "NewOrleans",
+   "tier": "core"
+  },
+  {
+   "id": "Boston",
+   "tier": "core"
+  },
+  {
+   "id": "Atlanta",
+   "tier": "core"
+  },
+  {
+   "id": "Miami",
+   "tier": "core"
+  },
+  {
+   "id": "WashingtonDC",
+   "tier": "core"
+  },
+  {
+   "id": "E_Seattle",
+   "tier": "access"
+  },
+  {
+   "id": "E_LosAngeles",
+   "tier": "access"
+  },
+  {
+   "id": "E_SanFrancisco",
+   "tier": "access"
+  },
+  {
+   "id": "E_LasVegas",
+   "tier": "access"
+  },
+  {
+   "id": "E_SaltLakeCity",
+   "tier": "access"
+  },
+  {
+   "id": "E_ElPaso",
+   "tier": "access"
+  },
+  {
+   "id": "E_Dallas",
+   "tier": "access"
+  },
+  {
+   "id": "E_Houston",
+   "tier": "access"
+  },
+  {
+   "id": "E_Tulsa",
+   "tier": "access"
+  },
+  {
+   "id": "E_Minneapolis",
+   "tier": "access"
+  },
+  {
+   "id": "E_KansasCity",
+   "tier": "access"
+  },
+  {
+   "id": "E_Denver",
+   "tier": "access"
+  },
+  {
+   "id": "E_Chicago",
+   "tier": "access"
+  },
+  {
+   "id": "E_Indianapolis",
+   "tier": "access"
+  },
+  {
+   "id": "E_Detroit",
+   "tier": "access"
+  },
+  {
+   "id": "E_StLouis",
+   "tier": "access"
+  },
+  {
+   "id": "E_Nashville",
+   "tier": "access"
+  },
+  {
+   "id": "E_Cleveland",
+   "tier": "access"
+  },
+  {
+   "id": "E_NewYork",
+   "tier": "access"
+  },
+  {
+   "id": "E_Albany",
+   "tier": "access"
+  },
+  {
+   "id": "E_Charlotte",
+   "tier": "access"
+  },
+  {
+   "id": "E_NewOrleans",
+   "tier": "access"
+  },
+  {
+   "id": "E_Boston",
+   "tier": "access"
+  },
+  {
+   "id": "E_Atlanta",
+   "tier": "access"
+  },
+  {
+   "id": "E_Miami",
+   "tier": "access"
+  },
+  {
+   "id": "E_WashingtonDC",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "Seattle",
+   "target": "SanFrancisco",
+   "capacity": 206.321
+  },
+  {
+   "source": "Seattle",
+   "target": "SaltLakeCity",
+   "capacity": 445.466
+  },
+  {
+   "source": "Seattle",
+   "target": "E_Seattle",
+   "capacity": 586.14
+  },
+  {
+   "source": "LosAngeles",
+   "target": "SanFrancisco",
+   "capacity": 562.694
+  },
+  {
+   "source": "LosAngeles",
+   "target": "LasVegas",
+   "capacity": 206.321
+  },
+  {
+   "source": "LosAngeles",
+   "target": "ElPaso",
+   "capacity": 890.932
+  },
+  {
+   "source": "LosAngeles",
+   "target": "E_LosAngeles",
+   "capacity": 586.14
+  },
+  {
+   "source": "SanFrancisco",
+   "target": "SaltLakeCity",
+   "capacity": 234.456
+  },
+  {
+   "source": "SanFrancisco",
+   "target": "E_SanFrancisco",
+   "capacity": 586.14
+  },
+  {
+   "source": "LasVegas",
+   "target": "SaltLakeCity",
+   "capacity": 281.347
+  },
+  {
+   "source": "LasVegas",
+   "target": "ElPaso",
+   "capacity": 445.466
+  },
+  {
+   "source": "LasVegas",
+   "target": "E_LasVegas",
+   "capacity": 586.14
+  },
+  {
+   "source": "SaltLakeCity",
+   "target": "Denver",
+   "capacity": 1125.388
+  },
+  {
+   "source": "SaltLakeCity",
+   "target": "E_SaltLakeCity",
+   "capacity": 586.14
+  },
+  {
+   "source": "ElPaso",
+   "target": "Dallas",
+   "capacity": 1266.061
+  },
+  {
+   "source": "ElPaso",
+   "target": "Houston",
+   "capacity": 422.02
+  },
+  {
+   "source": "ElPaso",
+   "target": "E_ElPaso",
+   "capacity": 586.14
+  },
+  {
+   "source": "Dallas",
+   "target": "Houston",
+   "capacity": 609.585
+  },
+  {
+   "source": "Dallas",
+   "target": "Tulsa",
+   "capacity": 820.595
+  },
+  {
+   "source": "Dallas",
+   "target": "Denver",
+   "capacity": 773.704
+  },
+  {
+   "source": "Dallas",
+   "target": "Nashville",
+   "capacity": 2063.211
+  },
+  {
+   "source": "Dallas",
+   "target": "E_Dallas",
+   "capacity": 586.14
+  },
+  {
+   "source": "Houston",
+   "target": "NewOrleans",
+   "capacity": 586.14
+  },
+  {
+   "source": "Houston",
+   "target": "E_Houston",
+   "capacity": 586.14
+  },
+  {
+   "source": "Tulsa",
+   "target": "KansasCity",
+   "capacity": 363.407
+  },
+  {
+   "source": "Tulsa",
+   "target": "StLouis",
+   "capacity": 363.407
+  },
+  {
+   "source": "Tulsa",
+   "target": "E_Tulsa",
+   "capacity": 586.14
+  },
+  {
+   "source": "Minneapolis",
+   "target": "KansasCity",
+   "capacity": 586.14
+  },
+  {
+   "source": "Minneapolis",
+   "target": "Chicago",
+   "capacity": 562.694
+  },
+  {
+   "source": "Minneapolis",
+   "target": "E_Minneapolis",
+   "capacity": 586.14
+  },
+  {
+   "source": "KansasCity",
+   "target": "Denver",
+   "capacity": 703.367
+  },
+  {
+   "source": "KansasCity",
+   "target": "StLouis",
+   "capacity": 410.298
+  },
+  {
+   "source": "KansasCity",
+   "target": "E_KansasCity",
+   "capacity": 586.14
+  },
+  {
+   "source": "Denver",
+   "target": "E_Denver",
+   "capacity": 586.14
+  },
+  {
+   "source": "Chicago",
+   "target": "Indianapolis",
+   "capacity": 750.259
+  },
+  {
+   "source": "Chicago",
+   "target": "Detroit",
+   "capacity": 445.466
+  },
+  {
+   "source": "Chicago",
+   "target": "StLouis",
+   "capacity": 206.321
+  },
+  {
+   "source": "Chicago",
+   "target": "E_Chicago",
+   "capacity": 586.14
+  },
+  {
+   "source": "Indianapolis",
+   "target": "StLouis",
+   "capacity": 609.585
+  },
+  {
+   "source": "Indianapolis",
+   "target": "Nashville",
+   "capacity": 1406.735
+  },
+  {
+   "source": "Indianapolis",
+   "target": "Cleveland",
+   "capacity": 1336.398
+  },
+  {
+   "source": "Indianapolis",
+   "target": "E_Indianapolis",
+   "capacity": 586.14
+  },
+  {
+   "source": "Detroit",
+   "target": "Cleveland",
+   "capacity": 206.321
+  },
+  {
+   "source": "Detroit",
+   "target": "E_Detroit",
+   "capacity": 586.14
+  },
+  {
+   "source": "StLouis",
+   "target": "E_StLouis",
+   "capacity": 586.14
+  },
+  {
+   "source": "Nashville",
+   "target": "Charlotte",
+   "capacity": 1055.051
+  },
+  {
+   "source": "Nashville",
+   "target": "Atlanta",
+   "capacity": 750.259
+  },
+  {
+   "source": "Nashville",
+   "target": "E_Nashville",
+   "capacity": 586.14
+  },
+  {
+   "source": "Cleveland",
+   "target": "Albany",
+   "capacity": 949.546
+  },
+  {
+   "source": "Cleveland",
+   "target": "WashingtonDC",
+   "capacity": 269.624
+  },
+  {
+   "source": "Cleveland",
+   "target": "E_Cleveland",
+   "capacity": 586.14
+  },
+  {
+   "source": "NewYork",
+   "target": "Albany",
+   "capacity": 211.01
+  },
+  {
+   "source": "NewYork",
+   "target": "Boston",
+   "capacity": 339.961
+  },
+  {
+   "source": "NewYork",
+   "target": "WashingtonDC",
+   "capacity": 668.199
+  },
+  {
+   "source": "NewYork",
+   "target": "E_NewYork",
+   "capacity": 586.14
+  },
+  {
+   "source": "Albany",
+   "target": "Boston",
+   "capacity": 246.179
+  },
+  {
+   "source": "Albany",
+   "target": "E_Albany",
+   "capacity": 586.14
+  },
+  {
+   "source": "Charlotte",
+   "target": "Atlanta",
+   "capacity": 281.347
+  },
+  {
+   "source": "Charlotte",
+   "target": "WashingtonDC",
+   "capacity": 1031.606
+  },
+  {
+   "source": "Charlotte",
+   "target": "E_Charlotte",
+   "capacity": 586.14
+  },
+  {
+   "source": "NewOrleans",
+   "target": "Atlanta",
+   "capacity": 281.347
+  },
+  {
+   "source": "NewOrleans",
+   "target": "Miami",
+   "capacity": 281.347
+  },
+  {
+   "source": "NewOrleans",
+   "target": "E_NewOrleans",
+   "capacity": 586.14
+  },
+  {
+   "source": "Boston",
+   "target": "E_Boston",
+   "capacity": 586.14
+  },
+  {
+   "source": "Atlanta",
+   "target": "Miami",
+   "capacity": 304.793
+  },
+  {
+   "source": "Atlanta",
+   "target": "E_Atlanta",
+   "capacity": 586.14
+  },
+  {
+   "source": "Miami",
+   "target": "E_Miami",
+   "capacity": 586.14
+  },
+  {
+   "source": "WashingtonDC",
+   "target": "E_WashingtonDC",
+   "capacity": 586.14
+  }
+ ]
+}

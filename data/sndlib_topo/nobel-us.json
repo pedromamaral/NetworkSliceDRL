@@ -1,0 +1,296 @@
+{
+ "directed": false,
+ "multigraph": false,
+ "graph": {},
+ "nodes": [
+  {
+   "id": "Palo-Alto",
+   "tier": "core"
+  },
+  {
+   "id": "San-Diego",
+   "tier": "core"
+  },
+  {
+   "id": "Boulder",
+   "tier": "core"
+  },
+  {
+   "id": "Washington",
+   "tier": "core"
+  },
+  {
+   "id": "Atlanta",
+   "tier": "core"
+  },
+  {
+   "id": "Urbana-Champaign",
+   "tier": "core"
+  },
+  {
+   "id": "Ann-Arbor",
+   "tier": "core"
+  },
+  {
+   "id": "Lincoln",
+   "tier": "core"
+  },
+  {
+   "id": "Princeton",
+   "tier": "core"
+  },
+  {
+   "id": "Ithaca",
+   "tier": "core"
+  },
+  {
+   "id": "Pittsburgh",
+   "tier": "core"
+  },
+  {
+   "id": "Houston",
+   "tier": "core"
+  },
+  {
+   "id": "Salt-Lake-City",
+   "tier": "core"
+  },
+  {
+   "id": "Seattle",
+   "tier": "core"
+  },
+  {
+   "id": "E_Palo-Alto",
+   "tier": "access"
+  },
+  {
+   "id": "E_San-Diego",
+   "tier": "access"
+  },
+  {
+   "id": "E_Boulder",
+   "tier": "access"
+  },
+  {
+   "id": "E_Washington",
+   "tier": "access"
+  },
+  {
+   "id": "E_Atlanta",
+   "tier": "access"
+  },
+  {
+   "id": "E_Urbana-Champaign",
+   "tier": "access"
+  },
+  {
+   "id": "E_Ann-Arbor",
+   "tier": "access"
+  },
+  {
+   "id": "E_Lincoln",
+   "tier": "access"
+  },
+  {
+   "id": "E_Princeton",
+   "tier": "access"
+  },
+  {
+   "id": "E_Ithaca",
+   "tier": "access"
+  },
+  {
+   "id": "E_Pittsburgh",
+   "tier": "access"
+  },
+  {
+   "id": "E_Houston",
+   "tier": "access"
+  },
+  {
+   "id": "E_Salt-Lake-City",
+   "tier": "access"
+  },
+  {
+   "id": "E_Seattle",
+   "tier": "access"
+  }
+ ],
+ "links": [
+  {
+   "source": "Palo-Alto",
+   "target": "San-Diego",
+   "capacity": 334.218
+  },
+  {
+   "source": "Palo-Alto",
+   "target": "Salt-Lake-City",
+   "capacity": 612.732
+  },
+  {
+   "source": "Palo-Alto",
+   "target": "Seattle",
+   "capacity": 334.218
+  },
+  {
+   "source": "Palo-Alto",
+   "target": "E_Palo-Alto",
+   "capacity": 724.138
+  },
+  {
+   "source": "San-Diego",
+   "target": "Houston",
+   "capacity": 751.989
+  },
+  {
+   "source": "San-Diego",
+   "target": "Seattle",
+   "capacity": 250.663
+  },
+  {
+   "source": "San-Diego",
+   "target": "E_San-Diego",
+   "capacity": 724.138
+  },
+  {
+   "source": "Boulder",
+   "target": "Lincoln",
+   "capacity": 584.881
+  },
+  {
+   "source": "Boulder",
+   "target": "Houston",
+   "capacity": 696.286
+  },
+  {
+   "source": "Boulder",
+   "target": "Salt-Lake-City",
+   "capacity": 501.326
+  },
+  {
+   "source": "Boulder",
+   "target": "E_Boulder",
+   "capacity": 724.138
+  },
+  {
+   "source": "Washington",
+   "target": "Princeton",
+   "capacity": 557.029
+  },
+  {
+   "source": "Washington",
+   "target": "Ithaca",
+   "capacity": 278.515
+  },
+  {
+   "source": "Washington",
+   "target": "Houston",
+   "capacity": 779.841
+  },
+  {
+   "source": "Washington",
+   "target": "E_Washington",
+   "capacity": 724.138
+  },
+  {
+   "source": "Atlanta",
+   "target": "Pittsburgh",
+   "capacity": 501.326
+  },
+  {
+   "source": "Atlanta",
+   "target": "Houston",
+   "capacity": 501.326
+  },
+  {
+   "source": "Atlanta",
+   "target": "E_Atlanta",
+   "capacity": 724.138
+  },
+  {
+   "source": "Urbana-Champaign",
+   "target": "Lincoln",
+   "capacity": 473.475
+  },
+  {
+   "source": "Urbana-Champaign",
+   "target": "Pittsburgh",
+   "capacity": 835.544
+  },
+  {
+   "source": "Urbana-Champaign",
+   "target": "Seattle",
+   "capacity": 584.881
+  },
+  {
+   "source": "Urbana-Champaign",
+   "target": "E_Urbana-Champaign",
+   "capacity": 724.138
+  },
+  {
+   "source": "Ann-Arbor",
+   "target": "Princeton",
+   "capacity": 557.029
+  },
+  {
+   "source": "Ann-Arbor",
+   "target": "Ithaca",
+   "capacity": 167.109
+  },
+  {
+   "source": "Ann-Arbor",
+   "target": "Salt-Lake-City",
+   "capacity": 668.435
+  },
+  {
+   "source": "Ann-Arbor",
+   "target": "E_Ann-Arbor",
+   "capacity": 724.138
+  },
+  {
+   "source": "Lincoln",
+   "target": "E_Lincoln",
+   "capacity": 724.138
+  },
+  {
+   "source": "Princeton",
+   "target": "Pittsburgh",
+   "capacity": 612.732
+  },
+  {
+   "source": "Princeton",
+   "target": "E_Princeton",
+   "capacity": 724.138
+  },
+  {
+   "source": "Ithaca",
+   "target": "Pittsburgh",
+   "capacity": 278.515
+  },
+  {
+   "source": "Ithaca",
+   "target": "E_Ithaca",
+   "capacity": 724.138
+  },
+  {
+   "source": "Pittsburgh",
+   "target": "E_Pittsburgh",
+   "capacity": 724.138
+  },
+  {
+   "source": "Houston",
+   "target": "E_Houston",
+   "capacity": 724.138
+  },
+  {
+   "source": "Salt-Lake-City",
+   "target": "E_Salt-Lake-City",
+   "capacity": 724.138
+  },
+  {
+   "source": "Seattle",
+   "target": "E_Seattle",
+   "capacity": 724.138
+  }
+ ]
+}
