@@ -112,6 +112,26 @@ def topology_from_existing(ref_path: str, ratio: float) -> nx.Graph:
     return G
 
 
+def build_topology_det(core: nx.Graph, ratio: float) -> nx.Graph:
+    """As build_topology(), but with a DETERMINISTIC per-edge jitter (hashlib), so
+    the family can be rebuilt bit-for-bit in any process. Used for new families
+    (WP2.2 germany50); the original family keeps its saved files."""
+    import hashlib
+    G = nx.Graph()
+    for c in core.nodes():
+        G.add_node(c, tier="core")
+    for u, v in core.edges():
+        h = int(hashlib.sha256(f"{min(u, v)}|{max(u, v)}".encode()).hexdigest(), 16)
+        jitter = 0.8 + 0.4 * ((h % 1000) / 1000.0)
+        G.add_edge(u, v, capacity=round(CORE_CAP_MEAN * jitter, 1))
+    by_deg = sorted(core.nodes(), key=lambda c: core.degree(c), reverse=True)
+    for a in range(N_ACCESS):
+        aid = f"A{a}"
+        G.add_node(aid, tier="access")
+        G.add_edge(aid, by_deg[a % len(by_deg)], capacity=round(CORE_CAP_MEAN * ratio, 1))
+    return G
+
+
 def to_nodelink(G: nx.Graph) -> dict:
     return {
         "directed": False, "multigraph": False, "graph": {},
@@ -179,11 +199,40 @@ def main() -> None:
     p.add_argument("--extend", type=float, nargs="+", default=None,
                    help="add these ratios to the EXISTING family (same core, "
                         "read from topo_r2.0.json); appends to family.json")
+    p.add_argument("--sndlib-core", default=None,
+                   help="build a NEW family on this SNDlib core (data/sndlib/<name>.txt) "
+                        "instead of the synthetic Waxman core; output to "
+                        "data/rho_family_<name>/")
+    p.add_argument("--ratios", type=float, nargs="+", default=None)
     args = p.parse_args()
     cal_eps = 8 if args.quick else 14
     fin_eps = 20 if args.quick else 40
 
     base = yaml.safe_load(open("configs/base.yaml"))
+    if args.sndlib_core:
+        from build_sndlib import parse
+        from measure_rho import EPISODES, SEEDS
+        core = parse(args.sndlib_core)
+        out_dir = f"data/rho_family_{args.sndlib_core}"
+        os.makedirs(out_dir, exist_ok=True)
+        rows = []
+        for ratio in (args.ratios or [0.4, 0.8, 1.0, 1.3, 1.6, 2.0, 2.5, 3.0]):
+            G = build_topology_det(core, ratio)
+            path = os.path.join(out_dir, f"topo_r{ratio:0.1f}.json")
+            with open(path, "w") as f:
+                json.dump(to_nodelink(G), f, indent=2)
+            scale, _, _ = calibrate(path, base, 14)
+            ms = [measure(path, scale, base, EPISODES, seed=s_) for s_ in SEEDS]
+            row = {"ratio": ratio, "capacity_scale": scale, "topology": path,
+                   "greedy_acceptance_wp2": sum(m[0] for m in ms) / len(ms),
+                   "rho_wp2": sum(m[1] for m in ms) / len(ms)}
+            rows.append(row)
+            print(f"ratio={ratio:4.1f}  cap_scale={scale:5.3f}  "
+                  f"greedy={row['greedy_acceptance_wp2']:.4f}  rho={100*row['rho_wp2']:6.2f}%",
+                  flush=True)
+            with open(os.path.join(out_dir, "family.json"), "w") as f:
+                json.dump(rows, f, indent=1)
+        return
     os.makedirs(OUT_DIR, exist_ok=True)
     if args.extend:
         fam_path = os.path.join(OUT_DIR, "family.json")
