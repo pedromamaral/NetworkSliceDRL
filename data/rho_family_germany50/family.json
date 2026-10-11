@@ -1,0 +1,58 @@
+[
+ {
+  "ratio": 0.4,
+  "capacity_scale": 1.7724609375,
+  "topology": "data/rho_family_germany50/topo_r0.4.json",
+  "greedy_acceptance_wp2": 0.468044,
+  "rho_wp2": 0.000132
+ },
+ {
+  "ratio": 0.8,
+  "capacity_scale": 0.91552734375,
+  "topology": "data/rho_family_germany50/topo_r0.8.json",
+  "greedy_acceptance_wp2": 0.479408,
+  "rho_wp2": 0.032852000000000006
+ },
+ {
+  "ratio": 1.0,
+  "capacity_scale": 0.73271484375,
+  "topology": "data/rho_family_germany50/topo_r1.0.json",
+  "greedy_acceptance_wp2": 0.475712,
+  "rho_wp2": 0.06400000000000002
+ },
+ {
+  "ratio": 1.3,
+  "capacity_scale": 0.57275390625,
+  "topology": "data/rho_family_germany50/topo_r1.3.json",
+  "greedy_acceptance_wp2": 0.468692,
+  "rho_wp2": 0.10258400000000001
+ },
+ {
+  "ratio": 1.6,
+  "capacity_scale": 0.515625,
+  "topology": "data/rho_family_germany50/topo_r1.6.json",
+  "greedy_acceptance_wp2": 0.477376,
+  "rho_wp2": 0.127844
+ },
+ {
+  "ratio": 2.0,
+  "capacity_scale": 0.44707031249999996,
+  "topology": "data/rho_family_germany50/topo_r2.0.json",
+  "greedy_acceptance_wp2": 0.45962800000000004,
+  "rho_wp2": 0.13828800000000002
+ },
+ {
+  "ratio": 2.5,
+  "capacity_scale": 0.45849609375,
+  "topology": "data/rho_family_germany50/topo_r2.5.json",
+  "greedy_acceptance_wp2": 0.47394400000000003,
+  "rho_wp2": 0.144452
+ },
+ {
+  "ratio": 3.0,
+  "capacity_scale": 0.45849609375,
+  "topology": "data/rho_family_germany50/topo_r3.0.json",
+  "greedy_acceptance_wp2": 0.474252,
+  "rho_wp2": 0.144924
+ }
+]

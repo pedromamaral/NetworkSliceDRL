@@ -1,0 +1,784 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "tier": "core",
+      "id": "Aachen"
+    },
+    {
+      "tier": "core",
+      "id": "Augsburg"
+    },
+    {
+      "tier": "core",
+      "id": "Bayreuth"
+    },
+    {
+      "tier": "core",
+      "id": "Berlin"
+    },
+    {
+      "tier": "core",
+      "id": "Bielefeld"
+    },
+    {
+      "tier": "core",
+      "id": "Braunschweig"
+    },
+    {
+      "tier": "core",
+      "id": "Bremen"
+    },
+    {
+      "tier": "core",
+      "id": "Bremerhaven"
+    },
+    {
+      "tier": "core",
+      "id": "Chemnitz"
+    },
+    {
+      "tier": "core",
+      "id": "Darmstadt"
+    },
+    {
+      "tier": "core",
+      "id": "Dortmund"
+    },
+    {
+      "tier": "core",
+      "id": "Dresden"
+    },
+    {
+      "tier": "core",
+      "id": "Duesseldorf"
+    },
+    {
+      "tier": "core",
+      "id": "Erfurt"
+    },
+    {
+      "tier": "core",
+      "id": "Essen"
+    },
+    {
+      "tier": "core",
+      "id": "Flensburg"
+    },
+    {
+      "tier": "core",
+      "id": "Frankfurt"
+    },
+    {
+      "tier": "core",
+      "id": "Freiburg"
+    },
+    {
+      "tier": "core",
+      "id": "Fulda"
+    },
+    {
+      "tier": "core",
+      "id": "Giessen"
+    },
+    {
+      "tier": "core",
+      "id": "Greifswald"
+    },
+    {
+      "tier": "core",
+      "id": "Hamburg"
+    },
+    {
+      "tier": "core",
+      "id": "Hannover"
+    },
+    {
+      "tier": "core",
+      "id": "Kaiserslautern"
+    },
+    {
+      "tier": "core",
+      "id": "Karlsruhe"
+    },
+    {
+      "tier": "core",
+      "id": "Kassel"
+    },
+    {
+      "tier": "core",
+      "id": "Kempten"
+    },
+    {
+      "tier": "core",
+      "id": "Kiel"
+    },
+    {
+      "tier": "core",
+      "id": "Koblenz"
+    },
+    {
+      "tier": "core",
+      "id": "Koeln"
+    },
+    {
+      "tier": "core",
+      "id": "Konstanz"
+    },
+    {
+      "tier": "core",
+      "id": "Leipzig"
+    },
+    {
+      "tier": "core",
+      "id": "Magdeburg"
+    },
+    {
+      "tier": "core",
+      "id": "Mannheim"
+    },
+    {
+      "tier": "core",
+      "id": "Muenchen"
+    },
+    {
+      "tier": "core",
+      "id": "Muenster"
+    },
+    {
+      "tier": "core",
+      "id": "Norden"
+    },
+    {
+      "tier": "core",
+      "id": "Nuernberg"
+    },
+    {
+      "tier": "core",
+      "id": "Oldenburg"
+    },
+    {
+      "tier": "core",
+      "id": "Osnabrueck"
+    },
+    {
+      "tier": "core",
+      "id": "Passau"
+    },
+    {
+      "tier": "core",
+      "id": "Regensburg"
+    },
+    {
+      "tier": "core",
+      "id": "Saarbruecken"
+    },
+    {
+      "tier": "core",
+      "id": "Schwerin"
+    },
+    {
+      "tier": "core",
+      "id": "Siegen"
+    },
+    {
+      "tier": "core",
+      "id": "Stuttgart"
+    },
+    {
+      "tier": "core",
+      "id": "Trier"
+    },
+    {
+      "tier": "core",
+      "id": "Ulm"
+    },
+    {
+      "tier": "core",
+      "id": "Wesel"
+    },
+    {
+      "tier": "core",
+      "id": "Wuerzburg"
+    },
+    {
+      "tier": "access",
+      "id": "A0"
+    },
+    {
+      "tier": "access",
+      "id": "A1"
+    },
+    {
+      "tier": "access",
+      "id": "A2"
+    },
+    {
+      "tier": "access",
+      "id": "A3"
+    },
+    {
+      "tier": "access",
+      "id": "A4"
+    },
+    {
+      "tier": "access",
+      "id": "A5"
+    },
+    {
+      "tier": "access",
+      "id": "A6"
+    },
+    {
+      "tier": "access",
+      "id": "A7"
+    },
+    {
+      "tier": "access",
+      "id": "A8"
+    },
+    {
+      "tier": "access",
+      "id": "A9"
+    },
+    {
+      "tier": "access",
+      "id": "A10"
+    },
+    {
+      "tier": "access",
+      "id": "A11"
+    },
+    {
+      "tier": "access",
+      "id": "A12"
+    },
+    {
+      "tier": "access",
+      "id": "A13"
+    },
+    {
+      "tier": "access",
+      "id": "A14"
+    }
+  ],
+  "links": [
+    {
+      "capacity": 644.9,
+      "source": "Aachen",
+      "target": "Koeln"
+    },
+    {
+      "capacity": 498.0,
+      "source": "Aachen",
+      "target": "Wesel"
+    },
+    {
+      "capacity": 601.2,
+      "source": "Aachen",
+      "target": "Trier"
+    },
+    {
+      "capacity": 670.8,
+      "source": "Augsburg",
+      "target": "Ulm"
+    },
+    {
+      "capacity": 678.2,
+      "source": "Augsburg",
+      "target": "Muenchen"
+    },
+    {
+      "capacity": 586.8,
+      "source": "Augsburg",
+      "target": "Wuerzburg"
+    },
+    {
+      "capacity": 515.0,
+      "source": "Bayreuth",
+      "target": "Leipzig"
+    },
+    {
+      "capacity": 653.0,
+      "source": "Bayreuth",
+      "target": "Chemnitz"
+    },
+    {
+      "capacity": 537.6,
+      "source": "Bayreuth",
+      "target": "Nuernberg"
+    },
+    {
+      "capacity": 665.8,
+      "source": "Berlin",
+      "target": "Leipzig"
+    },
+    {
+      "capacity": 502.1,
+      "source": "Berlin",
+      "target": "Dresden"
+    },
+    {
+      "capacity": 646.6,
+      "source": "Berlin",
+      "target": "Schwerin"
+    },
+    {
+      "capacity": 562.1,
+      "source": "Berlin",
+      "target": "Magdeburg"
+    },
+    {
+      "capacity": 545.0,
+      "source": "Berlin",
+      "target": "Greifswald"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Berlin",
+      "target": "A0"
+    },
+    {
+      "capacity": 638.4,
+      "source": "Bielefeld",
+      "target": "Muenster"
+    },
+    {
+      "capacity": 575.3,
+      "source": "Bielefeld",
+      "target": "Siegen"
+    },
+    {
+      "capacity": 531.1,
+      "source": "Bielefeld",
+      "target": "Hannover"
+    },
+    {
+      "capacity": 489.1,
+      "source": "Bielefeld",
+      "target": "Braunschweig"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Bielefeld",
+      "target": "A11"
+    },
+    {
+      "capacity": 685.9,
+      "source": "Braunschweig",
+      "target": "Magdeburg"
+    },
+    {
+      "capacity": 635.5,
+      "source": "Braunschweig",
+      "target": "Hamburg"
+    },
+    {
+      "capacity": 545.5,
+      "source": "Braunschweig",
+      "target": "Hannover"
+    },
+    {
+      "capacity": 482.6,
+      "source": "Braunschweig",
+      "target": "Kassel"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Braunschweig",
+      "target": "A1"
+    },
+    {
+      "capacity": 698.2,
+      "source": "Bremen",
+      "target": "Oldenburg"
+    },
+    {
+      "capacity": 553.2,
+      "source": "Bremen",
+      "target": "Bremerhaven"
+    },
+    {
+      "capacity": 535.7,
+      "source": "Bremen",
+      "target": "Hannover"
+    },
+    {
+      "capacity": 698.2,
+      "source": "Bremerhaven",
+      "target": "Flensburg"
+    },
+    {
+      "capacity": 618.0,
+      "source": "Chemnitz",
+      "target": "Dresden"
+    },
+    {
+      "capacity": 480.0,
+      "source": "Chemnitz",
+      "target": "Erfurt"
+    },
+    {
+      "capacity": 597.8,
+      "source": "Darmstadt",
+      "target": "Frankfurt"
+    },
+    {
+      "capacity": 674.4,
+      "source": "Darmstadt",
+      "target": "Mannheim"
+    },
+    {
+      "capacity": 588.2,
+      "source": "Darmstadt",
+      "target": "Kaiserslautern"
+    },
+    {
+      "capacity": 482.6,
+      "source": "Dortmund",
+      "target": "Essen"
+    },
+    {
+      "capacity": 530.2,
+      "source": "Dortmund",
+      "target": "Muenster"
+    },
+    {
+      "capacity": 582.5,
+      "source": "Dortmund",
+      "target": "Siegen"
+    },
+    {
+      "capacity": 664.3,
+      "source": "Dortmund",
+      "target": "Kassel"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Dortmund",
+      "target": "A12"
+    },
+    {
+      "capacity": 581.5,
+      "source": "Dresden",
+      "target": "Leipzig"
+    },
+    {
+      "capacity": 702.5,
+      "source": "Dresden",
+      "target": "Erfurt"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Dresden",
+      "target": "A13"
+    },
+    {
+      "capacity": 701.5,
+      "source": "Duesseldorf",
+      "target": "Essen"
+    },
+    {
+      "capacity": 719.3,
+      "source": "Duesseldorf",
+      "target": "Koeln"
+    },
+    {
+      "capacity": 582.5,
+      "source": "Erfurt",
+      "target": "Leipzig"
+    },
+    {
+      "capacity": 547.4,
+      "source": "Erfurt",
+      "target": "Kassel"
+    },
+    {
+      "capacity": 520.6,
+      "source": "Erfurt",
+      "target": "Wuerzburg"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Erfurt",
+      "target": "A2"
+    },
+    {
+      "capacity": 514.1,
+      "source": "Essen",
+      "target": "Wesel"
+    },
+    {
+      "capacity": 611.3,
+      "source": "Flensburg",
+      "target": "Kiel"
+    },
+    {
+      "capacity": 679.4,
+      "source": "Frankfurt",
+      "target": "Koblenz"
+    },
+    {
+      "capacity": 669.6,
+      "source": "Frankfurt",
+      "target": "Giessen"
+    },
+    {
+      "capacity": 641.3,
+      "source": "Frankfurt",
+      "target": "Fulda"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Frankfurt",
+      "target": "A14"
+    },
+    {
+      "capacity": 708.7,
+      "source": "Freiburg",
+      "target": "Karlsruhe"
+    },
+    {
+      "capacity": 684.5,
+      "source": "Freiburg",
+      "target": "Konstanz"
+    },
+    {
+      "capacity": 618.0,
+      "source": "Fulda",
+      "target": "Kassel"
+    },
+    {
+      "capacity": 656.6,
+      "source": "Fulda",
+      "target": "Giessen"
+    },
+    {
+      "capacity": 584.9,
+      "source": "Fulda",
+      "target": "Wuerzburg"
+    },
+    {
+      "capacity": 652.1,
+      "source": "Giessen",
+      "target": "Siegen"
+    },
+    {
+      "capacity": 552.0,
+      "source": "Giessen",
+      "target": "Kassel"
+    },
+    {
+      "capacity": 614.4,
+      "source": "Greifswald",
+      "target": "Schwerin"
+    },
+    {
+      "capacity": 534.0,
+      "source": "Hamburg",
+      "target": "Schwerin"
+    },
+    {
+      "capacity": 493.0,
+      "source": "Hamburg",
+      "target": "Kiel"
+    },
+    {
+      "capacity": 485.0,
+      "source": "Hamburg",
+      "target": "Hannover"
+    },
+    {
+      "capacity": 718.3,
+      "source": "Hannover",
+      "target": "Osnabrueck"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Hannover",
+      "target": "A3"
+    },
+    {
+      "capacity": 553.4,
+      "source": "Kaiserslautern",
+      "target": "Koblenz"
+    },
+    {
+      "capacity": 624.7,
+      "source": "Kaiserslautern",
+      "target": "Saarbruecken"
+    },
+    {
+      "capacity": 717.4,
+      "source": "Kaiserslautern",
+      "target": "Karlsruhe"
+    },
+    {
+      "capacity": 585.1,
+      "source": "Karlsruhe",
+      "target": "Mannheim"
+    },
+    {
+      "capacity": 652.8,
+      "source": "Karlsruhe",
+      "target": "Saarbruecken"
+    },
+    {
+      "capacity": 679.2,
+      "source": "Karlsruhe",
+      "target": "Stuttgart"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Karlsruhe",
+      "target": "A4"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Kassel",
+      "target": "A5"
+    },
+    {
+      "capacity": 535.4,
+      "source": "Kempten",
+      "target": "Konstanz"
+    },
+    {
+      "capacity": 652.6,
+      "source": "Kempten",
+      "target": "Muenchen"
+    },
+    {
+      "capacity": 673.7,
+      "source": "Kiel",
+      "target": "Schwerin"
+    },
+    {
+      "capacity": 558.2,
+      "source": "Koblenz",
+      "target": "Koeln"
+    },
+    {
+      "capacity": 674.4,
+      "source": "Koblenz",
+      "target": "Siegen"
+    },
+    {
+      "capacity": 695.0,
+      "source": "Koblenz",
+      "target": "Trier"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Koblenz",
+      "target": "A6"
+    },
+    {
+      "capacity": 497.3,
+      "source": "Konstanz",
+      "target": "Stuttgart"
+    },
+    {
+      "capacity": 568.6,
+      "source": "Leipzig",
+      "target": "Magdeburg"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Leipzig",
+      "target": "A7"
+    },
+    {
+      "capacity": 482.4,
+      "source": "Magdeburg",
+      "target": "Schwerin"
+    },
+    {
+      "capacity": 580.1,
+      "source": "Muenchen",
+      "target": "Passau"
+    },
+    {
+      "capacity": 661.7,
+      "source": "Muenchen",
+      "target": "Nuernberg"
+    },
+    {
+      "capacity": 548.9,
+      "source": "Muenchen",
+      "target": "Regensburg"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Muenchen",
+      "target": "A8"
+    },
+    {
+      "capacity": 570.7,
+      "source": "Muenster",
+      "target": "Osnabrueck"
+    },
+    {
+      "capacity": 591.1,
+      "source": "Norden",
+      "target": "Wesel"
+    },
+    {
+      "capacity": 715.2,
+      "source": "Norden",
+      "target": "Oldenburg"
+    },
+    {
+      "capacity": 549.6,
+      "source": "Nuernberg",
+      "target": "Wuerzburg"
+    },
+    {
+      "capacity": 635.5,
+      "source": "Nuernberg",
+      "target": "Regensburg"
+    },
+    {
+      "capacity": 702.0,
+      "source": "Oldenburg",
+      "target": "Wesel"
+    },
+    {
+      "capacity": 690.0,
+      "source": "Oldenburg",
+      "target": "Osnabrueck"
+    },
+    {
+      "capacity": 562.1,
+      "source": "Passau",
+      "target": "Regensburg"
+    },
+    {
+      "capacity": 549.4,
+      "source": "Saarbruecken",
+      "target": "Trier"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Schwerin",
+      "target": "A9"
+    },
+    {
+      "capacity": 693.1,
+      "source": "Stuttgart",
+      "target": "Ulm"
+    },
+    {
+      "capacity": 595.0,
+      "source": "Stuttgart",
+      "target": "Wuerzburg"
+    },
+    {
+      "capacity": 960.0,
+      "source": "Wuerzburg",
+      "target": "A10"
+    }
+  ]
+}
