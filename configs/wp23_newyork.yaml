@@ -1,0 +1,14 @@
+# WP2.3 out-of-sample network: SNDlib newyork (paper/preregistration_wp2.md s6).
+# Built by scripts/build_sndlib.py with the registered rules; capacity_scale calibrated
+# to greedy ~0.47.  rho_wp2 = 10.29%  greedy = 0.4736
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+topology_file: data/sndlib_topo/newyork.json
+capacity_scale: 0.38994140625
+
+run_name: wp23_newyork
+wandb_project: netslice-drl
+wandb_tags: [wp23, sndlib]

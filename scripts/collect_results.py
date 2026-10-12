@@ -99,6 +99,10 @@ CSV_RUNS = {
 for lvl in ("r0p4", "r0p8", "r1p0", "r1p3", "r1p6", "r2p0", "r2p5", "r3p0"):
     CSV_RUNS[f"ddqn_unified_rho_{lvl}"] = (f"rho_{lvl}", "nominal")
 
+for _n in ("abilene", "polska", "nobel_us", "atlanta", "newyork", "nobel_germany",
+           "geant", "janos_us", "nobel_eu"):
+    CSV_RUNS[f"wp23_{_n}"] = (f"sndlib_{_n}", "nominal")
+
 # The K=8 baseline run trained AC-only for only 50 episodes as a throwaway
 # reference: its AC-only value is NOT comparable and is flagged invalid.
 INVALID = {("sweep_k8_baselines", "aconly")}

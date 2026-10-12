@@ -1,0 +1,14 @@
+# WP2.3 out-of-sample network: SNDlib abilene (paper/preregistration_wp2.md s6).
+# Built by scripts/build_sndlib.py with the registered rules; capacity_scale calibrated
+# to greedy ~0.47.  rho_wp2 = 7.00%  greedy = 0.4807
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+topology_file: data/sndlib_topo/abilene.json
+capacity_scale: 0.91552734375
+
+run_name: wp23_abilene
+wandb_project: netslice-drl
+wandb_tags: [wp23, sndlib]

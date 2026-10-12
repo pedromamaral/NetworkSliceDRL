@@ -92,6 +92,18 @@ jobs_wp2() {
   done; done
 }
 
+# WP2.3 (preregistration_wp2.md s6 + amendment 2): 9 SNDlib networks, seeds 42-46.
+jobs_wp23() {
+  NETS="nobel_eu newyork janos_us geant nobel_germany atlanta nobel_us polska abilene"
+  for S in 42 43 44 45 46; do for N in $NETS; do
+    echo "wp23_${N}_aconly_s$S|$BASE --config configs/wp23_$N.yaml --seed $S --baselines aconly"
+    echo "wp23_${N}_acwidest_s$S|$BASE --config configs/wp23_$N.yaml --seed $S --baselines acwidest"
+  done; done
+  for S in 42 43 44 45 46; do for N in $NETS; do
+    echo "wp23_${N}_greedy_s$S|$BASE --config configs/wp23_$N.yaml --seed $S --baselines greedy,greedyshortest"
+  done; done
+}
+
 one() {
   name="${1%%|*}"; cmd="${1#*|}"
   # skip jobs already completed (lets the driver be restarted safely)
@@ -106,7 +118,7 @@ one() {
 export -f one
 export LOG
 
-JOBSET="${JOBSET:-jobs}"   # jobs | jobs_loose | jobs_wp2
+JOBSET="${JOBSET:-jobs}"   # jobs | jobs_loose | jobs_wp2 | jobs_wp23
 echo "$(date '+%F %T') WP1 start [$JOBSET], $($JOBSET | wc -l) jobs, P=$P, commit $(cat .wp1_commit 2>/dev/null)"
 $JOBSET | xargs -d '\n' -P "$P" -I{} bash -c 'one "$@"' _ {}
 echo "$(date '+%F %T') WP1_COMPLETE"
