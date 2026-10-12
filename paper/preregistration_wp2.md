@@ -168,3 +168,28 @@ the criterion but not discriminating", not as a successful out-of-sample predict
 **Why this is allowed.** It is registered before any WP2.3 prediction is committed, before
 any WP2.3 training, and without any knowledge of F on these networks; it can only make
 the test harder to pass.
+
+---
+
+## Amendment 2 — 2026-10-12, WP2.3 predictions (before any WP2.3 run)
+
+WP2.1 is complete (`wp2_analysis_output.txt`): W1, W2 and W3 supported (Holm), W4
+supported. Following the registered procedure, the WP2.3 predictions are computed from the
+W1 fit, F = 0.3707·ρ + 0.1318 pp (n = 80), with 95 % OLS prediction intervals for the mean
+of 5 seeds (`scripts/wp23_predictions.py`, `data/sndlib_topo/predictions.json`). Constant
+predictor for amendment 1: F̂ = +2.864 pp.
+
+| network | ρ_wp2 (%) | predicted F (pp) | 95 % PI |
+|---|---|---|---|
+| nobel-eu | 6.20 | +2.43 | [+2.00, +2.86] |
+| nobel-germany | 6.45 | +2.52 | [+2.09, +2.96] |
+| abilene | 7.00 | +2.73 | [+2.29, +3.16] |
+| janos-us | 7.44 | +2.89 | [+2.46, +3.32] |
+| geant | 7.86 | +3.05 | [+2.61, +3.48] |
+| atlanta | 8.45 | +3.26 | [+2.83, +3.70] |
+| nobel-us | 8.89 | +3.43 | [+2.99, +3.86] |
+| polska | 9.09 | +3.50 | [+3.07, +3.94] |
+| newyork | 10.29 | +3.95 | [+3.51, +4.38] |
+
+Runs: `ac_dqn_widest` and `aconly`, seeds 42–46, plus `greedy`, on each network, frozen
+`base.yaml`, same image and seeding as WP2.1.
