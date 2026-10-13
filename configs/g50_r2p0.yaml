@@ -1,0 +1,13 @@
+# WP2.2 germany50 rho family, access/core ratio 2.0 (preregistration_wp2.md amendment 3).
+#   rho_wp2 = 13.83%   greedy = 0.4596
+_base_: configs/base.yaml
+
+agent: ddqn_unified
+mode: unified
+seed: 42
+topology_file: data/rho_family_germany50/topo_r2.0.json
+capacity_scale: 0.44707031249999996
+
+run_name: g50_r2p0
+wandb_project: netslice-drl
+wandb_tags: [wp22, germany50]
