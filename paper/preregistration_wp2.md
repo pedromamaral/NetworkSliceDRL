@@ -193,3 +193,47 @@ predictor for amendment 1: F̂ = +2.864 pp.
 
 Runs: `ac_dqn_widest` and `aconly`, seeds 42–46, plus `greedy`, on each network, frozen
 `base.yaml`, same image and seeding as WP2.1.
+
+---
+
+## Amendment 3 — 2026-10-13, WP2.2 run list, hypotheses and predictions (before any WP2.2 run)
+
+**Family.** `data/rho_family_germany50/` (built by `generate_rho_family.py --sndlib-core
+germany50` with the construction fixed in §6): 8 levels, ρ_wp2 = 0.01 % … 14.49 %, greedy
+acceptance 0.460–0.479.
+
+**Runs (main sweep).** `ac_dqn_widest` and `aconly`, seeds 42–46, at all 8 levels
+(80 trainings), plus `greedy` and `greedy_shortest`. Everything else as WP2.1.
+
+**Hypotheses.**
+- **W6** — F rises with ρ on germany50: slope of F on ρ_wp2 > 0, 95 % cluster-bootstrap CI
+  excludes 0 (as W1).
+- **W7** — no flexibility value without headroom on germany50: F at ratio 0.4 equivalent to
+  0 within ±0.5 pp (TOST, n = 5).
+- **W8** — slope invariance across cores: the difference (germany50 slope − WP2.1 slope) is
+  equivalent to 0 within ±0.10 pp per point of ρ (≈ 27 % of the WP2.1 slope); 90 %
+  bootstrap CI of the difference (both families resampled independently, seeds within
+  level) lies inside ±0.10.
+- **W9** — cross-core prediction: the level means match the predictions below from the
+  WP2.1 fit (F = 0.3707·ρ + 0.1318 pp) with MAE ≤ 1.0 pp and ≥ 6 of 8 inside their 95 % PI
+  (mean of 5 seeds), and beat the constant predictor (+2.864 pp) in MAE.
+
+Holm–Bonferroni over {W6, W7, W8, W9} (W9 pass/fail as p = 0 / 1).
+
+| ratio | ρ_wp2 (%) | predicted F (pp) | 95 % PI |
+|---|---|---|---|
+| 0.4 | 0.01 | +0.14 | [−0.32, +0.59] |
+| 0.8 | 3.29 | +1.35 | [+0.91, +1.79] |
+| 1.0 | 6.40 | +2.50 | [+2.07, +2.94] |
+| 1.3 | 10.26 | +3.93 | [+3.50, +4.37] |
+| 1.6 | 12.78 | +4.87 | [+4.43, +5.32] |
+| 2.0 | 13.83 | +5.26 | [+4.81, +5.71] |
+| 2.5 | 14.45 | +5.49 | [+5.03, +5.94] |
+| 3.0 | 14.49 | +5.50 | [+5.05, +5.96] |
+
+**Sub-studies (operating points greedy ≈ 0.35 / 0.60, K = 6).** Not in this amendment:
+they need new calibrations (and ρ changes with K), so they are registered separately, with
+their predictions, after those calibrations and before their runs. If time is short they
+are dropped, and the paper says so.
+
+**Stopping rule.** WP2.2 main sweep ends when all 8 levels have seeds 42–46 for both arms.
