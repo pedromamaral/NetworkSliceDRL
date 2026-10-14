@@ -11,9 +11,9 @@ A008 | tried | controlled rho family (capacity-ratio levels) | C2 | E006,E013 | 
 A009 | tried | aggregate-state DQN baseline | C4 | E008,E012 | 0.4195, aconly +2.74pp | 2026-10-08
 A010 | tried | ac_dqn_widest (learn AC, route widest) | C1 | E011 | best arm everywhere (K11) | 2026-10-08
 A011 | tried | trunk reservation (shortest/widest/DAR), calibrated theta | C1 | E011 | theta~0 = greedy (K12) | 2026-10-08
-A012 | active | real SNDlib cores, load-proportional capacity rule (a) | C2 | E014 | analyse vs predictions | 2026-10-14
+A012 | tried | real SNDlib cores, load-proportional capacity rule (a) | C2 | E014 | WP2.3 FAIL: rho neither levels nor ranks F on real nets (K18) | 2026-10-14
 A013 | active | germany50 rho family (slope invariance across cores) | C2 | E015 | running | 2026-10-14
-A014 | active | exponential/AAP-style pricing comparator | C6 | E016 | raw: pricing ≥ acwidest | 2026-10-14
+A014 | tried | exponential/AAP-style pricing comparator | C6 | E016 | P1/P2 hold (rho predicts pricing routing gain); P3 reversed, pricing beats acwidest (K16,K17) | 2026-10-14
 A015 | dropped | reuse pre-fix runs as WP1 comparison arms | — | — | batch confound; all learned arms re-run | 2026-10-06
 A016 | dropped | per-seed (mu,sigma) calibration for pricing | C6 | — | ~35 core-h; calibrate once on seed 42 | 2026-10-13
 A017 | dropped | Abilene with real capacities in WP2.3 | C2 | — | needs ad-hoc access-capacity rule | 2026-10-09

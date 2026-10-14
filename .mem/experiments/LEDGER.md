@@ -12,7 +12,7 @@ E009 | 2026-10-02 | c4f68aa | factored arch at rho=0 penalty test | — | see E0
 E011 | 2026-10-08 | 42061a6 | WP1 factorial, 90 jobs (joint/factored/aconly/acwidest/heur/TR) | 5 seeds, op+Wx+5 rho lvls | acwidest ≥ joint everywhere | Gate 1 (K11,K12) | A010,A011
 E012 | 2026-10-08 | c59cb11 | loose ends re-run under wp1 seeding (K6/K8, load, mask, aggregate) | 5 seeds | K07,K08,K02,K09 | done | A006,A004,A009
 E013 | 2026-10-12 | 369189c | WP2.1 rho family 8 lvls × 10 seeds, aconly vs acwidest + greedy | seeds 42-51 | F=0.371ρ+0.13pp; W1-W4 supported | positive (K13,K14) | A008
-E014 | 2026-10-14 | af20d0d | WP2.3 SNDlib 9 real nets, 90 trainings + 45 greedy | load-prop caps (rule a) | COMPLETE on gpu15, not pulled/analysed | pending | A012
+E014 | 2026-10-14 | af20d0d | WP2.3 SNDlib 9 real nets, 90 trainings + 45 greedy | load-prop caps (rule a) | MAE 1.74pp, 0/9 in PI, Spearman +.08, bias -1.74pp | negative: WP2.3 FAIL (K18) | A012
 E015 | 2026-10-14 | 3c69310 | WP2.2 germany50 rho family, 80 trainings + 40 greedy | 8 lvls | RUNNING gpu15 | pending | A013
-E016 | 2026-10-14 | 68b7df1 | WP4.1 exp-pricing comparator (ap_cheapest/ap_shortest) | calibrated on seed 42 | COMPLETE gpu14, raw ~0.50, not analysed | pending (K16) | A014
+E016 | 2026-10-14 | 68b7df1 | WP4.1 exp-pricing comparator (ap_cheapest/ap_shortest) | calibrated on seed 42 | P1,P2 supported (slope .481); P3 reversed: ap_cheapest > acwidest +1.67 op/+0.85 Wx | mixed: C1/C6 refuted (K16,K17) | A014
 E017 | 2026-10-02 | — | feasibility-mechanism diagnosis (diagnose.py, orig ckpts) | — | 54.9% vs 46.2% feasible | positive (K06) | A003

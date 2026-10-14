@@ -14,3 +14,4 @@ D12 | rho family regeneration only via --extend or build_topology_det (hashlib) 
 D13 | runs on gpu15 stay there; gpu14 only small non-GPU tasks; never touch others' jobs (MADDPG etc.); no long jobs on laptop | Pedro's rule | — | 2026-10
 D14 | checkpoints final-only (checkpoint_every_eval false) | gpu15 disk ~11G free | per-eval ckpts | 2026-10
 D15 | rho estimator for WP2 = scripts/measure_rho.py, 5 eval seeds 142-146 × 100 eps | precision | 20-ep --quick (v3/WP1; max diff 0.28pp) | 2026-10-08
+D16 | (ACCEPTED by Pedro 2026-10-14) C1 and C6 cannot be claimed as stated (K16); C2 limited to in-family (K18,K19). Freeze new runs except E015; re-plan claim set in research-think strategy | pre-registered P3 reversed + WP2.3 failed | keep C1 with caveat (rejected: pricing wins on every substrate) | 2026-10-14

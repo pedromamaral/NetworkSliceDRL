@@ -13,6 +13,7 @@ REF | greedy at calibrated operating point (all families) | ~0.47 | E013
 REF | seed sd learned | 0.002-0.006 | E011
 REF | seed sd greedy | 0.001-0.003 | E011
 REF | real SNDlib rho (load-prop. capacities) | 6.2-10.3% | E014 prep
+REF | exp-pricing ap_cheapest op/Wx/family | 0.5006/0.5021/0.491-0.514 | E016
 REF | germany50 family rho / greedy | 0.01-14.49% / 0.460-0.479 | E015 prep
 
 ## Conclusions
@@ -31,4 +32,7 @@ K12 | H3: calibrated trunk reservation picks theta~0 (=greedy); acwidest beats i
 K13 | WP2.1: F = 0.371*rho + 0.13pp, slope CI [0.355,0.386]; F(rho=0) = -0.04pp (TOST p=0.0005); new-level MAE 0.14pp, 3/3 in PI | E013 | high | 2026-10-12
 K14 | WP2.1: G = acc(acwidest)-acc(greedy) = -0.114*rho + 2.05 (fresh seeds); rho*~0 → foresight/flexibility trade-off | E013 | high | 2026-10-12
 K15 | real backbones sit mid-range of rho (6.2-10.3%) | E014 prep | high | 2026-10-09
-K16 | (raw, unanalysed) exp-pricing acceptance ~0.50 > acwidest → WP4.1 P3 likely fails; pricing routing gain grows with rho (P1 likely holds) | E016 | low | 2026-10-14
+K16 | WP4.1 P3 REVERSED: exp-pricing ap_cheapest beats acwidest +1.67pp op (p=.0009), +0.85pp Wx (p=.0087), and at all 8 family levels (0.9-2.4pp); hard capacity respected, no calibration overfit; gain is from admission threshold (sigma=inf ≈ greedy) | E016 | high | 2026-10-14
+K17 | WP4.1 P1/P2: rho predicts routing gain of non-learned pricing, F_AP = 0.481*rho - 0.05pp (CI .476-.486), 0 at rho=0 → rho is a substrate property in-family, not a learner artefact | E016 | high | 2026-10-14
+K18 | WP2.3 FAIL: on 9 SNDlib nets F below prediction everywhere (bias -1.74pp), MAE 1.74, 0/9 in PI, constant predictor not beaten, Spearman +.08 (p=.42); greedy routing gain also unranked by rho (exploratory) → rho does not transfer out-of-family in the 6-10% range | E014 | high | 2026-10-14
+K19 | C2 scope after WP2.3: rho→F holds within a controlled family (DQN slope .371, pricing .481) but intercept/slope are family-specific; WP2.2 (germany50) decides whether slope is core-invariant | E013,E014,E016 | med | 2026-10-14

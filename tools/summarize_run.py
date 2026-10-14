@@ -25,7 +25,7 @@ import subprocess
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ARM_COLS = ("baseline", "arm", "agent", "policy")
+ARM_COLS = ("baseline", "arm", "agent", "policy", "routing")
 
 
 def _float(x):
@@ -67,6 +67,8 @@ def samples(path, metrics):
             s = int(r["seed"]) if r.get("seed") else seed
             yield group, arm, s, {k: (_float(r.get(k)), None, None) for k in metrics if _float(r.get(k)) is not None}
     elif path.endswith(".csv"):                       # flat CSV (exp-pricing)
+        if path.endswith("_calibration.csv"):        # calibration sweep, not an evaluation
+            return
         for r in _read(path):
             arm = next((r[c] for c in ARM_COLS if c in r), "?")
             yield name[:-4], arm, _float(r.get("seed")), {

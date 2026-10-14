@@ -85,6 +85,9 @@ BASELINE_NAMES = {
     "tr_dar": "tr_dar",
 }
 
+# WP4.1 exponential-pricing comparator: routing column of exp_pricing/*.csv.
+PRICING_ARMS = {"cheapest": "ap_cheapest", "shortest": "ap_shortest"}
+
 # WP1+ baselines: results/baselines_<config-stem>_s<seed>__<subset>/metrics.csv.
 # Keyed by config stem.  These rows carry batch="wp1" so that a WP1 re-run of
 # an existing cell (e.g. aconly on the new image) is a separate row, never a
@@ -182,6 +185,25 @@ def collect():
                                  agent=BASELINE_NAMES[r["baseline"]], seed=int(r["seed"]),
                                  batch="wp1", source=f"{src}/{d}/metrics.csv", valid=1,
                                  **vals))
+
+    # ---- WP4.1 exponential-pricing comparator (exp_pricing/<substrate>.csv) ---
+    # columns: substrate,routing,seed,eval_seed,mu,sigma,<metrics>; the
+    # *_calibration.csv sweeps are not evaluations and are skipped.
+    for src in SOURCES:
+        for path in glob.glob(os.path.join(ROOT, src, "exp_pricing", "*.csv")):
+            if path.endswith("_calibration.csv"):
+                continue
+            for r in csv.DictReader(open(path)):
+                if r["routing"] not in PRICING_ARMS:
+                    unmapped[f"pricing:{src}:{r['routing']}"] += 1
+                    continue
+                vals = {k: float(v) for k, v in r.items()
+                        if k not in ("substrate", "routing", "seed", "eval_seed", "mu", "sigma")
+                        and v not in ("", None)}
+                rows.append(dict(substrate=r["substrate"], condition="nominal",
+                                 agent=PRICING_ARMS[r["routing"]], seed=int(r["seed"]),
+                                 batch="wp4", source=f"{src}/exp_pricing/{os.path.basename(path)}",
+                                 valid=1, mu=float(r["mu"]), sigma=float(r["sigma"]), **vals))
 
     return rows, unmapped
 

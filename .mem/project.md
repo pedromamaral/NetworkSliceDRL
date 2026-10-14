@@ -14,12 +14,13 @@ routing-headroom statistic rho.
 ## Target claims (current; original "47.5% more slices / 18% more fulfilled" are SUPERSEDED)
 - C1 Learned admission + widest-path routing (ac_dqn_widest) beats greedy, trunk reservation
   and learned joint routing on acceptance, on every substrate. (WP1, supported — K11)
+  ⚠ 2026-10-14: exp-pricing beats acwidest everywhere (K16) → C1 refuted vs strongest classical baseline; see D16.
 - C2 rho predicts the value of path flexibility: F = acc(acwidest)-acc(aconly) ~ 0.371*rho + 0.13pp,
-  F~0 at rho=0. "criterion" (not "law") unless WP2.3 passes. (WP2.1 supported; WP2.2/2.3 pending)
+  F~0 at rho=0. "criterion" (not "law") unless WP2.3 passes. (WP2.1 supported; WP2.3 FAILED K18; pricing in-family K17; WP2.2 pending)
 - C3 Foresight/flexibility trade-off: G = acc(acwidest)-acc(greedy) falls with rho (-0.114*rho+2.05).
 - C4 Mechanism: learned admission keeps more future arrivals feasible (54.9% vs 46.2%).
 - C5 (theory, WP3) lemma: single-homed + access-limited => rho=0; proposition on slope ~0.37. Not started.
-- C6 Learned AC vs analytic online pricing (exp-pricing, WP4.1). Pending analysis; may fail (K16).
+- C6 Learned AC vs analytic online pricing (exp-pricing, WP4.1). REFUTED: pricing wins (K16).
 
 ## Metrics
 - Primary: acceptance_ratio on held-out eval seed = train_seed+100, 200 eps (fulfillment ≡1 under hard).
