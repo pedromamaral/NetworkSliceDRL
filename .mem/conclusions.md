@@ -15,6 +15,7 @@ REF | seed sd greedy | 0.001-0.003 | E011
 REF | real SNDlib rho (load-prop. capacities) | 6.2-10.3% | E014 prep
 REF | exp-pricing ap_cheapest op/Wx/family | 0.5006/0.5021/0.491-0.514 | E016
 REF | germany50 family rho / greedy | 0.01-14.49% / 0.460-0.479 | E015 prep
+REF | germany50 F slope / seed sd of F | 0.499 (CI .467-.530) / 0.2-0.7pp | E015
 
 ## Conclusions
 K01 | revenue/soft objective beats greedy only by admitting fewer; per-step SLA penalty floods | E001 | high | 2026-07-07
@@ -35,4 +36,6 @@ K15 | real backbones sit mid-range of rho (6.2-10.3%) | E014 prep | high | 2026-
 K16 | WP4.1 P3 REVERSED: exp-pricing ap_cheapest beats acwidest +1.67pp op (p=.0009), +0.85pp Wx (p=.0087), and at all 8 family levels (0.9-2.4pp); hard capacity respected, no calibration overfit; gain is from admission threshold (sigma=inf ≈ greedy) | E016 | high | 2026-10-14
 K17 | WP4.1 P1/P2: rho predicts routing gain of non-learned pricing, F_AP = 0.481*rho - 0.05pp (CI .476-.486), 0 at rho=0 → rho is a substrate property in-family, not a learner artefact | E016 | high | 2026-10-14
 K18 | WP2.3 FAIL: on 9 SNDlib nets F below prediction everywhere (bias -1.74pp), MAE 1.74, 0/9 in PI, constant predictor not beaten, Spearman +.08 (p=.42); greedy routing gain also unranked by rho (exploratory) → rho does not transfer out-of-family in the 6-10% range | E014 | high | 2026-10-14
-K19 | C2 scope after WP2.3: rho→F holds within a controlled family (DQN slope .371, pricing .481) but intercept/slope are family-specific; WP2.2 (germany50) decides whether slope is core-invariant | E013,E014,E016 | med | 2026-10-14
+K19 | C2 scope after WP2.3+WP2.2: rho→F is monotone and strongly linear within a controlled family on both cores (DQN slope .371 WP2.1, .499 germany50; pricing .481) but slope/intercept are family/core-specific (W8 refuted) and do not transfer out-of-family (K18) | E013,E014,E015,E016 | high | 2026-10-16
+K20 | WP2.2 germany50: W6 ✓ slope .499; W7 inconcl. (F(0.4)=−0.13, n=5 underpowered); W8 ✗ Δslope +.128 CI90 [.099,.157]; W9 fail 4/8 in PI though MAE .74 and exact (≤.17pp) for rho≤10.3; rho plateau ~14.5% is NOT an estimator ceiling (bound is ≤ greedy acc 0.47): ratio scales access links only and calibrated capacity_scale is identical at ratio 2.5/3.0 → access slack, network = core under K=3; F plateaus too (7.26→7.29). Real misfit = convexity of F vs rho over ratio 1.3-2.5 (F 3.94→7.26, rho 10.3→14.5); state-distribution cause REFUTED by E018 (K21) | E015 | high | 2026-10-16
+K21 | E018: rho plateau = K=3 core path-diversity bound (access×100 changes rho ≤.06pt at r3.0; K=6 lifts it +3-5pt); ratio knob = access tightness, saturating; rho on acwidest's own states = greedy-state rho ±.52pt (estimator valid for the flexible agent); convex F(rho) unexplained by rho — acwidest acc flat ~.48, F growth = aconly decline (SP-only self-congestion, aconly states +3.6-5.7pt rho). n=1 train seed (part c) | E018 | medium | 2026-10-17

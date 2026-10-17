@@ -1,0 +1,53 @@
+=== wp21: level means (pp), n_seeds=10 ===
+ratio   rho%       F       G       H     Dsp
+  0.4   0.00   -0.04    2.68   -2.72    0.00
+  0.8   0.74    0.60    2.17   -1.57    0.44
+  1.0   1.82    0.89    1.42   -0.52    0.99
+  1.3   5.36    2.07    1.13    0.94    2.43
+  1.6   9.55    3.49    0.81    2.68    4.17
+  2.0  13.02    4.94    0.55    4.39    5.81
+  2.5  14.07    5.28    0.50    4.78    6.25
+  3.0  14.41    5.67    0.64    5.03    6.49
+=== g50: level means (pp), n_seeds=5 ===
+ratio   rho%       F       G       H     Dsp
+  0.4   0.01   -0.13    2.55   -2.68    0.01
+  0.8   3.29    1.27    1.33   -0.06    1.80
+  1.0   6.40    2.67    1.20    1.47    3.17
+  1.3  10.26    3.94    0.94    3.00    5.19
+  1.6  12.78    5.41    1.01    4.39    6.82
+  2.0  13.83    6.55    0.96    5.59    7.81
+  2.5  14.45    7.26    1.11    6.15    8.35
+  3.0  14.49    7.29    1.26    6.03    8.37
+
+=== SNDlib nets (n_seeds=5) ===
+net              rho%       F       G       H     Dsp
+nobel-eu         6.20    1.48    0.24    1.24    1.86
+nobel-germany    6.45    1.63    1.34    0.29    1.89
+abilene          7.00   -0.16    2.64   -2.80    0.41
+janos-us         7.44    1.74    0.27    1.46    2.45
+geant            7.86    1.75    0.41    1.34    2.28
+atlanta          8.45    1.04    1.18   -0.14    1.78
+nobel-us         8.89    0.69    1.29   -0.60    1.10
+polska           9.09    0.46    1.49   -1.03    1.41
+newyork         10.29    3.50   -0.00    3.50    3.68
+
+=== H1: quadratic terms and LOO MAE of F (per family, n=8 level means) ===
+  wp21: quad p  F~rho 0.407 | F~Dsp 0.410 | Dsp~rho 0.555   LOO-MAE F~rho 0.166  F~Dsp 0.108   Pearson(Dsp,F)=+0.999  => per-family pass=False
+  g50: quad p  F~rho 0.068 | F~Dsp 0.126 | Dsp~rho 0.023   LOO-MAE F~rho 0.464  F~Dsp 0.234   Pearson(Dsp,F)=+0.997  => per-family pass=False
+H1 holds (as stated, both families): False  [falsified if fails in both: True]
+
+=== H2: transfer to SNDlib (F ~ Dsp linear fit, 9 nets) ===
+  fit on wp21: F = 0.844·Dsp +0.059  MAE 0.369 pp  bias +0.295  (threshold 1.74)
+  fit on g50: F = 0.876·Dsp -0.263  MAE 0.231 pp  bias +0.032  (threshold 1.74)
+  Spearman(Dsp,F) = +0.967 (p=0.000);  reference Spearman(rho,F) = +0.083 (p=0.831)
+  Dsp range nets [0.41,3.68] vs wp21 [0.00,6.49] g50 [0.01,8.37]
+H2 holds (wp21 fit): True
+
+=== H3: curvature of G and H vs rho (quad coef, p) ===
+  wp21: G: +0.0130 (p=0.052) | H: -0.0101 (p=0.227) | F: +0.0029 (p=0.407)
+  g50: G: +0.0156 (p=0.003) | H: +0.0005 (p=0.952) | F: +0.0161 (p=0.068)
+
+=== H4: F ~ rho + Dsp (n small, overfit flag) ===
+  wp21 (n=8): R2 full 0.999 | rho only 0.996 | Dsp only 0.998 | partial R2 rho|Dsp 0.479, Dsp|rho 0.759
+  g50 (n=8): R2 full 0.997 | rho only 0.974 | Dsp only 0.994 | partial R2 rho|Dsp 0.566, Dsp|rho 0.896
+  pooled (n=16): R2 full 0.994 | rho only 0.954 | Dsp only 0.994 | partial R2 rho|Dsp 0.001, Dsp|rho 0.875

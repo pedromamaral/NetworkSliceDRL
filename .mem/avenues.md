@@ -12,7 +12,7 @@ A009 | tried | aggregate-state DQN baseline | C4 | E008,E012 | 0.4195, aconly +2
 A010 | tried | ac_dqn_widest (learn AC, route widest) | C1 | E011 | best arm everywhere (K11) | 2026-10-08
 A011 | tried | trunk reservation (shortest/widest/DAR), calibrated theta | C1 | E011 | theta~0 = greedy (K12) | 2026-10-08
 A012 | tried | real SNDlib cores, load-proportional capacity rule (a) | C2 | E014 | WP2.3 FAIL: rho neither levels nor ranks F on real nets (K18) | 2026-10-14
-A013 | active | germany50 rho family (slope invariance across cores) | C2 | E015 | running | 2026-10-14
+A013 | tried | germany50 rho family (slope invariance across cores) | C2 | E015 | slope .499 ≠ .371 (W8 refuted); rho ranks F in-family only; rho saturates ~14.5% (K20) | 2026-10-16
 A014 | tried | exponential/AAP-style pricing comparator | C6 | E016 | P1/P2 hold (rho predicts pricing routing gain); P3 reversed, pricing beats acwidest (K16,K17) | 2026-10-14
 A015 | dropped | reuse pre-fix runs as WP1 comparison arms | — | — | batch confound; all learned arms re-run | 2026-10-06
 A016 | dropped | per-seed (mu,sigma) calibration for pricing | C6 | — | ~35 core-h; calibrate once on seed 42 | 2026-10-13
@@ -26,3 +26,7 @@ A023 | proposed | WP5 multi-homing | C2,C5 | — | pending | 2026-10-14
 A024 | parked | WP2.2 sub-studies: greedy 0.35/0.60 operating points, K=6 | C2 | — | not calibrated/registered | 2026-10-13
 A025 | proposed | mid-training checkpoints / resumable training (power-cut lesson) | infra | — | before PPO | 2026-10-13
 A026 | tried | slice_duration / arrival tuning to calibrate greedy operating point | — | — | greedy ~0.47 everywhere | 2026-06-21
+A027 | tried | rho plateau/convexity diagnostic: access×100, K=6, rho under learned-policy states | C2 | E018 | plateau = K=3 core path diversity (access slack); greedy-state rho valid for acwidest; convexity not explained, sits in aconly decline (K21) | 2026-10-17
+A028 | active | SP-penalty predictor Δ_SP=acc(greedy K3)−acc(greedy_shortest) for F (+ rho&Δ_SP bivariate as secondary) and decomposition F=G+H (H=greedy−aconly), retrospective on 26 substrates | C2,C3 | E019 | — | 2026-10-17
+A029 | proposed | Erlang reduced-load fixed-point model of SP-only vs K-path blocking as training-free F predictor | C5,C2 | — | after E019 | 2026-10-17
+A030 | dropped | rho measured on greedy_shortest (SP-only) states as F predictor | C2 | — | K21: aconly-state rho does not linearize F (F/rho .23→.29) | 2026-10-17

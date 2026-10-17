@@ -1,25 +1,27 @@
-# STATE — 2026-10-14 · main @dce7bce (.mem edits + new analysis script uncommitted)
-Phase just done: research-think analyze E014 + E016 vs pre-registrations.
+# STATE — 2026-10-16 · main @5b4e022 (.mem edits + 2 new analysis scripts uncommitted)
+Phase just done: analyze E018 (K21) + ideate (D18: E019 active A028, A029 proposed, A030 dropped).
 
 ## Changed this session
-- NEW scripts/analyze_wp23_wp41.py → paper/wp23_wp41_analysis_output.txt (registered tests, Holm)
-- Cards E014/E016 results+verdicts; LEDGER; A012/A014 → tried; K16 rewritten, K17-K19 new; D16 ACCEPTED; project.md claim flags
+- NEW scripts/analyze_wp22.py → paper/wp22_analysis_output.txt (registered W6-W9, Holm); results/all_results.csv refreshed (160 g50 rows)
+- Card E015 results+verdict; LEDGER; A013 → tried; K19 revised; K20 new; REF germany50 slope added
 
-## Active runs (runs.md)
-- E015 WP2.2 germany50 | gpu15 | running, ETA ~2026-10-15 09:00
+## Active runs
+- none running (E018 ab+c both done and fetched 2026-10-17)
 
 ## Latest results
-- E014 WP2.3 FAIL: MAE 1.74pp, 0/9 in PI, constant not beaten, Spearman +.08; bias -1.74pp (K18).
-- E016: P1/P2 supported (pricing F_AP slope .481, rho is substrate property, K17);
-  P3 REVERSED: ap_cheapest beats acwidest +1.67 op / +0.85 Wx / all family levels (K16).
+- E015: W6 ✓ slope .499; W7 inconclusive (n=5); W8 ✗ slope ≠ .371 (Δ+.128); W9 FAIL 4/8 in PI (MAE .74, exact for rho≤10.3).
+- rho plateau ~14.5% explained (K20): access-link slack, not estimator ceiling; F plateaus too. Open: convex F(rho) over ratio 1.3-2.5.
+- E014 WP2.3 FAIL (K18); E016 pricing beats acwidest (K16), pricing F slope .481 (K17).
 
 ## Open problem
-C1 and C6 refuted as stated; C2 holds only in-family (K19). Paper story must be re-planned (D16 accepted: no new runs except E015 until strategy re-plan).
+C1/C6 refuted as stated; C2 = in-family ordinal predictor only (K19). Paper story must be re-planned (D16).
 
 ## EXACT next step
-1. E015: after ~10-15 09:00 `bash tools/runs_status.sh`, fetch, analyse vs W6-W9 (now decisive for C2 slope invariance).
-2. research-think strategy (or ideate): re-plan claims (candidates: rho as substrate statistic across controllers; pricing-vs-DQN
-   decomposition ap_widest; honest negatives) — no new runs before that.
+0. DONE: E019 implemented (scripts/analyze_e019.py, output in paper/e019_analysis_output.txt) → next: research-think analyze E019.
+1. (done) research-do implement E019 (card experiments/E019-sp-penalty-predictor.md, D18): scripts/analyze_e019.py on all_results.csv
+   (0 GPU, laptop OK) → paper/e019_analysis_output.txt; then research-think analyze E019.
+2. Then research-think strategy: re-plan claim set using K16-K21 + E019 verdict (C2 scope: rho vs Δ_SP).
+3. A029 (Erlang reduced-load model) only if E019 H1/H2 hold or strategy asks for C5 theory.
 
 ## Files next session must read
-STATE.md, conclusions.md (K16-K19), decisions.md D16, project.md, paper/wp23_wp41_analysis_output.txt.
+STATE.md, conclusions.md (K16-K20), decisions.md D16, project.md, paper/wp22_analysis_output.txt, paper/wp23_wp41_analysis_output.txt.

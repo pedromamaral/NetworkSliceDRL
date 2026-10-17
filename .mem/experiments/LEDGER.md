@@ -13,6 +13,7 @@ E011 | 2026-10-08 | 42061a6 | WP1 factorial, 90 jobs (joint/factored/aconly/acwi
 E012 | 2026-10-08 | c59cb11 | loose ends re-run under wp1 seeding (K6/K8, load, mask, aggregate) | 5 seeds | K07,K08,K02,K09 | done | A006,A004,A009
 E013 | 2026-10-12 | 369189c | WP2.1 rho family 8 lvls × 10 seeds, aconly vs acwidest + greedy | seeds 42-51 | F=0.371ρ+0.13pp; W1-W4 supported | positive (K13,K14) | A008
 E014 | 2026-10-14 | af20d0d | WP2.3 SNDlib 9 real nets, 90 trainings + 45 greedy | load-prop caps (rule a) | MAE 1.74pp, 0/9 in PI, Spearman +.08, bias -1.74pp | negative: WP2.3 FAIL (K18) | A012
-E015 | 2026-10-14 | 3c69310 | WP2.2 germany50 rho family, 80 trainings + 40 greedy | 8 lvls | RUNNING gpu15 | pending | A013
+E015 | 2026-10-14 | 3c69310 | WP2.2 germany50 rho family, 80 trainings + 40 greedy | 8 lvls × 5 seeds | F=0.499ρ−0.43pp; W6 ✓, W7 inconcl., W8 ✗ (Δslope +.128), W9 fail 4/8 in PI (MAE .74) | mixed: slope core-specific (K20) | A013
 E016 | 2026-10-14 | 68b7df1 | WP4.1 exp-pricing comparator (ap_cheapest/ap_shortest) | calibrated on seed 42 | P1,P2 supported (slope .481); P3 reversed: ap_cheapest > acwidest +1.67 op/+0.85 Wx | mixed: C1/C6 refuted (K16,K17) | A014
 E017 | 2026-10-02 | — | feasibility-mechanism diagnosis (diagnose.py, orig ckpts) | — | 54.9% vs 46.2% feasible | positive (K06) | A003
+E018 | 2026-10-17 | 5b4e022 | rho plateau/convexity diagnostic (access×100, K=6, rho on learned-agent states), exploratory D17 | 3 ratios × 2 fams; part c seed 42 | P-a ✓ plateau not access; P-b ✓ plateau = K=3 core path diversity (k6 +3-5pt); P-c ✗ rho(acwidest st)−rho(greedy st) ≤.52pt; F growth = aconly decline | mixed: convexity unexplained (K21) | A027
