@@ -7,6 +7,7 @@ Phase just done: ideate 2026-10-18 → D21 (order E020+E023 → E021 → E022; f
 - previous session: E019/K22, D19 pivot, D20 (commit f37f0fa)
 
 ## Active runs
+- E023 running on gpu14 (container netslice-drl-E023, launched 2026-10-18); next: research-do status → fetch E023
 - none
 
 ## Latest results
