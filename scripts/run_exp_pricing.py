@@ -31,6 +31,12 @@ SUBSTRATES = {f"rho_r{l}": f"configs/ddqn_unified_rho_r{l}.yaml"
               for l in ("0p4", "0p8", "1p0", "1p3", "1p6", "2p0", "2p5", "3p0")}
 SUBSTRATES["operator"] = "configs/ddqn_unified_count.yaml"
 SUBSTRATES["waxman"] = "configs/ddqn_unified_count_topo2.yaml"
+# E023 (A036): SNDlib + germany50 family, seeds matched to the existing ac_dqn_widest rows.
+for _n in ("abilene", "atlanta", "geant", "janos_us", "newyork", "nobel_eu", "nobel_germany",
+           "nobel_us", "polska"):
+    SUBSTRATES[f"sndlib_{_n}"] = f"configs/wp23_{_n}.yaml"
+for _l in ("0p4", "0p8", "1p0", "1p3", "1p6", "2p0", "2p5", "3p0"):
+    SUBSTRATES[f"g50_r{_l}"] = f"configs/g50_r{_l}.yaml"
 SEEDS = {s: (list(range(42, 52)) if s.startswith("rho_") else list(range(42, 47)))
          for s in SUBSTRATES}
 CAL_SEED, CAL_EPISODES, EVAL_EPISODES = 42, 40, 200

@@ -202,7 +202,8 @@ def collect():
                         and v not in ("", None)}
                 rows.append(dict(substrate=r["substrate"], condition="nominal",
                                  agent=PRICING_ARMS[r["routing"]], seed=int(r["seed"]),
-                                 batch="wp4", source=f"{src}/exp_pricing/{os.path.basename(path)}",
+                                 batch=("e023" if r["substrate"].startswith(("sndlib_", "g50_")) else "wp4"),
+                                 source=f"{src}/exp_pricing/{os.path.basename(path)}",
                                  valid=1, mu=float(r["mu"]), sigma=float(r["sigma"]), **vals))
 
     return rows, unmapped

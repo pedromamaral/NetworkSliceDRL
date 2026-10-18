@@ -12,3 +12,7 @@
 ## Success / falsification
 - H1 falsified if pricing ≤ acwidest on ≥3/9 SNDlib (or ≥3/8 g50) → C2' restricted to "in-family + op/Wx" wording.
 - Check: hard capacity never violated; calibrated parameter not at grid edge (else extend grid, record).
+## Status 2026-10-18 — IMPLEMENTED, not deployed
+- Code: 17 substrates added to SUBSTRATES in scripts/run_exp_pricing.py (sndlib_<net>→configs/wp23_<net>.yaml, g50_r<l>→configs/g50_r<l>.yaml; seeds 42-46).
+  collect_results.py tags those rows batch=e023 (others stay wp4). Smoke (1 ep, abilene+g50_r1p0) OK; pytest 106 pass.
+- Launch (gpu14): `python3 scripts/run_exp_pricing.py --procs 4 --only $(sndlib_* g50_r* names)` → results/exp_pricing/<sub>.csv. Then fetch, collect_results.py, analyse H1/H2.
