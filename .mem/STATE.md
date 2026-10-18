@@ -1,7 +1,7 @@
-# STATE — 2026-10-18 · main @8dee9b9 (+ .mem commit below)
+# STATE — 2026-10-18 · main @d1abf51
 Phase just done: ideate 2026-10-18 → D21 (order E020+E023 → E021 → E022; freeze lifted for A036). Cards E020-E023 written.
 
-## Changed this session (ideate, .mem only — not committed)
+## Changed this session (ideate, committed d1abf51)
 - avenues: A029 active (E020); A036 NEW active (E023); A035→E021, A031→E022 planned · decisions D21
 - cards: E020 (full), E023 (full), E021/E022 skeletons
 - previous session: E019/K22, D19 pivot, D20 (commit f37f0fa)
