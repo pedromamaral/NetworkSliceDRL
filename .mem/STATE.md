@@ -1,27 +1,31 @@
-# STATE — 2026-10-16 · main @5b4e022 (.mem edits + 2 new analysis scripts uncommitted)
-Phase just done: analyze E018 (K21) + ideate (D18: E019 active A028, A029 proposed, A030 dropped).
+# STATE — 2026-10-18 · main @8dee9b9 (+ .mem commit below)
+Phase just done: implement+analyze E019 (K22) → strategy re-plan (D19 PIVOT, D20 freeze lifted for A031/A035).
 
 ## Changed this session
-- NEW scripts/analyze_wp22.py → paper/wp22_analysis_output.txt (registered W6-W9, Holm); results/all_results.csv refreshed (160 g50 rows)
-- Card E015 results+verdict; LEDGER; A013 → tried; K19 revised; K20 new; REF germany50 slope added
+- scripts/analyze_e019.py + paper/e019_analysis_output.txt (8dee9b9); card E019 results/verdict; LEDGER E019
+- conclusions K22 new, K14 annotated · avenues A028 tried; A029/A031/A035 needed-for-paper; A032/A033 parked
+- strategy.md = digest of lit-graph/drl-slicing-path-flex/strategy-plan.md (2026-10-18)
+- project.md claims C1'-C4' (D19) · decisions D19 (pivot), D20 (freeze lift for A031/A035 only)
 
 ## Active runs
-- none running (E018 ab+c both done and fetched 2026-10-17)
+- none
 
 ## Latest results
-- E015: W6 ✓ slope .499; W7 inconclusive (n=5); W8 ✗ slope ≠ .371 (Δ+.128); W9 FAIL 4/8 in PI (MAE .74, exact for rho≤10.3).
-- rho plateau ~14.5% explained (K20): access-link slack, not estimator ceiling; F plateaus too. Open: convex F(rho) over ratio 1.3-2.5.
-- E014 WP2.3 FAIL (K18); E016 pricing beats acwidest (K16), pricing F slope .481 (K17).
+- E019: F ≈ .84-.88·Δ_SP across wp21/g50/SNDlib; SNDlib MAE .37pp (rho 1.74), Spearman .97 (rho .08); exploratory (K22).
+- E016: exp-pricing beats acwidest +1.67pp op (K16) → C2' honest negative.
 
 ## Open problem
-C1/C6 refuted as stated; C2 = in-family ordinal predictor only (K19). Paper story must be re-planned (D16).
+C3' out-of-family predictor Δ_SP is exploratory and semi-tautological → needs pre-registered test on new
+nets (A035) and ideally an analytic Erlang version (A029, kill-gated). BR-EFP baseline missing (A031).
 
 ## EXACT next step
-0. DONE: E019 implemented (scripts/analyze_e019.py, output in paper/e019_analysis_output.txt) → next: research-think analyze E019.
-1. (done) research-do implement E019 (card experiments/E019-sp-penalty-predictor.md, D18): scripts/analyze_e019.py on all_results.csv
-   (0 GPU, laptop OK) → paper/e019_analysis_output.txt; then research-think analyze E019.
-2. Then research-think strategy: re-plan claim set using K16-K21 + E019 verdict (C2 scope: rho vs Δ_SP).
-3. A029 (Erlang reduced-load model) only if E019 H1/H2 hold or strategy asks for C5 theory.
+1. research-think ideate (strongest model): cards E020 = A029 kill test (EFP-predicted vs measured Δ_SP,
+   26 substrates, CPU; kill if Spearman<.7 or MAE>1pp), E021 = A035 pilot (2 new ITZ nets, greedy/
+   greedy_shortest/pricing, no training; kill if Δ_SP range <1pp) + A035 prereg draft, E022 = A031 BR-EFP (timebox 2 wk).
+2. Then research-do implement E020/E021.
 
 ## Files next session must read
-STATE.md, conclusions.md (K16-K20), decisions.md D16, project.md, paper/wp22_analysis_output.txt, paper/wp23_wp41_analysis_output.txt.
+STATE.md, strategy.md, project.md, conclusions.md (K16-K22), decisions.md D19-D20, avenues A029/A031/A035 lines.
+## Housekeeping
+Untracked from earlier sessions, not yet committed: scripts/analyze_wp22.py, diag_rho_plateau.py, run_e018.sh,
+paper/wp22_analysis_output.txt, data/diag_rho/, lit-graph/ (repo copy — ask Pedro before adding).
